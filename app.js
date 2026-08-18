@@ -1,0 +1,681 @@
+// ============================================================
+// حفظ الحديث - المنطق الرئيسي
+// ============================================================
+
+// ---------- Firebase Setup (تحميل اختياري، ما يوقفش باقي التطبيق لو فشل) ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyD8jxpVrvicStETloL8tk5s865dmNatIqE",
+  authDomain: "mazen-productivity-bab1c.firebaseapp.com",
+  databaseURL: "https://mazen-productivity-bab1c-default-rtdb.firebaseio.com",
+  projectId: "mazen-productivity-bab1c",
+  storageBucket: "mazen-productivity-bab1c.firebasestorage.app",
+  messagingSenderId: "388570583199",
+  appId: "1:388570583199:web:45e958a32585b0572252aa",
+  measurementId: "G-LCMB1W8DW9"
+};
+
+let auth = null;
+let db = null;
+let fbReady = false;
+let currentUser = null;
+let authMode = "login"; // login | signup
+let fbFns = {}; // سيحتوي على دوال Firebase بعد التحميل
+
+async function initFirebase(){
+  try{
+    const [{ initializeApp }, authMod, dbMod] = await Promise.all([
+      import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"),
+      import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js")
+    ]);
+    const fbApp = initializeApp(firebaseConfig);
+    auth = authMod.getAuth(fbApp);
+    db = dbMod.getDatabase(fbApp);
+    fbFns = {
+      createUserWithEmailAndPassword: authMod.createUserWithEmailAndPassword,
+      signInWithEmailAndPassword: authMod.signInWithEmailAndPassword,
+      onAuthStateChanged: authMod.onAuthStateChanged,
+      signOut: authMod.signOut,
+      ref: dbMod.ref, set: dbMod.set, get: dbMod.get
+    };
+    fbReady = true;
+
+    fbFns.onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+      const authBtn = document.getElementById("authBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const syncStatus = document.getElementById("syncStatus");
+
+      if(user){
+        authBtn.textContent = user.email;
+        logoutBtn.style.display = "block";
+        syncStatus.textContent = "متزامن ✓ — " + user.email;
+        loadCloudProgress(user.uid);
+      } else {
+        authBtn.textContent = "تسجيل الدخول";
+        logoutBtn.style.display = "none";
+        syncStatus.textContent = "غير مسجّل دخول — البيانات محلية فقط";
+      }
+    });
+  }catch(err){
+    console.error("فشل تحميل Firebase:", err);
+    const syncStatus = document.getElementById("syncStatus");
+    if(syncStatus) syncStatus.textContent = "المزامنة غير متاحة الآن — البيانات محلية فقط";
+    showToast("تعذّر الاتصال بخدمة المزامنة، التطبيق شغال بالبيانات المحلية", true);
+  }
+}
+
+// ---------- App State ----------
+// progress structure:
+// progress[hadithKey] = {
+//   lastReviewDate: "2026-08-18",
+//   nextReviewDate: "2026-08-19",
+//   intervalDays: 1,
+//   history: [{date, rating}]
+// }
+let progress = {};
+let activeQuiz = null; // { key, hadith, chapterTitle, revealedWords }
+
+const LOCAL_KEY = "hadith_app_progress_v1";
+
+function hadithKey(bookName, chapterId, numInBook){
+  return `${bookName}::${chapterId}::${numInBook}`;
+}
+
+function loadLocalProgress(){
+  try{
+    const raw = localStorage.getItem(LOCAL_KEY);
+    progress = raw ? JSON.parse(raw) : {};
+  }catch(e){ progress = {}; }
+}
+function saveLocalProgress(){
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(progress));
+}
+
+function saveProgress(){
+  saveLocalProgress();
+  if(currentUser && fbReady){
+    fbFns.set(fbFns.ref(db, `hadithApp/${currentUser.uid}/progress`), progress)
+      .catch(err => showToast("خطأ في المزامنة: " + err.message, true));
+  }
+}
+
+function loadCloudProgress(uid){
+  if(!fbReady) return;
+  return fbFns.get(fbFns.ref(db, `hadithApp/${uid}/progress`)).then(snap => {
+    if(snap.exists()){
+      const cloud = snap.val();
+      // دمج: أحدث تعديل يفوز (بنسخة مبسطة: البيانات السحابية تفوز لو موجودة)
+      progress = cloud;
+      saveLocalProgress();
+    } else if(Object.keys(progress).length > 0){
+      // مافيش بيانات سحابية بس فيه بيانات محلية -> رفعها
+      fbFns.set(fbFns.ref(db, `hadithApp/${uid}/progress`), progress);
+    }
+    renderCurrentView();
+  }).catch(err => {
+    showToast("تعذّر تحميل بيانات المزامنة: " + err.message, true);
+  });
+}
+
+// ---------- Toast ----------
+function showToast(msg, isErr){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast show" + (isErr ? " err" : "");
+  setTimeout(() => { t.className = "toast" + (isErr ? " err" : ""); }, 2800);
+}
+
+// ---------- Navigation ----------
+let currentTab = "books";
+let currentBookIdx = null;
+let currentChapterId = null;
+
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll("nav.bottom-nav button").forEach(b => b.classList.remove("active"));
+  document.getElementById("nav-" + tab).classList.add("active");
+
+  if(tab === "books"){
+    goToBooks();
+  } else if(tab === "review"){
+    showView("view-review");
+    renderReviewTab();
+  }
+}
+
+function showView(id){
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function goToBooks(){
+  showView("view-books");
+  renderBooksList();
+  document.querySelectorAll("nav.bottom-nav button").forEach(b => b.classList.remove("active"));
+  document.getElementById("nav-books").classList.add("active");
+}
+
+function goToChapters(){
+  showView("view-chapters");
+}
+
+function showAuthView(){
+  showView("view-auth");
+}
+
+function renderCurrentView(){
+  if(currentTab === "books") renderBooksList();
+  if(currentTab === "review") renderReviewTab();
+  updateReviewBadge();
+}
+
+// ---------- Books List ----------
+const BOOKS = [RIYAD_ALSALIHIN];
+
+function renderBooksList(){
+  const wrap = document.getElementById("booksList");
+  wrap.innerHTML = "";
+  BOOKS.forEach((book, idx) => {
+    const totalHadiths = book.chapters.reduce((s,c) => s + c.hadiths.length, 0);
+    const el = document.createElement("div");
+    el.className = "card-item";
+    el.onclick = () => openBook(idx);
+    el.innerHTML = `
+      <div class="row-main">
+        <div class="num-badge">📖</div>
+        <div>
+          <div class="title">${book.bookName}</div>
+          <div class="meta">${book.chapters.length} باب · ${totalHadiths} حديث</div>
+        </div>
+      </div>
+      <span class="chev">‹</span>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function openBook(idx){
+  currentBookIdx = idx;
+  const book = BOOKS[idx];
+  document.getElementById("chaptersBookTitle").textContent = book.bookName;
+  document.getElementById("chaptersTitle").textContent = book.bookName;
+  renderChaptersList();
+  showView("view-chapters");
+}
+
+function renderChaptersList(){
+  const book = BOOKS[currentBookIdx];
+  const wrap = document.getElementById("chaptersList");
+  wrap.innerHTML = "";
+  book.chapters.forEach(chapter => {
+    const dueCount = chapter.hadiths.filter(h => {
+      const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+      return isDue(key);
+    }).length;
+
+    const el = document.createElement("div");
+    el.className = "card-item";
+    el.onclick = () => openChapter(chapter.id);
+    el.innerHTML = `
+      <div class="row-main">
+        <div class="num-badge">${chapter.id}</div>
+        <div>
+          <div class="title">${chapter.title}</div>
+          <div class="meta">${chapter.hadiths.length} حديث${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
+        </div>
+      </div>
+      <span class="chev">‹</span>
+    `;
+    wrap.appendChild(el);
+  });
+}
+
+function openChapter(chapterId){
+  currentChapterId = chapterId;
+  const book = BOOKS[currentBookIdx];
+  const chapter = book.chapters.find(c => c.id === chapterId);
+
+  document.getElementById("crumbBook").textContent = book.bookName;
+  document.getElementById("crumbChapter").textContent = chapter.title;
+  document.getElementById("chapterContentTitle").textContent = chapter.title;
+
+  renderAyat(chapter);
+  renderHadiths(book, chapter);
+  showView("view-chapter-content");
+}
+
+function renderAyat(chapter){
+  const wrap = document.getElementById("ayatContainer");
+  wrap.innerHTML = "";
+  if(!chapter.ayat || chapter.ayat.length === 0) return;
+
+  const block = document.createElement("div");
+  block.className = "ayat-block";
+  block.innerHTML = `<div class="label">آيات الباب</div>`;
+  chapter.ayat.forEach(a => {
+    const item = document.createElement("div");
+    item.className = "ayah-item";
+    item.innerHTML = `
+      <div class="ayah-text">﴿ ${a.text} ﴾</div>
+      <div class="ayah-ref">[${a.reference}]</div>
+    `;
+    block.appendChild(item);
+  });
+  wrap.appendChild(block);
+}
+
+function renderHadiths(book, chapter){
+  const wrap = document.getElementById("hadithsContainer");
+  wrap.innerHTML = "";
+  chapter.hadiths.forEach(h => {
+    const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+    const prog = progress[key];
+    const due = isDue(key);
+
+    const card = document.createElement("div");
+    card.className = "hadith-card";
+    card.innerHTML = `
+      <div class="hh">
+        <div class="nums">
+          <span class="num-pill">رقم الباب: <b>${h.numInChapter}</b></span>
+          <span class="num-pill">رقم الكتاب: <b>${h.numInBook}</b></span>
+        </div>
+        ${due ? `<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}
+      </div>
+      <div class="narrator">${h.narrator}</div>
+      <div class="hadith-text" id="hadithText-${key.replace(/[^a-zA-Z0-9]/g,'_')}">${h.text}</div>
+      <div class="takhrij">${h.takhrij}</div>
+      ${h.note ? `<div class="note">${h.note}</div>` : ""}
+      <div class="hh-actions">
+        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${key.replace(/[^a-zA-Z0-9]/g,'_')}')">إظهار / إخفاء الحديث</button>
+        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">تسميع (كتابة) ✍️</button>
+      </div>
+      ${prog ? `<div class="meta" style="margin-top:10px;font-size:0.76rem;color:var(--ink-soft);">
+          آخر مراجعة: ${prog.lastReviewDate || "—"} · المراجعة القادمة: ${prog.nextReviewDate || "—"}
+        </div>` : ""}
+    `;
+    wrap.appendChild(card);
+  });
+}
+
+function toggleHadithText(btn, safeKey){
+  const el = document.getElementById("hadithText-" + safeKey);
+  el.classList.toggle("shown");
+}
+
+// ---------- Arabic text normalization for comparison ----------
+function stripDiacritics(text){
+  // إزالة التشكيل والتطويل وعلامات الترقيم غير الجوهرية
+  return text
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, "") // تشكيل
+    .replace(/ـ/g, "") // تطويل
+    .replace(/[،.,؛:؟!"'«»()"]/g, "")
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeForCompare(text){
+  return stripDiacritics(text).toLowerCase();
+}
+
+function tokenize(text){
+  return text.split(/\s+/).filter(Boolean);
+}
+
+// ---------- Quiz (تسميع) ----------
+function openQuiz(bookName, chapterId, numInBook){
+  const book = BOOKS.find(b => b.bookName === bookName);
+  const chapter = book.chapters.find(c => c.id === chapterId);
+  const h = chapter.hadiths.find(x => x.numInBook === numInBook);
+  const key = hadithKey(bookName, chapterId, numInBook);
+
+  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null };
+
+  document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
+  document.getElementById("quizInput").value = "";
+  document.getElementById("hintBox").className = "hint-box";
+  document.getElementById("hintBox").textContent = "";
+  document.getElementById("compareResult").innerHTML = "";
+  document.getElementById("selfRateBox").className = "self-rate";
+  document.getElementById("manualReviewDate").value = "";
+  document.getElementById("quizModal").classList.add("active");
+}
+
+function closeQuizModal(){
+  document.getElementById("quizModal").classList.remove("active");
+  activeQuiz = null;
+}
+
+function showNextWordHint(){
+  if(!activeQuiz) return;
+  const words = tokenize(activeQuiz.hadith.text);
+  activeQuiz.revealedWordsCount = Math.min(activeQuiz.revealedWordsCount + 1, words.length);
+  const revealed = words.slice(0, activeQuiz.revealedWordsCount).join(" ");
+  const box = document.getElementById("hintBox");
+  box.className = "hint-box shown";
+  box.innerHTML = `<b>بداية الحديث:</b> ${revealed} ...`;
+}
+
+function checkQuizAnswer(){
+  if(!activeQuiz) return;
+  const userText = document.getElementById("quizInput").value.trim();
+  if(!userText){
+    showToast("اكتب الحديث الأول قبل التحقق", true);
+    return;
+  }
+
+  const originalWords = tokenize(activeQuiz.hadith.text);
+  const userWords = tokenize(userText);
+
+  const originalNorm = originalWords.map(normalizeForCompare);
+  const userNorm = userWords.map(normalizeForCompare);
+
+  // مقارنة تسلسلية بسيطة بمحاذاة قريبة (نفس المؤشر) + احتساب الكلمات الزايدة/الناقصة
+  const maxLen = Math.max(originalNorm.length, userNorm.length);
+  let correctCount = 0;
+  let htmlParts = [];
+
+  // نستخدم اللغة الأصلية (originalWords) كأساس للعرض، ونقارن بموقعها المقابل من كلام المستخدم
+  for(let i = 0; i < originalWords.length; i++){
+    const oWord = originalWords[i];
+    const oNorm = originalNorm[i];
+    const uNorm = userNorm[i];
+
+    if(uNorm === undefined){
+      htmlParts.push(`<span class="word-missing">${oWord}</span>`);
+    } else if(uNorm === oNorm){
+      htmlParts.push(`<span class="word-ok">${oWord}</span>`);
+      correctCount++;
+    } else {
+      htmlParts.push(`<span class="word-bad">${oWord}</span>`);
+    }
+  }
+
+  // كلمات زايدة كتبها المستخدم أكتر من طول الحديث الأصلي
+  if(userWords.length > originalWords.length){
+    const extra = userWords.slice(originalWords.length).join(" ");
+    htmlParts.push(`<span class="word-extra"> + ${extra}</span>`);
+  }
+
+  const percentage = Math.round((correctCount / originalWords.length) * 100);
+
+  const resultBox = document.getElementById("compareResult");
+  resultBox.innerHTML = `
+    <div class="compare-output">${htmlParts.join(" ")}</div>
+    <div style="margin-top:10px;font-size:0.9rem;color:var(--ink-soft);">
+      نسبة الصحة: <b style="color:${percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${percentage}%</b>
+      (${correctCount} من ${originalWords.length} كلمة)
+    </div>
+  `;
+
+  document.getElementById("selfRateBox").className = "self-rate shown";
+}
+
+// ---------- Spaced Repetition ----------
+const BASE_INTERVAL_DAYS = 1;
+const RATING_DELTA = {
+  excellent: 10,
+  good: 5,
+  medium: 2,
+  bad: -2
+};
+
+function todayStr(){
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+}
+
+function addDays(dateStr, days){
+  const d = new Date(dateStr + "T00:00:00");
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0,10);
+}
+
+function isDue(key){
+  const p = progress[key];
+  if(!p || !p.nextReviewDate) return false;
+  return p.nextReviewDate <= todayStr();
+}
+
+function daysDiff(a, b){
+  const d1 = new Date(a + "T00:00:00");
+  const d2 = new Date(b + "T00:00:00");
+  return Math.round((d2 - d1) / (1000*60*60*24));
+}
+
+function recordReview(key, reviewDate, rating){
+  const p = progress[key] || { history: [] };
+  const prevInterval = p.intervalDays || 0;
+
+  let newInterval;
+  if(rating === "manual"){
+    // تسجيل تاريخ يدوي بدون تقييم: نحافظ على نفس الفترة القديمة أو نبدأ بالأساسية
+    newInterval = prevInterval > 0 ? prevInterval : BASE_INTERVAL_DAYS;
+  } else {
+    const base = prevInterval > 0 ? prevInterval : BASE_INTERVAL_DAYS;
+    newInterval = Math.max(1, base + RATING_DELTA[rating]);
+  }
+
+  p.lastReviewDate = reviewDate;
+  p.intervalDays = newInterval;
+  p.nextReviewDate = addDays(reviewDate, newInterval);
+  p.history = p.history || [];
+  p.history.push({ date: reviewDate, rating: rating });
+
+  progress[key] = p;
+  saveProgress();
+}
+
+function submitSelfRating(rating){
+  if(!activeQuiz) return;
+  recordReview(activeQuiz.key, todayStr(), rating);
+  showToast("تم تسجيل المراجعة ✓ — المراجعة القادمة بعد " + progress[activeQuiz.key].intervalDays + " يوم");
+  closeQuizModal();
+  refreshAfterProgress();
+}
+
+function submitManualDate(){
+  if(!activeQuiz) return;
+  const dateVal = document.getElementById("manualReviewDate").value;
+  if(!dateVal){
+    showToast("اختر تاريخ أولاً", true);
+    return;
+  }
+  recordReview(activeQuiz.key, dateVal, "manual");
+  showToast("تم تسجيل تاريخ المراجعة اليدوي ✓");
+  closeQuizModal();
+  refreshAfterProgress();
+}
+
+function refreshAfterProgress(){
+  if(currentTab === "review"){
+    renderReviewTab();
+  }
+  if(document.getElementById("view-chapter-content").classList.contains("active")){
+    const book = BOOKS[currentBookIdx];
+    const chapter = book.chapters.find(c => c.id === currentChapterId);
+    renderHadiths(book, chapter);
+  }
+  renderChaptersList();
+  updateReviewBadge();
+}
+
+// ---------- Review Tab ----------
+function getAllDueHadiths(){
+  const results = [];
+  BOOKS.forEach(book => {
+    book.chapters.forEach(chapter => {
+      chapter.hadiths.forEach(h => {
+        const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+        const p = progress[key];
+        if(p && p.nextReviewDate && p.nextReviewDate <= todayStr()){
+          results.push({
+            key, book, chapter, hadith: h,
+            nextReviewDate: p.nextReviewDate,
+            overdueDays: daysDiff(p.nextReviewDate, todayStr())
+          });
+        }
+      });
+    });
+  });
+  // الأكثر تأخيراً أولاً
+  results.sort((a,b) => b.overdueDays - a.overdueDays);
+  return results;
+}
+
+function renderReviewTab(){
+  const due = getAllDueHadiths();
+  const overdueOnly = due.filter(d => d.overdueDays > 0);
+  const todayOnly = due.filter(d => d.overdueDays === 0);
+
+  const summary = document.getElementById("reviewSummary");
+  summary.innerHTML = `
+    <div class="stat-box overdue">
+      <div class="num">${overdueOnly.length}</div>
+      <div class="lbl">متأخرة</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">${todayOnly.length}</div>
+      <div class="lbl">مستحقة اليوم</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">${due.length}</div>
+      <div class="lbl">الإجمالي</div>
+    </div>
+  `;
+
+  const list = document.getElementById("reviewList");
+  list.innerHTML = "";
+
+  if(due.length === 0){
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="emoji">✅</div>
+        <div>مافيش أحاديث مستحقة للمراجعة دلوقتي، تبارك الله عليك</div>
+      </div>
+    `;
+    return;
+  }
+
+  due.forEach(item => {
+    const el = document.createElement("div");
+    el.className = "review-item " + (item.overdueDays > 0 ? "overdue" : "today");
+    let tagText = item.overdueDays > 0 ? `متأخر ${item.overdueDays} يوم` : "مستحق اليوم";
+    el.innerHTML = `
+      <div class="info">
+        <div class="title">حديث رقم ${item.hadith.numInBook} — ${item.chapter.title}</div>
+        <div class="sub">${item.book.bookName} · باب رقم ${item.hadith.numInChapter} في الباب</div>
+      </div>
+      <span class="due-tag">${tagText}</span>
+    `;
+    el.onclick = () => openQuiz(item.book.bookName, item.chapter.id, item.hadith.numInBook);
+    list.appendChild(el);
+  });
+}
+
+function updateReviewBadge(){
+  const due = getAllDueHadiths();
+  const badge = document.getElementById("reviewBadge");
+  if(due.length > 0){
+    badge.style.display = "flex";
+    badge.textContent = due.length > 99 ? "99+" : due.length;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+// ---------- Auth ----------
+function switchAuthTab(mode){
+  authMode = mode;
+  document.getElementById("tabLogin").classList.toggle("active", mode === "login");
+  document.getElementById("tabSignup").classList.toggle("active", mode === "signup");
+  document.getElementById("authSubmitBtn").textContent = mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب";
+  document.getElementById("authMsg").textContent = "";
+}
+
+function submitAuth(){
+  const msgEl = document.getElementById("authMsg");
+  msgEl.className = "auth-msg";
+  msgEl.textContent = "";
+
+  if(!fbReady){
+    msgEl.className = "auth-msg err";
+    msgEl.textContent = "خدمة المزامنة غير متاحة الآن، حاول تاني بعد قليل";
+    return;
+  }
+
+  const email = document.getElementById("authEmail").value.trim();
+  const password = document.getElementById("authPassword").value;
+
+  if(!email || !password){
+    msgEl.className = "auth-msg err";
+    msgEl.textContent = "من فضلك اكتب البريد وكلمة المرور";
+    return;
+  }
+
+  const action = authMode === "login"
+    ? fbFns.signInWithEmailAndPassword(auth, email, password)
+    : fbFns.createUserWithEmailAndPassword(auth, email, password);
+
+  action
+    .then(() => {
+      msgEl.className = "auth-msg ok";
+      msgEl.textContent = authMode === "login" ? "تم تسجيل الدخول ✓" : "تم إنشاء الحساب ✓";
+      setTimeout(() => goToBooks(), 700);
+    })
+    .catch(err => {
+      msgEl.className = "auth-msg err";
+      msgEl.textContent = translateAuthError(err.code);
+    });
+}
+
+function translateAuthError(code){
+  const map = {
+    "auth/invalid-email": "البريد الإلكتروني غير صحيح",
+    "auth/user-not-found": "لا يوجد حساب بهذا البريد",
+    "auth/wrong-password": "كلمة المرور غير صحيحة",
+    "auth/invalid-credential": "بيانات الدخول غير صحيحة",
+    "auth/email-already-in-use": "هذا البريد مسجّل من قبل، سجّل دخول بدل إنشاء حساب",
+    "auth/weak-password": "كلمة المرور ضعيفة، لازم تكون ٦ أحرف على الأقل",
+    "auth/too-many-requests": "محاولات كتير، حاول بعد شوية"
+  };
+  return map[code] || ("حصل خطأ: " + code);
+}
+
+function doLogout(){
+  if(!fbReady) return;
+  fbFns.signOut(auth).then(() => {
+    showToast("تم تسجيل الخروج");
+    goToBooks();
+  });
+}
+
+// ---------- Init ----------
+loadLocalProgress();
+renderBooksList();
+updateReviewBadge();
+initFirebase(); // تحميل Firebase بشكل غير معطّل لباقي التطبيق
+
+// جعل الدوال متاحة من onclick في الـ HTML (لأن الملف module)
+window.switchTab = switchTab;
+window.goToBooks = goToBooks;
+window.goToChapters = goToChapters;
+window.showAuthView = showAuthView;
+window.openBook = openBook;
+window.openChapter = openChapter;
+window.toggleHadithText = toggleHadithText;
+window.openQuiz = openQuiz;
+window.closeQuizModal = closeQuizModal;
+window.showNextWordHint = showNextWordHint;
+window.checkQuizAnswer = checkQuizAnswer;
+window.submitSelfRating = submitSelfRating;
+window.submitManualDate = submitManualDate;
+window.switchAuthTab = switchAuthTab;
+window.submitAuth = submitAuth;
+window.doLogout = doLogout;

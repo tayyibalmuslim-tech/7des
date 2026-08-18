@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حفظ الحديث</title>
+<style>
+  :root{
+    --paper: #F3ECDA;
+    --paper-deep: #E9DEC4;
+    --ink: #2B2620;
+    --ink-soft: #6B6152;
+    --line: #C9BB9C;
+    --olive: #4B5D3A;
+    --olive-deep: #3A4A2C;
+    --gold: #A9812F;
+    --red: #9B3B2E;
+    --card: #FBF7EC;
+    --shadow: rgba(43,38,32,0.15);
+    --green-ok: #3F7A3F;
+    --red-err: #B5423A;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(169,129,47,0.06), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(75,93,58,0.07), transparent 40%);
+    color: var(--ink);
+    font-family: "Segoe UI", Tahoma, "Traditional Arabic", serif;
+    min-height: 100vh;
+    padding-bottom: 90px;
+  }
+
+  @font-face {
+    font-family: 'AmiriLocal';
+    src: local('Amiri');
+  }
+
+  .hadith-text, .ayah-text, .quiz-input, .compare-output {
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+  }
+
+  header.topbar{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: linear-gradient(180deg, var(--olive-deep), var(--olive));
+    color: #F3ECDA;
+    padding: 14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    box-shadow: 0 3px 10px var(--shadow);
+  }
+
+  header.topbar .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size: 1.15rem;
+    font-weight:700;
+    letter-spacing: 0.3px;
+  }
+  header.topbar .brand .mark{
+    width: 30px; height:30px;
+    display:flex; align-items:center; justify-content:center;
+    border: 1.5px solid #D9CBA3;
+    border-radius: 50%;
+    font-size: 15px;
+  }
+
+  header.topbar .actions{
+    display:flex; gap:10px; align-items:center;
+  }
+
+  .icon-btn{
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #F3ECDA;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 0.85rem;
+    cursor:pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+  .icon-btn:hover{ background: rgba(255,255,255,0.18); }
+  .icon-btn.danger{ border-color: rgba(181,66,58,0.6); }
+
+  main{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* ===== Bottom nav ===== */
+  nav.bottom-nav{
+    position: fixed;
+    bottom: 0; left:0; right:0;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    display:flex;
+    z-index: 40;
+    box-shadow: 0 -4px 14px var(--shadow);
+  }
+  nav.bottom-nav button{
+    flex:1;
+    background:none;
+    border:none;
+    padding: 10px 4px 8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    color: var(--ink-soft);
+    font-family: inherit;
+    font-size: 0.72rem;
+    cursor:pointer;
+    position: relative;
+  }
+  nav.bottom-nav button .ico{ font-size:1.15rem; }
+  nav.bottom-nav button.active{ color: var(--olive-deep); font-weight:700; }
+  nav.bottom-nav button.active::before{
+    content:"";
+    position:absolute; top:0; left:20%; right:20%;
+    height:3px; background: var(--gold);
+    border-radius: 0 0 4px 4px;
+  }
+  nav.bottom-nav button .badge{
+    position:absolute; top:4px; left:calc(50% + 8px);
+    background: var(--red-err); color:#fff;
+    font-size:0.62rem; min-width:16px; height:16px;
+    border-radius:9px; display:flex; align-items:center; justify-content:center;
+    padding:0 3px;
+  }
+
+  .view{ display:none; }
+  .view.active{ display:block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  /* ===== Breadcrumb ===== */
+  .crumbs{
+    display:flex; align-items:center; gap:8px;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    flex-wrap:wrap;
+  }
+  .crumbs .crumb{
+    cursor:pointer;
+    color: var(--olive-deep);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.2s;
+  }
+  .crumbs .crumb:hover{ text-decoration-color: var(--olive-deep); }
+  .crumbs .sep{ opacity:0.5; }
+  .crumbs .current{ color: var(--ink); font-weight:600; }
+
+  h1.page-title{
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+    color: var(--olive-deep);
+  }
+  p.page-sub{
+    color: var(--ink-soft);
+    margin: 0 0 20px;
+    font-size: 0.92rem;
+  }
+
+  /* ===== Book / chapter cards ===== */
+  .grid-cards{
+    display:grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+  }
+  .card-item{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    cursor:pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 6px rgba(43,38,32,0.06);
+  }
+  .card-item:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow);
+    border-color: var(--gold);
+  }
+  .card-item .title{
+    font-weight:700;
+    font-size: 1.02rem;
+    color: var(--ink);
+  }
+  .card-item .meta{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top:4px;
+  }
+  .card-item .num-badge{
+    background: var(--olive);
+    color:#fff;
+    width:34px; height:34px;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.85rem;
+    flex-shrink:0;
+    margin-left: 12px;
+  }
+  .card-item .chev{ color: var(--gold); font-size:1.2rem; }
+  .card-item .row-main{ display:flex; align-items:center; flex:1; }
+
+  /* ===== Chapter content (ayat + hadiths) ===== */
+  .ayat-block{
+    background: linear-gradient(180deg, #EFE6C9, #E9DEC4);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .ayat-block .label{
+    font-size:0.78rem;
+    color: var(--gold);
+    font-weight:700;
+    margin-bottom:10px;
+    letter-spacing: 0.5px;
+  }
+  .ayah-item{
+    margin-bottom: 12px;
+  }
+  .ayah-item .ayah-text{
+    font-size: 1.25rem;
+    line-height: 2.1;
+    color: var(--olive-deep);
+    text-align: center;
+  }
+  .ayah-item .ayah-ref{
+    text-align:center;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  .hadith-card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .hadith-card .hh{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hadith-card .nums{
+    display:flex; gap:8px;
+  }
+  .num-pill{
+    background: var(--paper-deep);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+  }
+  .num-pill b{ color: var(--olive-deep); }
+
+  .hadith-card .narrator{
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.9;
+    margin-bottom: 10px;
+  }
+  .hadith-card .hadith-text{
+    font-size: 1.2rem;
+    line-height: 2;
+    color: var(--ink);
+    background: var(--paper);
+    border-right: 4px solid var(--olive);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display:none;
+  }
+  .hadith-card .hadith-text.shown{ display:block; }
+  .hadith-card .takhrij{
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight:600;
+  }
+  .hadith-card .note{
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top:8px;
+    font-style: italic;
+  }
+  .hadith-card .hh-actions{
+    display:flex; gap:8px; flex-wrap:wrap;
+    margin-top: 12px;
+  }
+
+  .btn{
+    font-family: inherit;
+    border:none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    cursor:pointer;
+    transition: filter 0.15s, transform 0.1s;
+  }
+  .btn:active{ transform: scale(0.97); }
+  .btn-primary{ background: var(--olive-deep); color:#fff; }
+  .btn-primary:hover{ filter: brightness(1.15); }
+  .btn-gold{ background: var(--gold); color:#fff; }
+  .btn-gold:hover{ filter: brightness(1.1); }
+  .btn-outline{ background: transparent; border: 1.5px solid var(--olive); color: var(--olive-deep); }
+  .btn-outline:hover{ background: rgba(75,93,58,0.08); }
+  .btn-danger{ background: var(--red-err); color:#fff; }
+  .btn-sm{ padding: 5px 12px; font-size:0.78rem; }
+  .btn:disabled{ opacity:0.5; cursor:not-allowed; }
+
+  /* ===== Quiz modal ===== */
+  .modal-overlay{
+    position: fixed; inset:0;
+    background: rgba(43,38,32,0.55);
+    display:none;
+    align-items:center; justify-content:center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .modal-overlay.active{ display:flex; }
+  .modal-box{
+    background: var(--card);
+    border-radius: 16px;
+    max-width: 640px;
+    width:100%;
+    max-height: 88vh;
+    overflow-y:auto;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  }
+  .modal-box h3{
+    margin:0 0 14px;
+    color: var(--olive-deep);
+    font-size: 1.15rem;
+  }
+  .quiz-input{
+    width:100%;
+    min-height: 140px;
+    font-size: 1.15rem;
+    line-height: 1.9;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    resize: vertical;
+    font-family: inherit;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .quiz-input:focus{ outline:none; border-color: var(--olive); }
+
+  .compare-output{
+    font-size: 1.2rem;
+    line-height: 2.1;
+    padding: 14px 16px;
+    background: var(--paper);
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    margin-top: 12px;
+  }
+  .word-ok{ color: var(--green-ok); font-weight:600; }
+  .word-bad{ color: var(--red-err); font-weight:600; text-decoration: underline wavy; }
+  .word-missing{ color: var(--red-err); opacity:0.6; }
+  .word-extra{ color: var(--ink-soft); text-decoration: line-through; opacity:0.6; }
+
+  .modal-actions{
+    display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;
+  }
+
+  .hint-box{
+    margin-top:10px;
+    font-size:0.9rem;
+    color: var(--ink-soft);
+    background: var(--paper-deep);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display:none;
+  }
+  .hint-box.shown{ display:block; }
+
+  .self-rate{
+    display:none;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+  .self-rate.shown{ display:block; }
+  .self-rate p{ margin: 0 0 10px; font-size:0.92rem; color:var(--ink-soft); }
+  .rate-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+  .rate-btn{
+    padding: 10px 8px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    cursor:pointer;
+    font-family: inherit;
+    font-size: 0.88rem;
+    text-align:center;
+    transition: all 0.15s;
+  }
+  .rate-btn small{ display:block; font-size:0.72rem; color:var(--ink-soft); margin-top:2px; }
+  .rate-btn.excellent:hover{ background:#E4F0E0; border-color:var(--green-ok); }
+  .rate-btn.good:hover{ background:#EAF2E4; border-color:var(--olive); }
+  .rate-btn.medium:hover{ background:#F5EBD8; border-color:var(--gold); }
+  .rate-btn.bad:hover{ background:#F5E1DD; border-color:var(--red-err); }
+
+  /* ===== Review tab ===== */
+  .review-summary{
+    display:flex; gap:12px; margin-bottom: 20px; flex-wrap:wrap;
+  }
+  .stat-box{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 20px;
+    text-align:center;
+    flex:1;
+    min-width: 100px;
+  }
+  .stat-box .num{ font-size:1.6rem; font-weight:700; color: var(--olive-deep); }
+  .stat-box .lbl{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; }
+  .stat-box.overdue .num{ color: var(--red-err); }
+
+  .review-item{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-right: 4px solid var(--olive);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap: 10px;
+    flex-wrap: wrap;
+    cursor:pointer;
+  }
+  .review-item.overdue{ border-right-color: var(--red-err); }
+  .review-item .info .title{ font-weight:700; font-size:0.95rem; }
+  .review-item .info .sub{ font-size:0.78rem; color:var(--ink-soft); margin-top:3px; }
+  .review-item .due-tag{
+    font-size:0.75rem;
+    padding: 4px 10px;
+    border-radius: 14px;
+    background: var(--paper-deep);
+    color: var(--ink-soft);
+    white-space:nowrap;
+  }
+  .review-item.overdue .due-tag{ background: #F5E1DD; color: var(--red-err); font-weight:700; }
+  .review-item.today .due-tag{ background: #EAF2E4; color: var(--olive-deep); font-weight:700; }
+
+  .empty-state{
+    text-align:center;
+    padding: 50px 20px;
+    color: var(--ink-soft);
+  }
+  .empty-state .emoji{ font-size:2.4rem; margin-bottom:10px; }
+
+  /* ===== Auth ===== */
+  .auth-box{
+    max-width: 380px;
+    margin: 40px auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align:center;
+  }
+  .auth-box h2{ color:var(--olive-deep); margin-top:0; }
+  .auth-box input{
+    width:100%;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .auth-box input:focus{ outline:none; border-color: var(--olive); }
+  .auth-tabs{ display:flex; gap:8px; margin-bottom:18px; }
+  .auth-tabs button{
+    flex:1; padding:8px; border-radius:10px; border:1.5px solid var(--line);
+    background: var(--paper); cursor:pointer; font-family:inherit; color: var(--ink-soft);
+  }
+  .auth-tabs button.active{ background: var(--olive-deep); color:#fff; border-color:var(--olive-deep); }
+  .auth-msg{ font-size:0.82rem; margin-top:10px; min-height:18px; }
+  .auth-msg.err{ color: var(--red-err); }
+  .auth-msg.ok{ color: var(--green-ok); }
+  .sync-status{
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.75);
+    margin-top: 2px;
+  }
+
+  .toast{
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: var(--olive-deep);
+    color:#fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    z-index: 200;
+    font-size: 0.88rem;
+    opacity:0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    max-width: 300px;
+  }
+  .toast.show{ opacity:1; transform:none; }
+  .toast.err{ background: var(--red-err); }
+
+  .manual-date-row{
+    display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap;
+  }
+  .manual-date-row input[type="date"]{
+    padding: 7px 10px;
+    border-radius: 8px;
+    border: 1.5px solid var(--line);
+    font-family: inherit;
+    background: var(--paper);
+  }
+
+  @media (max-width: 520px){
+    header.topbar .brand span.txt{ font-size: 1rem; }
+    main{ padding: 16px 10px 40px; }
+    .hadith-card .hadith-text{ font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark">📖</span>
+    <div>
+      <span class="txt">حفظ الحديث</span>
+      <div class="sync-status" id="syncStatus">غير مسجّل دخول — البيانات محلية فقط</div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="icon-btn" id="authBtn" onclick="showAuthView()">تسجيل الدخول</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ Books List View ============ -->
+  <section class="view active" id="view-books">
+    <h1 class="page-title">الكتب</h1>
+    <p class="page-sub">اختر الكتاب لعرض أبوابه</p>
+    <div class="grid-cards" id="booksList"></div>
+  </section>
+
+  <!-- ============ Chapters List View ============ -->
+  <section class="view" id="view-chapters">
+    <div class="crumbs">
+      <span class="crumb" onclick="goToBooks()">الكتب</span>
+      <span class="sep">/</span>
+      <span class="current" id="chaptersBookTitle"></span>
+    </div>
+    <h1 class="page-title" id="chaptersTitle"></h1>
+    <p class="page-sub">اختر الباب</p>
+    <div class="grid-cards" id="chaptersList"></div>
+  </section>
+
+  <!-- ============ Chapter Content View ============ -->
+  <section class="view" id="view-chapter-content">
+    <div class="crumbs">
+      <span class="crumb" onclick="goToBooks()">الكتب</span>
+      <span class="sep">/</span>
+      <span class="crumb" id="crumbBook" onclick="goToChapters()"></span>
+      <span class="sep">/</span>
+      <span class="current" id="crumbChapter"></span>
+    </div>
+    <h1 class="page-title" id="chapterContentTitle"></h1>
+    <div id="ayatContainer"></div>
+    <div id="hadithsContainer"></div>
+  </section>
+
+  <!-- ============ Review Due View ============ -->
+  <section class="view" id="view-review">
+    <h1 class="page-title">المستحقة للمراجعة</h1>
+    <p class="page-sub">الأحاديث اللي حان وقت مراجعتها، مرتبة بالأولوية</p>
+    <div class="review-summary" id="reviewSummary"></div>
+    <div id="reviewList"></div>
+  </section>
+
+  <!-- ============ Auth View ============ -->
+  <section class="view" id="view-auth">
+    <div class="auth-box">
+      <h2>مزامنة الحساب</h2>
+      <div class="auth-tabs">
+        <button class="active" id="tabLogin" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+        <button id="tabSignup" onclick="switchAuthTab('signup')">حساب جديد</button>
+      </div>
+      <input type="email" id="authEmail" placeholder="البريد الإلكتروني" autocomplete="email">
+      <input type="password" id="authPassword" placeholder="كلمة المرور" autocomplete="current-password">
+      <button class="btn btn-primary" style="width:100%" id="authSubmitBtn" onclick="submitAuth()">تسجيل الدخول</button>
+      <div class="auth-msg" id="authMsg"></div>
+      <div style="margin-top:14px;">
+        <button class="btn btn-outline btn-sm" id="logoutBtn" onclick="doLogout()" style="display:none;width:100%;">تسجيل الخروج</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav">
+  <button class="active" id="nav-books" onclick="switchTab('books')">
+    <span class="ico">📚</span> الكتب
+  </button>
+  <button id="nav-review" onclick="switchTab('review')">
+    <span class="ico">🔁</span> المراجعة
+    <span class="badge" id="reviewBadge" style="display:none;">0</span>
+  </button>
+</nav>
+
+<!-- ============ Quiz Modal ============ -->
+<div class="modal-overlay" id="quizModal">
+  <div class="modal-box">
+    <h3 id="quizTitle">تسميع الحديث</h3>
+    <textarea class="quiz-input" id="quizInput" placeholder="اكتب الحديث هنا بدون تشكيل..." dir="rtl"></textarea>
+    <div class="hint-box" id="hintBox"></div>
+    <div class="modal-actions">
+      <button class="btn btn-gold btn-sm" onclick="showNextWordHint()">الكلمة التالية 💡</button>
+      <button class="btn btn-primary" onclick="checkQuizAnswer()">تحقق ✓</button>
+      <button class="btn btn-outline btn-sm" onclick="closeQuizModal()">إغلاق</button>
+    </div>
+    <div id="compareResult"></div>
+
+    <div class="self-rate" id="selfRateBox">
+      <p>قيّم نفسك في هذا التسميع:</p>
+      <div class="rate-grid">
+        <button class="rate-btn excellent" onclick="submitSelfRating('excellent')">ممتاز<small>+١٠ أيام</small></button>
+        <button class="rate-btn good" onclick="submitSelfRating('good')">جيد<small>+٥ أيام</small></button>
+        <button class="rate-btn medium" onclick="submitSelfRating('medium')">متوسط<small>+٢ أيام</small></button>
+        <button class="rate-btn bad" onclick="submitSelfRating('bad')">سيء<small>−٢ أيام</small></button>
+      </div>
+      <div class="manual-date-row">
+        <label style="font-size:0.82rem;color:var(--ink-soft);">أو سجّل تاريخ مراجعة يدوي:</label>
+        <input type="date" id="manualReviewDate">
+        <button class="btn btn-outline btn-sm" onclick="submitManualDate()">تسجيل</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="data/riyad-alsalihin.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
