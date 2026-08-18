@@ -288,13 +288,6 @@ function renderHadiths(book, chapter){
       <div class="hadith-text" id="hadithText-${safeKey}">${h.text}</div>
       <div class="takhrij">${h.takhrij}</div>
       ${h.note ? `<div class="note">${h.note}</div>` : ""}
-      <div class="takhrij-select-row">
-        <label>خرّجه: </label>
-        <select id="takhrijSelect-${safeKey}" onchange="saveTakhrijChoice('${key}', this.value)">
-          <option value="">— اختر —</option>
-          ${TAKHRIJ_SOURCES.map(src => `<option value="${src}" ${prog && prog.takhrijChoice === src ? "selected" : ""}>${src}</option>`).join("")}
-        </select>
-      </div>
       <div class="hh-actions">
         <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">إظهار / إخفاء الحديث</button>
         <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">تسميع (كتابة) ✍️</button>
@@ -379,7 +372,7 @@ function openQuiz(bookName, chapterId, numInBook){
   const h = chapter.hadiths.find(x => x.numInBook === numInBook);
   const key = hadithKey(bookName, chapterId, numInBook);
 
-  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null };
+  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null };
 
   document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
@@ -387,8 +380,20 @@ function openQuiz(bookName, chapterId, numInBook){
   document.getElementById("hintBox").className = "hint-box";
   document.getElementById("hintBox").textContent = "";
   document.getElementById("compareResult").innerHTML = "";
+  document.getElementById("takhrijQuizBox").className = "takhrij-quiz-box";
+  document.getElementById("takhrijResult").innerHTML = "";
   document.getElementById("selfRateBox").className = "self-rate";
   document.getElementById("manualReviewDate").value = "";
+
+  // بناء خانات اختيار التخريج
+  const checksWrap = document.getElementById("takhrijChecks");
+  checksWrap.innerHTML = TAKHRIJ_SOURCES.filter(s => s !== "أخرى").map((src, idx) => `
+    <label class="takhrij-check-item">
+      <input type="checkbox" name="takhrijCheck" value="${src}">
+      <span>${src}</span>
+    </label>
+  `).join("");
+
   document.getElementById("quizModal").classList.add("active");
 }
 
@@ -490,15 +495,35 @@ function checkQuizAnswer(){
     </div>
   `;
 
-  document.getElementById("selfRateBox").className = "self-rate shown";
+  document.getElementById("takhrijQuizBox").className = "takhrij-quiz-box shown";
 }
 
-function saveTakhrijChoice(key, value){
-  const p = progress[key] || { history: [] };
-  p.takhrijChoice = value;
-  progress[key] = p;
-  saveProgress();
-  showToast(value ? "تم حفظ مصدر التخريج ✓" : "تم إلغاء اختيار المصدر");
+function checkTakhrijAnswer(){
+  if(!activeQuiz) return;
+  const checked = Array.from(document.querySelectorAll('input[name="takhrijCheck"]:checked')).map(el => el.value);
+  const correct = activeQuiz.hadith.correctTakhrij || [];
+
+  if(checked.length === 0){
+    showToast("اختر مصدر واحد على الأقل قبل التحقق", true);
+    return;
+  }
+
+  // النجاح: نفس المجموعة تماماً (لا زيادة ولا نقصان)
+  const sortedChecked = [...checked].sort();
+  const sortedCorrect = [...correct].sort();
+  const isCorrect = sortedChecked.length === sortedCorrect.length &&
+    sortedChecked.every((v, i) => v === sortedCorrect[i]);
+
+  activeQuiz.takhrijCorrect = isCorrect;
+
+  const resultBox = document.getElementById("takhrijResult");
+  if(isCorrect){
+    resultBox.innerHTML = `<div class="takhrij-result-box correct">✓ صحيح! هذا الحديث ${correct.join(" و")}</div>`;
+  } else {
+    resultBox.innerHTML = `<div class="takhrij-result-box wrong">✗ غير صحيح. التخريج الصحيح: ${correct.join(" و")}</div>`;
+  }
+
+  document.getElementById("selfRateBox").className = "self-rate shown";
 }
 
 // ---------- Spaced Repetition ----------
@@ -754,11 +779,11 @@ window.showAuthView = showAuthView;
 window.openBook = openBook;
 window.openChapter = openChapter;
 window.toggleHadithText = toggleHadithText;
-window.saveTakhrijChoice = saveTakhrijChoice;
 window.openQuiz = openQuiz;
 window.closeQuizModal = closeQuizModal;
 window.showNextWordHint = showNextWordHint;
 window.checkQuizAnswer = checkQuizAnswer;
+window.checkTakhrijAnswer = checkTakhrijAnswer;
 window.submitSelfRating = submitSelfRating;
 window.submitManualDate = submitManualDate;
 window.switchAuthTab = switchAuthTab;
