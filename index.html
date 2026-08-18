@@ -32,7 +32,7 @@
     color: var(--ink);
     font-family: "Segoe UI", Tahoma, "Traditional Arabic", serif;
     min-height: 100vh;
-    padding-bottom: 90px;
+    padding-bottom: 12px;
   }
 
   @font-face {
@@ -50,11 +50,15 @@
     z-index: 40;
     background: linear-gradient(180deg, var(--olive-deep), var(--olive));
     color: #F3ECDA;
-    padding: 14px 18px;
+    padding: 8px 14px 0;
+    box-shadow: 0 3px 10px var(--shadow);
+  }
+
+  .topbar-row{
     display:flex;
     align-items:center;
     justify-content: space-between;
-    box-shadow: 0 3px 10px var(--shadow);
+    padding-bottom: 6px;
   }
 
   header.topbar .brand{
@@ -94,47 +98,41 @@
   main{
     max-width: 880px;
     margin: 0 auto;
-    padding: 20px 16px 40px;
+    padding: 16px 16px 30px;
   }
 
-  /* ===== Bottom nav ===== */
-  nav.bottom-nav{
-    position: fixed;
-    bottom: 0; left:0; right:0;
-    background: var(--card);
-    border-top: 1px solid var(--line);
+  /* ===== Tabs (مدمجة في الهيدر) ===== */
+  .header-tabs{
     display:flex;
-    z-index: 40;
-    box-shadow: 0 -4px 14px var(--shadow);
+    gap: 4px;
   }
-  nav.bottom-nav button{
+  .header-tabs button{
     flex:1;
-    background:none;
-    border:none;
-    padding: 10px 4px 8px;
+    background: rgba(255,255,255,0.06);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    padding: 7px 4px;
     display:flex;
-    flex-direction:column;
     align-items:center;
-    gap:3px;
-    color: var(--ink-soft);
+    justify-content:center;
+    gap: 5px;
+    color: rgba(243,236,218,0.7);
     font-family: inherit;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     cursor:pointer;
     position: relative;
+    transition: background 0.15s, color 0.15s;
   }
-  nav.bottom-nav button .ico{ font-size:1.15rem; }
-  nav.bottom-nav button.active{ color: var(--olive-deep); font-weight:700; }
-  nav.bottom-nav button.active::before{
-    content:"";
-    position:absolute; top:0; left:20%; right:20%;
-    height:3px; background: var(--gold);
-    border-radius: 0 0 4px 4px;
+  .header-tabs button .ico{ font-size:0.95rem; }
+  .header-tabs button.active{
+    background: var(--paper);
+    color: var(--olive-deep);
+    font-weight:700;
   }
-  nav.bottom-nav button .badge{
-    position:absolute; top:4px; left:calc(50% + 8px);
+  .header-tabs button .badge{
     background: var(--red-err); color:#fff;
-    font-size:0.62rem; min-width:16px; height:16px;
-    border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:0.62rem; min-width:15px; height:15px;
+    border-radius:8px; display:flex; align-items:center; justify-content:center;
     padding:0 3px;
   }
 
@@ -613,15 +611,26 @@
 <body>
 
 <header class="topbar">
-  <div class="brand">
-    <span class="mark">📖</span>
-    <div>
-      <span class="txt">حفظ الحديث</span>
-      <div class="sync-status" id="syncStatus">غير مسجّل دخول — البيانات محلية فقط</div>
+  <div class="topbar-row">
+    <div class="brand">
+      <span class="mark">📖</span>
+      <div>
+        <span class="txt">حفظ الحديث</span>
+        <div class="sync-status" id="syncStatus">غير مسجّل دخول</div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="icon-btn" id="authBtn" onclick="showAuthView()">دخول</button>
     </div>
   </div>
-  <div class="actions">
-    <button class="icon-btn" id="authBtn" onclick="showAuthView()">تسجيل الدخول</button>
+  <div class="header-tabs">
+    <button class="active" id="nav-books" onclick="switchTab('books')">
+      <span class="ico">📚</span> الكتب
+    </button>
+    <button id="nav-review" onclick="switchTab('review')">
+      <span class="ico">🔁</span> المراجعة
+      <span class="badge" id="reviewBadge" style="display:none;">0</span>
+    </button>
   </div>
 </header>
 
@@ -687,16 +696,6 @@
   </section>
 
 </main>
-
-<nav class="bottom-nav">
-  <button class="active" id="nav-books" onclick="switchTab('books')">
-    <span class="ico">📚</span> الكتب
-  </button>
-  <button id="nav-review" onclick="switchTab('review')">
-    <span class="ico">🔁</span> المراجعة
-    <span class="badge" id="reviewBadge" style="display:none;">0</span>
-  </button>
-</nav>
 
 <!-- ============ Quiz Modal ============ -->
 <div class="modal-overlay" id="quizModal">
