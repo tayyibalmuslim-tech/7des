@@ -311,27 +311,6 @@
     margin-top: 12px;
   }
 
-  .takhrij-select-row{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin-top: 10px;
-    font-size: 0.85rem;
-  }
-  .takhrij-select-row label{ color: var(--ink-soft); }
-  .takhrij-select-row select{
-    flex:1;
-    max-width: 260px;
-    padding: 6px 10px;
-    border-radius: 8px;
-    border: 1.5px solid var(--line);
-    background: var(--paper);
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 0.85rem;
-  }
-  .takhrij-select-row select:focus{ outline:none; border-color: var(--olive); }
-
   .compare-section-label{
     font-size: 0.82rem;
     font-weight: 700;
@@ -349,6 +328,44 @@
     border-top: 1px dashed var(--line);
     font-size: 0.8rem;
     color: var(--ink-soft);
+  }
+
+  .takhrij-quiz-box{
+    display:none;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+  .takhrij-quiz-box.shown{ display:block; }
+  .takhrij-checks{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .takhrij-check-item{
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+    cursor:pointer;
+  }
+  .takhrij-check-item input{ cursor:pointer; accent-color: var(--olive-deep); }
+  .takhrij-result-box{
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .takhrij-result-box.correct{ background: #E4F0E0; color: var(--green-ok); }
+  .takhrij-result-box.wrong{ background: #F5E1DD; color: var(--red-err); }
+
+  @media (max-width: 480px){
+    .takhrij-checks{ grid-template-columns: 1fr; }
   }
 
   .btn{
@@ -693,6 +710,12 @@
       <button class="btn btn-outline btn-sm" onclick="closeQuizModal()">إغلاق</button>
     </div>
     <div id="compareResult"></div>
+    <div class="takhrij-quiz-box" id="takhrijQuizBox">
+      <div class="compare-section-label">من خرّج هذا الحديث؟ (اختر واحدة أو أكثر)</div>
+      <div class="takhrij-checks" id="takhrijChecks"></div>
+      <button class="btn btn-gold btn-sm" onclick="checkTakhrijAnswer()" style="margin-top:10px;">تحقق من التخريج ✓</button>
+      <div id="takhrijResult"></div>
+    </div>
 
     <div class="self-rate" id="selfRateBox">
       <p>قيّم نفسك في هذا التسميع:</p>
