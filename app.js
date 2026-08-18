@@ -270,6 +270,7 @@ function renderHadiths(book, chapter){
   wrap.innerHTML = "";
   chapter.hadiths.forEach(h => {
     const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+    const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
     const prog = progress[key];
     const due = isDue(key);
 
@@ -284,11 +285,18 @@ function renderHadiths(book, chapter){
         ${due ? `<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}
       </div>
       <div class="narrator">${h.narrator}</div>
-      <div class="hadith-text" id="hadithText-${key.replace(/[^a-zA-Z0-9]/g,'_')}">${h.text}</div>
+      <div class="hadith-text" id="hadithText-${safeKey}">${h.text}</div>
       <div class="takhrij">${h.takhrij}</div>
       ${h.note ? `<div class="note">${h.note}</div>` : ""}
+      <div class="takhrij-select-row">
+        <label>خرّجه: </label>
+        <select id="takhrijSelect-${safeKey}" onchange="saveTakhrijChoice('${key}', this.value)">
+          <option value="">— اختر —</option>
+          ${TAKHRIJ_SOURCES.map(src => `<option value="${src}" ${prog && prog.takhrijChoice === src ? "selected" : ""}>${src}</option>`).join("")}
+        </select>
+      </div>
       <div class="hh-actions">
-        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${key.replace(/[^a-zA-Z0-9]/g,'_')}')">إظهار / إخفاء الحديث</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">إظهار / إخفاء الحديث</button>
         <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">تسميع (كتابة) ✍️</button>
       </div>
       ${prog ? `<div class="meta" style="margin-top:10px;font-size:0.76rem;color:var(--ink-soft);">
@@ -375,6 +383,7 @@ function openQuiz(bookName, chapterId, numInBook){
 
   document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
+  document.getElementById("quizInput").placeholder = "اكتب الراوي ثم الحديث معاً بدون تشكيل...";
   document.getElementById("hintBox").className = "hint-box";
   document.getElementById("hintBox").textContent = "";
   document.getElementById("compareResult").innerHTML = "";
@@ -390,61 +399,106 @@ function closeQuizModal(){
 
 function showNextWordHint(){
   if(!activeQuiz) return;
-  const words = tokenize(activeQuiz.hadith.text);
+  const words = tokenize(activeQuiz.hadith.narrator).concat(tokenize(activeQuiz.hadith.text));
   activeQuiz.revealedWordsCount = Math.min(activeQuiz.revealedWordsCount + 1, words.length);
   const revealed = words.slice(0, activeQuiz.revealedWordsCount).join(" ");
   const box = document.getElementById("hintBox");
   box.className = "hint-box shown";
-  box.innerHTML = `<b>بداية الحديث:</b> ${revealed} ...`;
+  box.innerHTML = `<b>البداية:</b> ${revealed} ...`;
 }
 
 function checkQuizAnswer(){
   if(!activeQuiz) return;
   const userText = document.getElementById("quizInput").value.trim();
   if(!userText){
-    showToast("اكتب الحديث الأول قبل التحقق", true);
+    showToast("اكتب الراوي ثم الحديث قبل التحقق", true);
     return;
   }
 
-  const originalWords = tokenize(activeQuiz.hadith.text);
+  const narratorWords = tokenize(activeQuiz.hadith.narrator);
+  const hadithWords = tokenize(activeQuiz.hadith.text);
   const userWords = tokenize(userText);
 
-  const originalNorm = originalWords.map(normalizeForCompare);
+  // نقسم كلام المستخدم بنفس عدد كلمات الراوي كتقدير أولي، لأن المستخدم كتب الاتنين متواصلين
+  // نستخدم LCS بمقارنة النص كله أولاً لتحديد أين ينتهي جزء الراوي فعلياً عند المستخدم
+  const narratorNorm = narratorWords.map(normalizeForCompare);
+  const hadithNorm = hadithWords.map(normalizeForCompare);
   const userNorm = userWords.map(normalizeForCompare);
 
-  const ops = lcsAlign(originalWords, originalNorm, userNorm);
+  // نحاذي كلام المستخدم بالكامل مقابل (الراوي + الحديث) كسلسلة واحدة عشان نلاقي نقطة الفصل
+  const fullOrigWords = narratorWords.concat(hadithWords);
+  const fullOrigNorm = narratorNorm.concat(hadithNorm);
+  const fullOps = lcsAlign(fullOrigWords, fullOrigNorm, userNorm);
 
-  let correctCount = 0;
-  let htmlParts = [];
-
-  ops.forEach(op => {
-    if(op.type === "match"){
-      htmlParts.push(`<span class="word-ok">${originalWords[op.origIdx]}</span>`);
-      correctCount++;
-    } else if(op.type === "missing"){
-      // كلمة موجودة في الأصل ومش موجودة عند المستخدم -> ناقصة
-      htmlParts.push(`<span class="word-missing">${originalWords[op.origIdx]}</span>`);
-    } else if(op.type === "extra"){
-      // كلمة كتبها المستخدم زيادة عن الأصل، أو غلط مكان كلمة أصلية
-      htmlParts.push(`<span class="word-extra">${userWords[op.userIdx]}</span>`);
+  // نحدد آخر userIdx اتقابل مع كلمة من الراوي (origIdx < narratorWords.length)
+  let splitUserIdx = -1;
+  fullOps.forEach(op => {
+    if(op.type === "match" && op.origIdx < narratorWords.length){
+      splitUserIdx = Math.max(splitUserIdx, op.userIdx);
     }
   });
+  const splitPoint = splitUserIdx >= 0 ? splitUserIdx + 1 : 0;
 
-  const percentage = Math.round((correctCount / originalWords.length) * 100);
+  const userNarratorWords = userWords.slice(0, splitPoint);
+  const userNarratorNorm = userNorm.slice(0, splitPoint);
+  const userHadithWords = userWords.slice(splitPoint);
+  const userHadithNorm = userNorm.slice(splitPoint);
+
+  function buildResult(origWords, origNorm, uWords, uNorm){
+    const ops = lcsAlign(origWords, origNorm, uNorm);
+    let correctCount = 0;
+    let htmlParts = [];
+    ops.forEach(op => {
+      if(op.type === "match"){
+        htmlParts.push(`<span class="word-ok">${origWords[op.origIdx]}</span>`);
+        correctCount++;
+      } else if(op.type === "missing"){
+        htmlParts.push(`<span class="word-missing">${origWords[op.origIdx]}</span>`);
+      } else if(op.type === "extra"){
+        htmlParts.push(`<span class="word-extra">${uWords[op.userIdx]}</span>`);
+      }
+    });
+    const percentage = origWords.length > 0 ? Math.round((correctCount / origWords.length) * 100) : 0;
+    return { html: htmlParts.join(" "), correctCount, total: origWords.length, percentage };
+  }
+
+  const narratorResult = buildResult(narratorWords, narratorNorm, userNarratorWords, userNarratorNorm);
+  const hadithResult = buildResult(hadithWords, hadithNorm, userHadithWords, userHadithNorm);
 
   const resultBox = document.getElementById("compareResult");
   resultBox.innerHTML = `
-    <div class="compare-output">${htmlParts.join(" ")}</div>
-    <div style="margin-top:10px;font-size:0.9rem;color:var(--ink-soft);">
-      نسبة الصحة: <b style="color:${percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${percentage}%</b>
-      (${correctCount} من ${originalWords.length} كلمة)
-      · <span class="word-ok">أخضر = صحيح</span>
-      · <span class="word-missing">أحمر باهت = ناقص من كلامك</span>
-      · <span class="word-extra">مشطوب = كتبته زيادة أو غلط</span>
+    <div style="margin-top:14px;">
+      <div class="compare-section-label">الراوي</div>
+      <div class="compare-output">${narratorResult.html || "<span style='color:var(--ink-soft)'>(لم يُكتب)</span>"}</div>
+      <div class="compare-percentage">
+        نسبة الصحة: <b style="color:${narratorResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${narratorResult.percentage}%</b>
+        (${narratorResult.correctCount} من ${narratorResult.total})
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="compare-section-label">متن الحديث</div>
+      <div class="compare-output">${hadithResult.html || "<span style='color:var(--ink-soft)'>(لم يُكتب)</span>"}</div>
+      <div class="compare-percentage">
+        نسبة الصحة: <b style="color:${hadithResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${hadithResult.percentage}%</b>
+        (${hadithResult.correctCount} من ${hadithResult.total})
+      </div>
+    </div>
+    <div class="compare-legend">
+      <span class="word-ok">أخضر = صحيح</span> ·
+      <span class="word-missing">أحمر باهت = ناقص من كلامك</span> ·
+      <span class="word-extra">مشطوب = كتبته زيادة أو غلط</span>
     </div>
   `;
 
   document.getElementById("selfRateBox").className = "self-rate shown";
+}
+
+function saveTakhrijChoice(key, value){
+  const p = progress[key] || { history: [] };
+  p.takhrijChoice = value;
+  progress[key] = p;
+  saveProgress();
+  showToast(value ? "تم حفظ مصدر التخريج ✓" : "تم إلغاء اختيار المصدر");
 }
 
 // ---------- Spaced Repetition ----------
@@ -700,6 +754,7 @@ window.showAuthView = showAuthView;
 window.openBook = openBook;
 window.openChapter = openChapter;
 window.toggleHadithText = toggleHadithText;
+window.saveTakhrijChoice = saveTakhrijChoice;
 window.openQuiz = openQuiz;
 window.closeQuizModal = closeQuizModal;
 window.showNextWordHint = showNextWordHint;
