@@ -126,21 +126,89 @@ function showToast(msg, isErr){
   setTimeout(() => { t.className = "toast" + (isErr ? " err" : ""); }, 2800);
 }
 
-// ---------- Navigation ----------
+// ---------- Navigation (History API) ----------
+// كل حالة تنقل بيتم تسجيلها في history عشان زر الرجوع والـ refresh يشتغلوا صح
 let currentTab = "books";
 let currentBookIdx = null;
 let currentChapterId = null;
 
-function switchTab(tab){
-  currentTab = tab;
-  document.querySelectorAll("nav.bottom-nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById("nav-" + tab).classList.add("active");
+function updateTabButtons(tab){
+  document.querySelectorAll(".header-tabs button").forEach(b => b.classList.remove("active"));
+  const btn = document.getElementById("nav-" + tab);
+  if(btn) btn.classList.add("active");
+}
 
-  if(tab === "books"){
-    goToBooks();
-  } else if(tab === "review"){
+// state = { view: "books" | "chapters" | "chapter-content" | "review" | "auth", bookIdx, chapterId }
+function applyState(state, push){
+  currentTab = (state.view === "review") ? "review" : "books";
+  updateTabButtons(currentTab);
+
+  if(state.view === "books"){
+    showView("view-books");
+    renderBooksList();
+  } else if(state.view === "chapters"){
+    currentBookIdx = state.bookIdx;
+    const book = BOOKS[currentBookIdx];
+    document.getElementById("chaptersBookTitle").textContent = book.bookName;
+    document.getElementById("chaptersTitle").textContent = book.bookName;
+    renderChaptersList();
+    showView("view-chapters");
+  } else if(state.view === "chapter-content"){
+    currentBookIdx = state.bookIdx;
+    currentChapterId = state.chapterId;
+    const book = BOOKS[currentBookIdx];
+    const chapter = book.chapters.find(c => c.id === currentChapterId);
+    if(!chapter){ applyState({view:"books"}, false); return; }
+    document.getElementById("crumbBook").textContent = book.bookName;
+    document.getElementById("crumbChapter").textContent = chapter.title;
+    document.getElementById("chapterContentTitle").textContent = chapter.title;
+    renderAyat(chapter);
+    renderHadiths(book, chapter);
+    showView("view-chapter-content");
+  } else if(state.view === "review"){
     showView("view-review");
     renderReviewTab();
+  } else if(state.view === "auth"){
+    showView("view-auth");
+  }
+
+  if(push){
+    history.pushState(state, "", "#" + stateToHash(state));
+  }
+}
+
+function stateToHash(state){
+  if(state.view === "books") return "books";
+  if(state.view === "chapters") return "chapters/" + state.bookIdx;
+  if(state.view === "chapter-content") return "chapter/" + state.bookIdx + "/" + state.chapterId;
+  if(state.view === "review") return "review";
+  if(state.view === "auth") return "auth";
+  return "books";
+}
+
+function hashToState(hash){
+  const parts = hash.replace(/^#/, "").split("/");
+  if(parts[0] === "chapters" && parts[1] !== undefined){
+    return { view: "chapters", bookIdx: Number(parts[1]) };
+  }
+  if(parts[0] === "chapter" && parts[1] !== undefined && parts[2] !== undefined){
+    return { view: "chapter-content", bookIdx: Number(parts[1]), chapterId: Number(parts[2]) };
+  }
+  if(parts[0] === "review") return { view: "review" };
+  if(parts[0] === "auth") return { view: "auth" };
+  return { view: "books" };
+}
+
+window.addEventListener("popstate", (e) => {
+  const state = e.state || hashToState(location.hash);
+  applyState(state, false);
+});
+
+function switchTab(tab){
+  if(tab === "books"){
+    applyState({ view: "books" }, true);
+  } else if(tab === "review"){
+    applyState({ view: "review" }, true);
   }
 }
 
@@ -150,23 +218,20 @@ function showView(id){
 }
 
 function goToBooks(){
-  showView("view-books");
-  renderBooksList();
-  document.querySelectorAll("nav.bottom-nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById("nav-books").classList.add("active");
+  applyState({ view: "books" }, true);
 }
 
 function goToChapters(){
-  showView("view-chapters");
+  applyState({ view: "chapters", bookIdx: currentBookIdx }, true);
 }
 
 function showAuthView(){
-  showView("view-auth");
+  applyState({ view: "auth" }, true);
 }
 
 function renderCurrentView(){
-  if(currentTab === "books") renderBooksList();
-  if(currentTab === "review") renderReviewTab();
+  const state = hashToState(location.hash);
+  applyState(state, false);
   updateReviewBadge();
 }
 
@@ -196,12 +261,7 @@ function renderBooksList(){
 }
 
 function openBook(idx){
-  currentBookIdx = idx;
-  const book = BOOKS[idx];
-  document.getElementById("chaptersBookTitle").textContent = book.bookName;
-  document.getElementById("chaptersTitle").textContent = book.bookName;
-  renderChaptersList();
-  showView("view-chapters");
+  applyState({ view: "chapters", bookIdx: idx }, true);
 }
 
 function renderChaptersList(){
@@ -232,17 +292,7 @@ function renderChaptersList(){
 }
 
 function openChapter(chapterId){
-  currentChapterId = chapterId;
-  const book = BOOKS[currentBookIdx];
-  const chapter = book.chapters.find(c => c.id === chapterId);
-
-  document.getElementById("crumbBook").textContent = book.bookName;
-  document.getElementById("crumbChapter").textContent = chapter.title;
-  document.getElementById("chapterContentTitle").textContent = chapter.title;
-
-  renderAyat(chapter);
-  renderHadiths(book, chapter);
-  showView("view-chapter-content");
+  applyState({ view: "chapter-content", bookIdx: currentBookIdx, chapterId: chapterId }, true);
 }
 
 function renderAyat(chapter){
@@ -603,7 +653,7 @@ function submitManualDate(){
 }
 
 function refreshAfterProgress(){
-  if(currentTab === "review"){
+  if(document.getElementById("view-review").classList.contains("active")){
     renderReviewTab();
   }
   if(document.getElementById("view-chapter-content").classList.contains("active")){
@@ -611,7 +661,9 @@ function refreshAfterProgress(){
     const chapter = book.chapters.find(c => c.id === currentChapterId);
     renderHadiths(book, chapter);
   }
-  renderChaptersList();
+  if(document.getElementById("view-chapters").classList.contains("active") && currentBookIdx !== null){
+    renderChaptersList();
+  }
   updateReviewBadge();
 }
 
@@ -767,7 +819,9 @@ function doLogout(){
 
 // ---------- Init ----------
 loadLocalProgress();
-renderBooksList();
+const initialState = location.hash ? hashToState(location.hash) : { view: "books" };
+history.replaceState(initialState, "", "#" + stateToHash(initialState));
+applyState(initialState, false);
 updateReviewBadge();
 initFirebase(); // تحميل Firebase بشكل غير معطّل لباقي التطبيق
 
