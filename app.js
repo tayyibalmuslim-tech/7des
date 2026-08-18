@@ -328,6 +328,42 @@ function tokenize(text){
   return text.split(/\s+/).filter(Boolean);
 }
 
+// ---------- LCS-based word alignment ----------
+function lcsAlign(origWords, origNorm, userNorm){
+  const n = origNorm.length, m = userNorm.length;
+  // dp[i][j] = طول أطول تسلسل مشترك بين origNorm[0..i) و userNorm[0..j)
+  const dp = Array.from({length: n+1}, () => new Uint16Array(m+1));
+  for(let i = n-1; i >= 0; i--){
+    for(let j = m-1; j >= 0; j--){
+      if(origNorm[i] === userNorm[j]){
+        dp[i][j] = dp[i+1][j+1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i+1][j], dp[i][j+1]);
+      }
+    }
+  }
+
+  // نرجع بالمسار عشان نبني قائمة العمليات: match / missing (من الأصل) / extra (من المستخدم)
+  const ops = [];
+  let i = 0, j = 0;
+  while(i < n && j < m){
+    if(origNorm[i] === userNorm[j]){
+      ops.push({ type: "match", origIdx: i, userIdx: j });
+      i++; j++;
+    } else if(dp[i+1][j] >= dp[i][j+1]){
+      ops.push({ type: "missing", origIdx: i });
+      i++;
+    } else {
+      ops.push({ type: "extra", userIdx: j });
+      j++;
+    }
+  }
+  while(i < n){ ops.push({ type: "missing", origIdx: i }); i++; }
+  while(j < m){ ops.push({ type: "extra", userIdx: j }); j++; }
+
+  return ops;
+}
+
 // ---------- Quiz (تسميع) ----------
 function openQuiz(bookName, chapterId, numInBook){
   const book = BOOKS.find(b => b.bookName === bookName);
@@ -376,32 +412,23 @@ function checkQuizAnswer(){
   const originalNorm = originalWords.map(normalizeForCompare);
   const userNorm = userWords.map(normalizeForCompare);
 
-  // مقارنة تسلسلية بسيطة بمحاذاة قريبة (نفس المؤشر) + احتساب الكلمات الزايدة/الناقصة
-  const maxLen = Math.max(originalNorm.length, userNorm.length);
+  const ops = lcsAlign(originalWords, originalNorm, userNorm);
+
   let correctCount = 0;
   let htmlParts = [];
 
-  // نستخدم اللغة الأصلية (originalWords) كأساس للعرض، ونقارن بموقعها المقابل من كلام المستخدم
-  for(let i = 0; i < originalWords.length; i++){
-    const oWord = originalWords[i];
-    const oNorm = originalNorm[i];
-    const uNorm = userNorm[i];
-
-    if(uNorm === undefined){
-      htmlParts.push(`<span class="word-missing">${oWord}</span>`);
-    } else if(uNorm === oNorm){
-      htmlParts.push(`<span class="word-ok">${oWord}</span>`);
+  ops.forEach(op => {
+    if(op.type === "match"){
+      htmlParts.push(`<span class="word-ok">${originalWords[op.origIdx]}</span>`);
       correctCount++;
-    } else {
-      htmlParts.push(`<span class="word-bad">${oWord}</span>`);
+    } else if(op.type === "missing"){
+      // كلمة موجودة في الأصل ومش موجودة عند المستخدم -> ناقصة
+      htmlParts.push(`<span class="word-missing">${originalWords[op.origIdx]}</span>`);
+    } else if(op.type === "extra"){
+      // كلمة كتبها المستخدم زيادة عن الأصل، أو غلط مكان كلمة أصلية
+      htmlParts.push(`<span class="word-extra">${userWords[op.userIdx]}</span>`);
     }
-  }
-
-  // كلمات زايدة كتبها المستخدم أكتر من طول الحديث الأصلي
-  if(userWords.length > originalWords.length){
-    const extra = userWords.slice(originalWords.length).join(" ");
-    htmlParts.push(`<span class="word-extra"> + ${extra}</span>`);
-  }
+  });
 
   const percentage = Math.round((correctCount / originalWords.length) * 100);
 
@@ -411,6 +438,9 @@ function checkQuizAnswer(){
     <div style="margin-top:10px;font-size:0.9rem;color:var(--ink-soft);">
       نسبة الصحة: <b style="color:${percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${percentage}%</b>
       (${correctCount} من ${originalWords.length} كلمة)
+      · <span class="word-ok">أخضر = صحيح</span>
+      · <span class="word-missing">أحمر باهت = ناقص من كلامك</span>
+      · <span class="word-extra">مشطوب = كتبته زيادة أو غلط</span>
     </div>
   `;
 
