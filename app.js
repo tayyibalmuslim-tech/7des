@@ -76,6 +76,9 @@ async function initFirebase(){
 let progress = {};
 let activeQuiz = null; // { key, hadith, chapterTitle, revealedWords }
 
+// ---------- التصحيح اللحظي: حالة التفعيل (محفوظة في localStorage عشان تفضل زي ما اخترتها) ----------
+let liveCheckEnabled = (localStorage.getItem("liveCheckEnabled") !== "false"); // مفعّل افتراضياً
+
 const LOCAL_KEY = "hadith_app_progress_v1";
 
 function hadithKey(bookName, chapterId, numInBook){
@@ -415,6 +418,103 @@ function lcsAlign(origWords, origNorm, userNorm){
   return ops;
 }
 
+// ---------- تصحيح فوري كلمة بكلمة (عند الضغط على مسافة) — لا يمس نظام "تحقق ✓" اليدوي القديم ----------
+
+// تشغيل/تعطيل التصحيح اللحظي من السويتش
+function onLiveCheckToggleChange(){
+  liveCheckEnabled = document.getElementById("liveCheckToggle").checked;
+  localStorage.setItem("liveCheckEnabled", liveCheckEnabled ? "true" : "false");
+
+  const boxN = document.getElementById("liveCheckBoxNarrator");
+  const boxH = document.getElementById("liveCheckBoxHadith");
+  boxN.classList.toggle("shown", liveCheckEnabled);
+  boxH.classList.toggle("shown", liveCheckEnabled);
+
+  if(liveCheckEnabled){
+    // لو فعّلنا السويتش ولقينا كلام مكتوب بالفعل، نصحح فوراً
+    liveCheckNarrator();
+    liveCheckHadith();
+  } else {
+    boxN.innerHTML = "";
+    boxH.innerHTML = "";
+  }
+}
+
+function lastWordLength(raw){
+  const m = raw.match(/(\S+)$/);
+  return m ? m[1].length : 0;
+}
+
+// عدد/محتوى الكلمات "المكتملة" فعلياً (بعد ما المستخدم كتب مسافة بعدها)
+function getCompletedWordsRaw(elId){
+  const raw = document.getElementById(elId).value;
+  const endsWithSpace = /\s$/.test(raw);
+  return endsWithSpace ? raw.trim() : raw.slice(0, raw.length - lastWordLength(raw)).trim();
+}
+
+// رسم صندوق تصحيح لحظي عام (يُستخدم لصندوق الراوي وصندوق المتن كل واحد لوحده)
+function renderLiveCheckGeneric(inputElId, boxElId, originalText){
+  if(!activeQuiz || !liveCheckEnabled) return;
+  const box = document.getElementById(boxElId);
+  const completedRaw = getCompletedWordsRaw(inputElId);
+
+  const originalWords = tokenize(originalText || "");
+  const originalNorm = originalWords.map(normalizeForCompare);
+  const userCompletedWords = tokenize(completedRaw);
+
+  if(originalWords.length === 0){
+    box.innerHTML = userCompletedWords.length ? userCompletedWords.map(w => `<span class="word-extra">${w}</span>`).join(" ") : "";
+    return;
+  }
+
+  let html = [];
+  for(let idx = 0; idx < userCompletedWords.length; idx++){
+    const uWord = userCompletedWords[idx];
+    const uNorm = normalizeForCompare(uWord);
+    if(idx >= originalWords.length){
+      html.push(`<span class="word-extra">${uWord}</span>`); // كلمة زيادة عن حد النص الأصلي
+      continue;
+    }
+    const isMatch = uNorm === originalNorm[idx];
+    const displayWord = isMatch ? originalWords[idx] : uWord;
+    html.push(`<span class="${isMatch ? 'word-ok' : 'word-wrong'}">${displayWord}</span>`);
+  }
+
+  box.innerHTML = html.join(" ");
+  box.scrollTop = box.scrollHeight;
+}
+
+function liveCheckNarrator(){
+  if(!activeQuiz) return;
+  renderLiveCheckGeneric("narratorInput", "liveCheckBoxNarrator", activeQuiz.hadith.narrator);
+}
+function liveCheckHadith(){
+  if(!activeQuiz) return;
+  renderLiveCheckGeneric("quizInput", "liveCheckBoxHadith", activeQuiz.hadith.text);
+}
+
+// بعد كل تغيير كتابة في أي صندوق: أي تلميح ظاهر بيتلغي لأن الكلام اتغيّر
+function handleNarratorInputChange(){
+  if(!liveCheckEnabled) return;
+}
+function handleQuizInputChange(){
+  if(!liveCheckEnabled) return;
+}
+
+// عند الضغط على مسافة، نصحح آخر كلمة مكتملة (بعد لحظة عشان المسافة تتسجل في value الأول)
+function handleNarratorInputKey(e){
+  if(!liveCheckEnabled) return;
+  if(e.key === " " || e.key === "Spacebar"){
+    setTimeout(liveCheckNarrator, 0);
+  }
+}
+function handleQuizInputKey(e){
+  if(!liveCheckEnabled) return;
+  if(e.key === " " || e.key === "Spacebar"){
+    setTimeout(liveCheckHadith, 0);
+  }
+}
+
 // ---------- Quiz (تسميع) ----------
 function openQuiz(bookName, chapterId, numInBook){
   const book = BOOKS.find(b => b.bookName === bookName);
@@ -422,11 +522,13 @@ function openQuiz(bookName, chapterId, numInBook){
   const h = chapter.hadiths.find(x => x.numInBook === numInBook);
   const key = hadithKey(bookName, chapterId, numInBook);
 
-  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null };
+  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
+                 hintWordIndex: null, hintCharsRevealed: 0 };
 
   document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
-  document.getElementById("quizInput").placeholder = "اكتب الراوي ثم الحديث معاً بدون تشكيل...";
+  document.getElementById("quizInput").placeholder = "اكتب متن الحديث هنا بدون تشكيل...";
+  document.getElementById("narratorInput").value = "";
   document.getElementById("hintBox").className = "hint-box";
   document.getElementById("hintBox").textContent = "";
   document.getElementById("compareResult").innerHTML = "";
@@ -434,6 +536,14 @@ function openQuiz(bookName, chapterId, numInBook){
   document.getElementById("takhrijResult").innerHTML = "";
   document.getElementById("selfRateBox").className = "self-rate";
   document.getElementById("manualReviewDate").value = "";
+
+  // إعداد سويتش التصحيح اللحظي وصناديقه
+  document.getElementById("liveCheckToggle").checked = liveCheckEnabled;
+  const boxN = document.getElementById("liveCheckBoxNarrator");
+  const boxH = document.getElementById("liveCheckBoxHadith");
+  boxN.innerHTML = ""; boxH.innerHTML = "";
+  boxN.classList.toggle("shown", liveCheckEnabled);
+  boxH.classList.toggle("shown", liveCheckEnabled);
 
   // بناء خانات اختيار التخريج
   const checksWrap = document.getElementById("takhrijChecks");
@@ -464,40 +574,27 @@ function showNextWordHint(){
 
 function checkQuizAnswer(){
   if(!activeQuiz) return;
-  const userText = document.getElementById("quizInput").value.trim();
-  if(!userText){
-    showToast("اكتب الراوي ثم الحديث قبل التحقق", true);
+  const hadithText = document.getElementById("quizInput").value.trim();
+  const narratorText = document.getElementById("narratorInput").value.trim();
+
+  if(!hadithText){
+    showToast("اكتب متن الحديث قبل التحقق", true);
     return;
   }
 
   const narratorWords = tokenize(activeQuiz.hadith.narrator);
   const hadithWords = tokenize(activeQuiz.hadith.text);
-  const userWords = tokenize(userText);
 
-  // نقسم كلام المستخدم بنفس عدد كلمات الراوي كتقدير أولي، لأن المستخدم كتب الاتنين متواصلين
-  // نستخدم LCS بمقارنة النص كله أولاً لتحديد أين ينتهي جزء الراوي فعلياً عند المستخدم
+  // الراوي والمتن بقوا في صندوقين منفصلين، فمفيش داعي لتخمين نقطة الفصل بالـ LCS —
+  // كل صندوق بيتقارن مباشرة بجزئه المقابل من بيانات الحديث الأصلية.
+  // (لو الراوي اتسيب فاضي، بيتعامل معاه كـ "لم يُكتب" لأنه اختياري)
+  const userNarratorWords = tokenize(narratorText);
+  const userNarratorNorm = userNarratorWords.map(normalizeForCompare);
+  const userHadithWords = tokenize(hadithText);
+  const userHadithNorm = userHadithWords.map(normalizeForCompare);
+
   const narratorNorm = narratorWords.map(normalizeForCompare);
   const hadithNorm = hadithWords.map(normalizeForCompare);
-  const userNorm = userWords.map(normalizeForCompare);
-
-  // نحاذي كلام المستخدم بالكامل مقابل (الراوي + الحديث) كسلسلة واحدة عشان نلاقي نقطة الفصل
-  const fullOrigWords = narratorWords.concat(hadithWords);
-  const fullOrigNorm = narratorNorm.concat(hadithNorm);
-  const fullOps = lcsAlign(fullOrigWords, fullOrigNorm, userNorm);
-
-  // نحدد آخر userIdx اتقابل مع كلمة من الراوي (origIdx < narratorWords.length)
-  let splitUserIdx = -1;
-  fullOps.forEach(op => {
-    if(op.type === "match" && op.origIdx < narratorWords.length){
-      splitUserIdx = Math.max(splitUserIdx, op.userIdx);
-    }
-  });
-  const splitPoint = splitUserIdx >= 0 ? splitUserIdx + 1 : 0;
-
-  const userNarratorWords = userWords.slice(0, splitPoint);
-  const userNarratorNorm = userNorm.slice(0, splitPoint);
-  const userHadithWords = userWords.slice(splitPoint);
-  const userHadithNorm = userNorm.slice(splitPoint);
 
   function buildResult(origWords, origNorm, uWords, uNorm){
     const ops = lcsAlign(origWords, origNorm, uNorm);
@@ -843,3 +940,10 @@ window.submitManualDate = submitManualDate;
 window.switchAuthTab = switchAuthTab;
 window.submitAuth = submitAuth;
 window.doLogout = doLogout;
+
+// التصحيح اللحظي
+window.onLiveCheckToggleChange = onLiveCheckToggleChange;
+window.handleNarratorInputChange = handleNarratorInputChange;
+window.handleQuizInputChange = handleQuizInputChange;
+window.handleNarratorInputKey = handleNarratorInputKey;
+window.handleQuizInputKey = handleQuizInputKey;
