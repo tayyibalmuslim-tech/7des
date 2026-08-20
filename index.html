@@ -439,9 +439,112 @@
   .word-bad{ color: var(--red-err); font-weight:600; text-decoration: underline wavy; }
   .word-missing{ color: var(--red-err); opacity:0.6; }
   .word-extra{ color: var(--ink-soft); text-decoration: line-through; opacity:0.6; }
+  .word-wrong{ color: var(--red-err); font-weight:700; text-decoration: underline wavy; }
 
   .modal-actions{
     display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;
+  }
+
+  /* ===== سويتش تفعيل/تعطيل التصحيح اللحظي ===== */
+  .live-toggle-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; margin-bottom:12px;
+    padding: 8px 12px;
+    background: var(--paper-deep);
+    border-radius: 10px;
+    border: 1px dashed var(--line);
+  }
+  .live-toggle-label{
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-weight:600;
+  }
+  .live-toggle-switch{
+    position: relative;
+    width: 42px; height: 24px;
+    flex-shrink:0;
+  }
+  .live-toggle-switch input{
+    opacity:0; width:0; height:0;
+  }
+  .live-toggle-slider{
+    position:absolute; cursor:pointer; inset:0;
+    background: var(--line);
+    border-radius: 999px;
+    transition: background 0.2s;
+  }
+  .live-toggle-slider::before{
+    content:"";
+    position:absolute;
+    width:18px; height:18px;
+    right:3px; top:3px;
+    background:#fff;
+    border-radius:50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .live-toggle-switch input:checked + .live-toggle-slider{
+    background: var(--olive-deep);
+  }
+  .live-toggle-switch input:checked + .live-toggle-slider::before{
+    transform: translateX(-18px);
+  }
+
+  /* ===== صندوق الراوي (اختياري ومنفصل عن المتن) ===== */
+  .narrator-field-label{
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin: 4px 2px 6px;
+  }
+  .narrator-field-label .opt-tag{
+    color: var(--gold);
+    font-weight:600;
+    margin-right:4px;
+  }
+  .narrator-input{
+    width:100%;
+    min-height: 46px;
+    font-size: 1rem;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    resize: vertical;
+    font-family: inherit;
+    background: var(--paper);
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .narrator-input:focus{ outline:none; border-color: var(--gold); }
+
+  .hadith-field-label{
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin: 0 2px 6px;
+  }
+
+  /* ===== صناديق التصحيح اللحظي (تظهر تحت كل صندوق كتابة) ===== */
+  .live-check-box{
+    min-height: 46px;
+    max-height: 220px;
+    overflow-y: auto;
+    font-size: 1.1rem;
+    line-height: 2;
+    padding: 10px 14px;
+    background: var(--paper-deep);
+    border-radius: 10px;
+    border: 1px dashed var(--line);
+    text-align: right;
+    margin-top: -4px;
+    margin-bottom: 14px;
+    display:none;
+  }
+  .live-check-box.shown{ display:block; }
+  .live-check-box:empty::before{
+    content: "التصحيح اللحظي هيظهر هنا وانت بتكتب...";
+    color: var(--ink-soft);
+    opacity:0.6;
+    font-size:0.85rem;
   }
 
   .hint-box{
@@ -701,7 +804,23 @@
 <div class="modal-overlay" id="quizModal">
   <div class="modal-box">
     <h3 id="quizTitle">تسميع الحديث</h3>
-    <textarea class="quiz-input" id="quizInput" placeholder="اكتب الحديث هنا بدون تشكيل..." dir="rtl"></textarea>
+
+    <div class="live-toggle-row">
+      <span class="live-toggle-label">⚡ التصحيح اللحظي أثناء الكتابة</span>
+      <label class="live-toggle-switch">
+        <input type="checkbox" id="liveCheckToggle" onchange="onLiveCheckToggleChange()">
+        <span class="live-toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="narrator-field-label"><span class="opt-tag">(اختياري)</span>راوي الحديث</div>
+    <textarea class="narrator-input" id="narratorInput" placeholder="اكتب اسم الراوي هنا لو حابب... (اختياري)" dir="rtl" oninput="window.handleNarratorInputChange()" onkeydown="window.handleNarratorInputKey(event)"></textarea>
+    <div class="live-check-box" id="liveCheckBoxNarrator"></div>
+
+    <div class="hadith-field-label">متن الحديث</div>
+    <textarea class="quiz-input" id="quizInput" placeholder="اكتب الحديث هنا بدون تشكيل..." dir="rtl" oninput="window.handleQuizInputChange()" onkeydown="window.handleQuizInputKey(event)"></textarea>
+    <div class="live-check-box" id="liveCheckBoxHadith"></div>
+
     <div class="hint-box" id="hintBox"></div>
     <div class="modal-actions">
       <button class="btn btn-gold btn-sm" onclick="showNextWordHint()">الكلمة التالية 💡</button>
