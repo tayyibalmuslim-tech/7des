@@ -540,21 +540,23 @@ function handleQuizInputKey(e){
 }
 
 // زرار "الكلمة التالية 💡": يورّي كلمة كاملة إضافية في صندوق التصحيح اللحظي نفسه (زي تطبيق القرآن بالظبط)
-// آخر صندوق كتب فيه المستخدم (focus) هو اللي بياخد التلميح؛ لو مفيش focus واضح، الافتراضي صندوق المتن
-function showLiveWordHint(){
+// target: "narrator" أو "hadith" — بيحدد صندوق التلميح مباشرة بدل الاعتماد على الـ focus
+function showLiveWordHintFor(target){
   if(!activeQuiz || !liveCheckEnabled){
     showNextWordHint(); // fallback للنظام القديم (hintBox) لو التصحيح اللحظي متعطّل
     return;
   }
-  const active = document.activeElement;
-  const useNarrator = (active && active.id === "narratorInput");
+  const useNarrator = (target === "narrator");
 
   const inputElId = useNarrator ? "narratorInput" : "quizInput";
   const originalText = useNarrator ? activeQuiz.hadith.narrator : activeQuiz.hadith.text;
   const hintState = useNarrator ? activeQuiz.narratorHint : activeQuiz.hadithHint;
 
   const words = tokenize(originalText || "");
-  if(words.length === 0){ showToast("الراوي غير مسجّل لهذا الحديث", true); return; }
+  if(words.length === 0){
+    showToast(useNarrator ? "الراوي غير مسجّل لهذا الحديث" : "متن الحديث غير متاح", true);
+    return;
+  }
 
   const targetIdx = getCompletedWordCountFor(inputElId);
   if(targetIdx >= words.length){ showToast("وصلت لنهاية النص", true); return; }
@@ -567,6 +569,13 @@ function showLiveWordHint(){
   }
 
   if(useNarrator) liveCheckNarrator(); else liveCheckHadith();
+}
+
+// نسخة قديمة (كانت بتعتمد على الـ focus) — متسابة لأي استدعاء خارجي قديم محتمل، بترجّع لصندوق المتن افتراضياً
+function showLiveWordHint(){
+  const active = document.activeElement;
+  const useNarrator = (active && active.id === "narratorInput");
+  showLiveWordHintFor(useNarrator ? "narrator" : "hadith");
 }
 
 // ---------- Quiz (تسميع) ----------
@@ -992,6 +1001,7 @@ window.openQuiz = openQuiz;
 window.closeQuizModal = closeQuizModal;
 window.showNextWordHint = showNextWordHint;
 window.showLiveWordHint = showLiveWordHint;
+window.showLiveWordHintFor = showLiveWordHintFor;
 window.checkQuizAnswer = checkQuizAnswer;
 window.checkTakhrijAnswer = checkTakhrijAnswer;
 window.submitSelfRating = submitSelfRating;
