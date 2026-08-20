@@ -526,13 +526,24 @@ function handleQuizInputChange(){
 }
 
 // عند الضغط على مسافة، نصحح آخر كلمة مكتملة (بعد لحظة عشان المسافة تتسجل في value الأول)
+// عند الضغط على Ctrl، نظهر الكلمة التالية (تلميح) لنفس الصندوق الواقف فيه، بدون ما ننقل الفوكس لصندوق تاني
 function handleNarratorInputKey(e){
+  if(e.key === "Control"){
+    e.preventDefault();
+    showLiveWordHintFor("narrator");
+    return;
+  }
   if(!liveCheckEnabled) return;
   if(e.key === " " || e.key === "Spacebar"){
     setTimeout(liveCheckNarrator, 0);
   }
 }
 function handleQuizInputKey(e){
+  if(e.key === "Control"){
+    e.preventDefault();
+    showLiveWordHintFor("hadith");
+    return;
+  }
   if(!liveCheckEnabled) return;
   if(e.key === " " || e.key === "Spacebar"){
     setTimeout(liveCheckHadith, 0);
