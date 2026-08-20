@@ -453,7 +453,8 @@ function getCompletedWordsRaw(elId){
 }
 
 // رسم صندوق تصحيح لحظي عام (يُستخدم لصندوق الراوي وصندوق المتن كل واحد لوحده)
-function renderLiveCheckGeneric(inputElId, boxElId, originalText){
+// hintState: كائن { hintWordIndex, hintCharsRevealed } خاص بهذا الصندوق تحديداً (راوي أو متن كل واحد له حالته)
+function renderLiveCheckGeneric(inputElId, boxElId, originalText, hintState){
   if(!activeQuiz || !liveCheckEnabled) return;
   const box = document.getElementById(boxElId);
   const completedRaw = getCompletedWordsRaw(inputElId);
@@ -462,22 +463,30 @@ function renderLiveCheckGeneric(inputElId, boxElId, originalText){
   const originalNorm = originalWords.map(normalizeForCompare);
   const userCompletedWords = tokenize(completedRaw);
 
+  let html = [];
+
   if(originalWords.length === 0){
-    box.innerHTML = userCompletedWords.length ? userCompletedWords.map(w => `<span class="word-extra">${w}</span>`).join(" ") : "";
-    return;
+    html = userCompletedWords.map(w => `<span class="word-extra">${w}</span>`);
+  } else {
+    for(let idx = 0; idx < userCompletedWords.length; idx++){
+      const uWord = userCompletedWords[idx];
+      const uNorm = normalizeForCompare(uWord);
+      if(idx >= originalWords.length){
+        html.push(`<span class="word-extra">${uWord}</span>`); // كلمة زيادة عن حد النص الأصلي
+        continue;
+      }
+      const isMatch = uNorm === originalNorm[idx];
+      const displayWord = isMatch ? originalWords[idx] : uWord;
+      html.push(`<span class="${isMatch ? 'word-ok' : 'word-wrong'}">${displayWord}</span>`);
+    }
   }
 
-  let html = [];
-  for(let idx = 0; idx < userCompletedWords.length; idx++){
-    const uWord = userCompletedWords[idx];
-    const uNorm = normalizeForCompare(uWord);
-    if(idx >= originalWords.length){
-      html.push(`<span class="word-extra">${uWord}</span>`); // كلمة زيادة عن حد النص الأصلي
-      continue;
-    }
-    const isMatch = uNorm === originalNorm[idx];
-    const displayWord = isMatch ? originalWords[idx] : uWord;
-    html.push(`<span class="${isMatch ? 'word-ok' : 'word-wrong'}">${displayWord}</span>`);
+  // تلميح الكلمة التالية (لو مفعّل لهذا الصندوق تحديداً) بيظهر جوه نفس الصندوق مباشرة بعد آخر كلمة مصححة
+  if(hintState && hintState.hintWordIndex !== null && hintState.hintWordIndex !== undefined && hintState.hintWordIndex < originalWords.length){
+    const hintWord = originalWords[hintState.hintWordIndex];
+    const hintCharsCount = hintState.hintCharsRevealed || 0;
+    const displayHint = (hintCharsCount >= hintWord.length) ? hintWord : hintWord.slice(0, hintCharsCount);
+    html.push(`<span class="word-hint">${displayHint}</span>`);
   }
 
   box.innerHTML = html.join(" ");
@@ -486,19 +495,34 @@ function renderLiveCheckGeneric(inputElId, boxElId, originalText){
 
 function liveCheckNarrator(){
   if(!activeQuiz) return;
-  renderLiveCheckGeneric("narratorInput", "liveCheckBoxNarrator", activeQuiz.hadith.narrator);
+  renderLiveCheckGeneric("narratorInput", "liveCheckBoxNarrator", activeQuiz.hadith.narrator, activeQuiz.narratorHint);
 }
 function liveCheckHadith(){
   if(!activeQuiz) return;
-  renderLiveCheckGeneric("quizInput", "liveCheckBoxHadith", activeQuiz.hadith.text);
+  renderLiveCheckGeneric("quizInput", "liveCheckBoxHadith", activeQuiz.hadith.text, activeQuiz.hadithHint);
 }
 
-// بعد كل تغيير كتابة في أي صندوق: أي تلميح ظاهر بيتلغي لأن الكلام اتغيّر
+// عدد الكلمات المكتملة فعلياً في صندوق معيّن (بعد ما المستخدم كتب مسافة بعدها) — تُستخدم لتحديد "الكلمة التالية" للتلميح
+function getCompletedWordCountFor(elId){
+  return tokenize(getCompletedWordsRaw(elId)).length;
+}
+
+// بعد كل تغيير كتابة في أي صندوق: أي تلميح ظاهر بيتلغي لأن الكلام اتغيّر (المستخدم كتب الكلمة أو تخطاها)
 function handleNarratorInputChange(){
-  if(!liveCheckEnabled) return;
+  if(!liveCheckEnabled || !activeQuiz) return;
+  if(activeQuiz.narratorHint.hintWordIndex !== null){
+    activeQuiz.narratorHint.hintWordIndex = null;
+    activeQuiz.narratorHint.hintCharsRevealed = 0;
+    liveCheckNarrator();
+  }
 }
 function handleQuizInputChange(){
-  if(!liveCheckEnabled) return;
+  if(!liveCheckEnabled || !activeQuiz) return;
+  if(activeQuiz.hadithHint.hintWordIndex !== null){
+    activeQuiz.hadithHint.hintWordIndex = null;
+    activeQuiz.hadithHint.hintCharsRevealed = 0;
+    liveCheckHadith();
+  }
 }
 
 // عند الضغط على مسافة، نصحح آخر كلمة مكتملة (بعد لحظة عشان المسافة تتسجل في value الأول)
@@ -515,6 +539,36 @@ function handleQuizInputKey(e){
   }
 }
 
+// زرار "الكلمة التالية 💡": يورّي كلمة كاملة إضافية في صندوق التصحيح اللحظي نفسه (زي تطبيق القرآن بالظبط)
+// آخر صندوق كتب فيه المستخدم (focus) هو اللي بياخد التلميح؛ لو مفيش focus واضح، الافتراضي صندوق المتن
+function showLiveWordHint(){
+  if(!activeQuiz || !liveCheckEnabled){
+    showNextWordHint(); // fallback للنظام القديم (hintBox) لو التصحيح اللحظي متعطّل
+    return;
+  }
+  const active = document.activeElement;
+  const useNarrator = (active && active.id === "narratorInput");
+
+  const inputElId = useNarrator ? "narratorInput" : "quizInput";
+  const originalText = useNarrator ? activeQuiz.hadith.narrator : activeQuiz.hadith.text;
+  const hintState = useNarrator ? activeQuiz.narratorHint : activeQuiz.hadithHint;
+
+  const words = tokenize(originalText || "");
+  if(words.length === 0){ showToast("الراوي غير مسجّل لهذا الحديث", true); return; }
+
+  const targetIdx = getCompletedWordCountFor(inputElId);
+  if(targetIdx >= words.length){ showToast("وصلت لنهاية النص", true); return; }
+
+  if(hintState.hintWordIndex !== targetIdx){
+    hintState.hintWordIndex = targetIdx;
+    hintState.hintCharsRevealed = words[targetIdx].length; // كلمة كاملة
+  } else {
+    hintState.hintCharsRevealed = words[targetIdx].length;
+  }
+
+  if(useNarrator) liveCheckNarrator(); else liveCheckHadith();
+}
+
 // ---------- Quiz (تسميع) ----------
 function openQuiz(bookName, chapterId, numInBook){
   const book = BOOKS.find(b => b.bookName === bookName);
@@ -523,7 +577,9 @@ function openQuiz(bookName, chapterId, numInBook){
   const key = hadithKey(bookName, chapterId, numInBook);
 
   activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
-                 hintWordIndex: null, hintCharsRevealed: 0 };
+                 hintWordIndex: null, hintCharsRevealed: 0,
+                 narratorHint: { hintWordIndex: null, hintCharsRevealed: 0 },
+                 hadithHint: { hintWordIndex: null, hintCharsRevealed: 0 } };
 
   document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
@@ -559,6 +615,8 @@ function openQuiz(bookName, chapterId, numInBook){
 
 function closeQuizModal(){
   document.getElementById("quizModal").classList.remove("active");
+  document.getElementById("liveCheckBoxNarrator").innerHTML = "";
+  document.getElementById("liveCheckBoxHadith").innerHTML = "";
   activeQuiz = null;
 }
 
@@ -933,6 +991,7 @@ window.toggleHadithText = toggleHadithText;
 window.openQuiz = openQuiz;
 window.closeQuizModal = closeQuizModal;
 window.showNextWordHint = showNextWordHint;
+window.showLiveWordHint = showLiveWordHint;
 window.checkQuizAnswer = checkQuizAnswer;
 window.checkTakhrijAnswer = checkTakhrijAnswer;
 window.submitSelfRating = submitSelfRating;
