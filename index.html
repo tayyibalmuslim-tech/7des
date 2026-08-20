@@ -546,6 +546,11 @@
     opacity:0.6;
     font-size:0.85rem;
   }
+  .field-actions{
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom: 14px;
+  }
 
   .hint-box{
     margin-top:10px;
@@ -816,14 +821,19 @@
     <div class="narrator-field-label"><span class="opt-tag">(اختياري)</span>راوي الحديث</div>
     <textarea class="narrator-input" id="narratorInput" placeholder="اكتب اسم الراوي هنا لو حابب... (اختياري)" dir="rtl" oninput="window.handleNarratorInputChange()" onkeydown="window.handleNarratorInputKey(event)"></textarea>
     <div class="live-check-box" id="liveCheckBoxNarrator"></div>
+    <div class="field-actions">
+      <button class="btn btn-gold btn-sm" onclick="showLiveWordHintFor('narrator')">الكلمة التالية 💡</button>
+    </div>
 
     <div class="hadith-field-label">متن الحديث</div>
     <textarea class="quiz-input" id="quizInput" placeholder="اكتب الحديث هنا بدون تشكيل..." dir="rtl" oninput="window.handleQuizInputChange()" onkeydown="window.handleQuizInputKey(event)"></textarea>
     <div class="live-check-box" id="liveCheckBoxHadith"></div>
+    <div class="field-actions">
+      <button class="btn btn-gold btn-sm" onclick="showLiveWordHintFor('hadith')">الكلمة التالية 💡</button>
+    </div>
 
     <div class="hint-box" id="hintBox"></div>
     <div class="modal-actions">
-      <button class="btn btn-gold btn-sm" onclick="showLiveWordHint()">الكلمة التالية 💡</button>
       <button class="btn btn-primary" onclick="checkQuizAnswer()">تحقق ✓</button>
       <button class="btn btn-outline btn-sm" onclick="closeQuizModal()">إغلاق</button>
     </div>
