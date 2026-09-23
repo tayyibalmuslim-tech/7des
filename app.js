@@ -343,6 +343,7 @@ function renderHadiths(book, chapter){
         </div>
         ${due ? `<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}
       </div>
+      ${h.title ? `<div class="hadith-title">${h.title}</div>` : ""}
       <div class="narrator">${h.narrator}</div>
       <div class="hadith-text" id="hadithText-${safeKey}">${h.text}</div>
       <div class="takhrij">${h.takhrij}</div>
@@ -607,7 +608,7 @@ function openQuiz(bookName, chapterId, numInBook){
                  narratorHint: { hintWordIndex: null, hintCharsRevealed: 0 },
                  hadithHint: { hintWordIndex: null, hintCharsRevealed: 0 } };
 
-  document.getElementById("quizTitle").textContent = `تسميع حديث رقم ${h.numInBook} (باب: ${chapter.title})`;
+  document.getElementById("quizTitle").textContent = `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
   document.getElementById("quizInput").placeholder = "اكتب متن الحديث هنا بدون تشكيل...";
   document.getElementById("narratorInput").value = "";
@@ -911,7 +912,7 @@ function renderReviewTab(){
     let tagText = item.overdueDays > 0 ? `متأخر ${item.overdueDays} يوم` : "مستحق اليوم";
     el.innerHTML = `
       <div class="info">
-        <div class="title">حديث رقم ${item.hadith.numInBook} — ${item.chapter.title}</div>
+        <div class="title">${item.hadith.title || `حديث رقم ${item.hadith.numInBook}`} — ${item.chapter.title}</div>
         <div class="sub">${item.book.bookName} · باب رقم ${item.hadith.numInChapter} في الباب</div>
       </div>
       <span class="due-tag">${tagText}</span>
