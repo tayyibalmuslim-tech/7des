@@ -143,12 +143,19 @@ function updateTabButtons(tab){
 
 // state = { view: "books" | "chapters" | "chapter-content" | "review" | "auth", bookIdx, chapterId }
 function applyState(state, push){
-  currentTab = (state.view === "review") ? "review" : "books";
+  currentTab = state.view === "review" ? "review" :
+    (state.bookIdx === 1 || state.view === "manhaji") ? "manhaji" : "books";
   updateTabButtons(currentTab);
 
   if(state.view === "books"){
     showView("view-books");
     renderBooksList();
+  } else if(state.view === "manhaji"){
+    currentBookIdx = 1;
+    document.getElementById("chaptersBookTitle").textContent = BOOKS[1].bookName;
+    document.getElementById("chaptersTitle").textContent = BOOKS[1].bookName;
+    renderChaptersList();
+    showView("view-chapters");
   } else if(state.view === "chapters"){
     currentBookIdx = state.bookIdx;
     const book = BOOKS[currentBookIdx];
@@ -182,6 +189,7 @@ function applyState(state, push){
 
 function stateToHash(state){
   if(state.view === "books") return "books";
+  if(state.view === "manhaji") return "manhaji";
   if(state.view === "chapters") return "chapters/" + state.bookIdx;
   if(state.view === "chapter-content") return "chapter/" + state.bookIdx + "/" + state.chapterId;
   if(state.view === "review") return "review";
@@ -198,6 +206,7 @@ function hashToState(hash){
     return { view: "chapter-content", bookIdx: Number(parts[1]), chapterId: Number(parts[2]) };
   }
   if(parts[0] === "review") return { view: "review" };
+  if(parts[0] === "manhaji") return { view: "manhaji" };
   if(parts[0] === "auth") return { view: "auth" };
   return { view: "books" };
 }
@@ -210,6 +219,8 @@ window.addEventListener("popstate", (e) => {
 function switchTab(tab){
   if(tab === "books"){
     applyState({ view: "books" }, true);
+  } else if(tab === "manhaji"){
+    applyState({ view: "manhaji" }, true);
   } else if(tab === "review"){
     applyState({ view: "review" }, true);
   }
@@ -221,11 +232,12 @@ function showView(id){
 }
 
 function goToBooks(){
-  applyState({ view: "books" }, true);
+  applyState({ view: currentBookIdx === 1 ? "manhaji" : "books" }, true);
 }
 
 function goToChapters(){
-  applyState({ view: "chapters", bookIdx: currentBookIdx }, true);
+  applyState(currentBookIdx === 1 ? { view: "manhaji" } :
+    { view: "chapters", bookIdx: currentBookIdx }, true);
 }
 
 function showAuthView(){
@@ -239,12 +251,12 @@ function renderCurrentView(){
 }
 
 // ---------- Books List ----------
-const BOOKS = [RIYAD_ALSALIHIN];
+const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS];
 
 function renderBooksList(){
   const wrap = document.getElementById("booksList");
   wrap.innerHTML = "";
-  BOOKS.forEach((book, idx) => {
+  BOOKS.slice(0, 1).forEach((book, idx) => {
     const totalHadiths = book.chapters.reduce((s,c) => s + c.hadiths.length, 0);
     const el = document.createElement("div");
     el.className = "card-item";
@@ -285,7 +297,7 @@ function renderChaptersList(){
         <div class="num-badge">${chapter.id}</div>
         <div>
           <div class="title">${chapter.title}</div>
-          <div class="meta">${chapter.hadiths.length} حديث${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
+          <div class="meta">${chapter.hadiths.length ? `${chapter.hadiths.length} حديث` : "بانتظار إضافة الأحاديث"}${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
         </div>
       </div>
       <span class="chev">‹</span>
@@ -321,6 +333,10 @@ function renderAyat(chapter){
 function renderHadiths(book, chapter){
   const wrap = document.getElementById("hadithsContainer");
   wrap.innerHTML = "";
+  if(chapter.hadiths.length === 0){
+    wrap.innerHTML = '<div class="empty-state">الأحاديث هتظهر هنا بعد إضافتها.</div>';
+    return;
+  }
   chapter.hadiths.forEach(h => {
     const key = hadithKey(book.bookName, chapter.id, h.numInBook);
     const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
