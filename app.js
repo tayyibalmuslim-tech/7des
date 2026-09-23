@@ -143,19 +143,12 @@ function updateTabButtons(tab){
 
 // state = { view: "books" | "chapters" | "chapter-content" | "review" | "auth", bookIdx, chapterId }
 function applyState(state, push){
-  currentTab = state.view === "review" ? "review" :
-    (state.bookIdx === 1 || state.view === "manhaji") ? "manhaji" : "books";
+  currentTab = state.view === "review" ? "review" : "books";
   updateTabButtons(currentTab);
 
   if(state.view === "books"){
     showView("view-books");
     renderBooksList();
-  } else if(state.view === "manhaji"){
-    currentBookIdx = 1;
-    document.getElementById("chaptersBookTitle").textContent = BOOKS[1].bookName;
-    document.getElementById("chaptersTitle").textContent = BOOKS[1].bookName;
-    renderChaptersList();
-    showView("view-chapters");
   } else if(state.view === "chapters"){
     currentBookIdx = state.bookIdx;
     const book = BOOKS[currentBookIdx];
@@ -189,7 +182,6 @@ function applyState(state, push){
 
 function stateToHash(state){
   if(state.view === "books") return "books";
-  if(state.view === "manhaji") return "manhaji";
   if(state.view === "chapters") return "chapters/" + state.bookIdx;
   if(state.view === "chapter-content") return "chapter/" + state.bookIdx + "/" + state.chapterId;
   if(state.view === "review") return "review";
@@ -206,7 +198,8 @@ function hashToState(hash){
     return { view: "chapter-content", bookIdx: Number(parts[1]), chapterId: Number(parts[2]) };
   }
   if(parts[0] === "review") return { view: "review" };
-  if(parts[0] === "manhaji") return { view: "manhaji" };
+  // رابط قديم من النسخة السابقة؛ افتح الكتاب داخل شاشة الكتب.
+  if(parts[0] === "manhaji") return { view: "chapters", bookIdx: 1 };
   if(parts[0] === "auth") return { view: "auth" };
   return { view: "books" };
 }
@@ -219,8 +212,6 @@ window.addEventListener("popstate", (e) => {
 function switchTab(tab){
   if(tab === "books"){
     applyState({ view: "books" }, true);
-  } else if(tab === "manhaji"){
-    applyState({ view: "manhaji" }, true);
   } else if(tab === "review"){
     applyState({ view: "review" }, true);
   }
@@ -232,12 +223,11 @@ function showView(id){
 }
 
 function goToBooks(){
-  applyState({ view: currentBookIdx === 1 ? "manhaji" : "books" }, true);
+  applyState({ view: "books" }, true);
 }
 
 function goToChapters(){
-  applyState(currentBookIdx === 1 ? { view: "manhaji" } :
-    { view: "chapters", bookIdx: currentBookIdx }, true);
+  applyState({ view: "chapters", bookIdx: currentBookIdx }, true);
 }
 
 function showAuthView(){
@@ -256,7 +246,7 @@ const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS];
 function renderBooksList(){
   const wrap = document.getElementById("booksList");
   wrap.innerHTML = "";
-  BOOKS.slice(0, 1).forEach((book, idx) => {
+  BOOKS.forEach((book, idx) => {
     const totalHadiths = book.chapters.reduce((s,c) => s + c.hadiths.length, 0);
     const el = document.createElement("div");
     el.className = "card-item";
