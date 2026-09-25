@@ -241,13 +241,14 @@ function renderCurrentView(){
 }
 
 // ---------- Books List ----------
-const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS];
+const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS, SAFWAT_ALZUBAD];
 
 function renderBooksList(){
   const wrap = document.getElementById("booksList");
   wrap.innerHTML = "";
   BOOKS.forEach((book, idx) => {
     const totalHadiths = book.chapters.reduce((s,c) => s + c.hadiths.length, 0);
+    const itemLabel = book.contentType === "poem" ? "بيت" : "حديث";
     const el = document.createElement("div");
     el.className = "card-item";
     el.onclick = () => openBook(idx);
@@ -256,7 +257,7 @@ function renderBooksList(){
         <div class="num-badge">📖</div>
         <div>
           <div class="title">${book.bookName}</div>
-          <div class="meta">${book.chapters.length} باب · ${totalHadiths} حديث</div>
+          <div class="meta">${book.chapters.length} باب · ${totalHadiths} ${itemLabel}</div>
         </div>
       </div>
       <span class="chev">‹</span>
@@ -282,12 +283,13 @@ function renderChaptersList(){
     const el = document.createElement("div");
     el.className = "card-item";
     el.onclick = () => openChapter(chapter.id);
+    const countLabel = book.contentType === "poem" ? "بيت" : "حديث";
     el.innerHTML = `
       <div class="row-main">
         <div class="num-badge">${chapter.id}</div>
         <div>
           <div class="title">${chapter.title}</div>
-          <div class="meta">${chapter.hadiths.length ? `${chapter.hadiths.length} حديث` : "بانتظار إضافة الأحاديث"}${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
+          <div class="meta">${chapter.hadiths.length ? `${chapter.hadiths.length} ${countLabel}` : "بانتظار إضافة النص"}${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
         </div>
       </div>
       <span class="chev">‹</span>
@@ -322,9 +324,10 @@ function renderAyat(chapter){
 
 function renderHadiths(book, chapter){
   const wrap = document.getElementById("hadithsContainer");
+  const isPoem = book.contentType === "poem";
   wrap.innerHTML = "";
   if(chapter.hadiths.length === 0){
-    wrap.innerHTML = '<div class="empty-state">الأحاديث هتظهر هنا بعد إضافتها.</div>';
+    wrap.innerHTML = '<div class="empty-state">النصوص هتظهر هنا بعد إضافتها.</div>';
     return;
   }
   chapter.hadiths.forEach(h => {
@@ -338,19 +341,19 @@ function renderHadiths(book, chapter){
     card.innerHTML = `
       <div class="hh">
         <div class="nums">
-          <span class="num-pill">رقم الباب: <b>${h.numInChapter}</b></span>
-          <span class="num-pill">رقم الكتاب: <b>${h.numInBook}</b></span>
+          <span class="num-pill">${isPoem ? "رقم المقطع" : "رقم الباب"}: <b>${h.numInChapter}</b></span>
+          <span class="num-pill">${isPoem ? "رقم النظم" : "رقم الكتاب"}: <b>${h.numInBook}</b></span>
         </div>
         ${due ? `<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}
       </div>
       ${h.title ? `<div class="hadith-title">${h.title}</div>` : ""}
-      <div class="narrator">${h.narrator}</div>
+      ${isPoem ? "" : `<div class="narrator">${h.narrator || ""}</div>`}
       <div class="hadith-text" id="hadithText-${safeKey}">${h.text}</div>
-      <div class="takhrij">${h.takhrij}</div>
+      ${isPoem ? "" : `<div class="takhrij">${h.takhrij || ""}</div>`}
       ${h.note ? `<div class="note">${h.note}</div>` : ""}
       <div class="hh-actions">
-        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">إظهار / إخفاء الحديث</button>
-        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">تسميع (كتابة) ✍️</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">${isPoem ? "إظهار / إخفاء البيت" : "إظهار / إخفاء الحديث"}</button>
+        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">${isPoem ? "تسميع البيت" : "تسميع (كتابة)"} ✍️</button>
       </div>
       ${prog ? `<div class="meta" style="margin-top:10px;font-size:0.76rem;color:var(--ink-soft);">
           آخر مراجعة: ${prog.lastReviewDate || "—"} · المراجعة القادمة: ${prog.nextReviewDate || "—"}
@@ -601,16 +604,23 @@ function openQuiz(bookName, chapterId, numInBook){
   const book = BOOKS.find(b => b.bookName === bookName);
   const chapter = book.chapters.find(c => c.id === chapterId);
   const h = chapter.hadiths.find(x => x.numInBook === numInBook);
+  const isPoem = book.contentType === "poem";
   const key = hadithKey(bookName, chapterId, numInBook);
 
-  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
+  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, isPoem, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
                  hintWordIndex: null, hintCharsRevealed: 0,
                  narratorHint: { hintWordIndex: null, hintCharsRevealed: 0 },
                  hadithHint: { hintWordIndex: null, hintCharsRevealed: 0 } };
 
-  document.getElementById("quizTitle").textContent = `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
+  document.getElementById("quizTitle").textContent = isPoem ? `تسميع البيت رقم ${h.numInBook} (باب: ${chapter.title})` : `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
-  document.getElementById("quizInput").placeholder = "اكتب متن الحديث هنا بدون تشكيل...";
+  document.getElementById("quizInput").placeholder = isPoem ? "اكتب البيت هنا..." : "اكتب متن الحديث هنا بدون تشكيل...";
+  document.querySelector(".hadith-field-label").textContent = isPoem ? "نص البيت" : "متن الحديث";
+  document.querySelector(".narrator-field-label").style.display = isPoem ? "none" : "";
+  document.getElementById("narratorInput").style.display = isPoem ? "none" : "";
+  document.getElementById("liveCheckBoxNarrator").style.display = isPoem ? "none" : "";
+  document.getElementById("liveCheckBoxNarrator").nextElementSibling.style.display = isPoem ? "none" : "";
+  document.getElementById("takhrijQuizBox").style.display = isPoem ? "none" : "";
   document.getElementById("narratorInput").value = "";
   document.getElementById("hintBox").className = "hint-box";
   document.getElementById("hintBox").textContent = "";
@@ -649,7 +659,7 @@ function closeQuizModal(){
 
 function showNextWordHint(){
   if(!activeQuiz) return;
-  const words = tokenize(activeQuiz.hadith.narrator).concat(tokenize(activeQuiz.hadith.text));
+  const words = tokenize(activeQuiz.hadith.narrator || "").concat(tokenize(activeQuiz.hadith.text || ""));
   activeQuiz.revealedWordsCount = Math.min(activeQuiz.revealedWordsCount + 1, words.length);
   const revealed = words.slice(0, activeQuiz.revealedWordsCount).join(" ");
   const box = document.getElementById("hintBox");
@@ -667,7 +677,7 @@ function checkQuizAnswer(){
     return;
   }
 
-  const narratorWords = tokenize(activeQuiz.hadith.narrator);
+  const narratorWords = tokenize(activeQuiz.hadith.narrator || "");
   const hadithWords = tokenize(activeQuiz.hadith.text);
 
   // الراوي والمتن بقوا في صندوقين منفصلين، فمفيش داعي لتخمين نقطة الفصل بالـ LCS —
@@ -703,7 +713,21 @@ function checkQuizAnswer(){
   const hadithResult = buildResult(hadithWords, hadithNorm, userHadithWords, userHadithNorm);
 
   const resultBox = document.getElementById("compareResult");
-  resultBox.innerHTML = `
+  resultBox.innerHTML = isPoem ? `
+    <div style="margin-top:14px;">
+      <div class="compare-section-label">نص البيت</div>
+      <div class="compare-output">${hadithResult.html}</div>
+      <div class="compare-percentage">
+        نسبة الصحة: <b style="color:${hadithResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${hadithResult.percentage}%</b>
+        (${hadithResult.correctCount} من ${hadithResult.total})
+      </div>
+    </div>
+    <div class="compare-legend">
+      <span class="word-ok">أخضر = صحيح</span> ·
+      <span class="word-missing">أحمر باهت = ناقص من كلامك</span> ·
+      <span class="word-extra">مشطوب = كتبته زيادة أو غلط</span>
+    </div>
+  ` : `
     <div style="margin-top:14px;">
       <div class="compare-section-label">الراوي</div>
       <div class="compare-output">${narratorResult.html || "<span style='color:var(--ink-soft)'>(لم يُكتب)</span>"}</div>
@@ -714,7 +738,7 @@ function checkQuizAnswer(){
     </div>
     <div style="margin-top:14px;">
       <div class="compare-section-label">متن الحديث</div>
-      <div class="compare-output">${hadithResult.html || "<span style='color:var(--ink-soft)'>(لم يُكتب)</span>"}</div>
+      <div class="compare-output">${hadithResult.html}</div>
       <div class="compare-percentage">
         نسبة الصحة: <b style="color:${hadithResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${hadithResult.percentage}%</b>
         (${hadithResult.correctCount} من ${hadithResult.total})
@@ -727,7 +751,7 @@ function checkQuizAnswer(){
     </div>
   `;
 
-  document.getElementById("takhrijQuizBox").className = "takhrij-quiz-box shown";
+  if(!activeQuiz.isPoem) document.getElementById("takhrijQuizBox").className = "takhrij-quiz-box shown";
 }
 
 function checkTakhrijAnswer(){
@@ -912,7 +936,7 @@ function renderReviewTab(){
     let tagText = item.overdueDays > 0 ? `متأخر ${item.overdueDays} يوم` : "مستحق اليوم";
     el.innerHTML = `
       <div class="info">
-        <div class="title">${item.hadith.title || `حديث رقم ${item.hadith.numInBook}`} — ${item.chapter.title}</div>
+        <div class="title">${item.hadith.title || (item.book.contentType === "poem" ? `بيت رقم ${item.hadith.numInBook}` : `حديث رقم ${item.hadith.numInBook}`)} — ${item.chapter.title}</div>
         <div class="sub">${item.book.bookName} · باب رقم ${item.hadith.numInChapter} في الباب</div>
       </div>
       <span class="due-tag">${tagText}</span>
