@@ -275,10 +275,12 @@ function renderChaptersList(){
   const wrap = document.getElementById("chaptersList");
   wrap.innerHTML = "";
   book.chapters.forEach(chapter => {
-    const dueCount = chapter.hadiths.filter(h => {
-      const key = hadithKey(book.bookName, chapter.id, h.numInBook);
-      return isDue(key);
-    }).length;
+    const reviewKey = book.contentType === "poem"
+      ? hadithKey(book.bookName, chapter.id, 0)
+      : null;
+    const dueCount = book.contentType === "poem"
+      ? (isDue(reviewKey) ? 1 : 0)
+      : chapter.hadiths.filter(h => isDue(hadithKey(book.bookName, chapter.id, h.numInBook))).length;
 
     const el = document.createElement("div");
     el.className = "card-item";
@@ -289,7 +291,7 @@ function renderChaptersList(){
         <div class="num-badge">${chapter.id}</div>
         <div>
           <div class="title">${chapter.title}</div>
-          <div class="meta">${chapter.hadiths.length ? `${chapter.hadiths.length} ${countLabel}` : "بانتظار إضافة النص"}${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">${dueCount} مستحق للمراجعة</span>` : ""}</div>
+          <div class="meta">${chapter.hadiths.length ? `${chapter.hadiths.length} ${countLabel}` : "بانتظار إضافة النص"}${dueCount > 0 ? ` · <span style="color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}</div>
         </div>
       </div>
       <span class="chev">‹</span>
@@ -330,30 +332,61 @@ function renderHadiths(book, chapter){
     wrap.innerHTML = '<div class="empty-state">النصوص هتظهر هنا بعد إضافتها.</div>';
     return;
   }
+
+  if(isPoem){
+    const key = hadithKey(book.bookName, chapter.id, 0);
+    const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
+    const prog = progress[key];
+    const due = isDue(key);
+    const verses = chapter.hadiths.map(h =>
+      `<div class="poem-verse"><span class="poem-number">${h.numInBook}.</span> ${h.text}</div>`
+    ).join("");
+    const card = document.createElement("div");
+    card.className = "hadith-card poem-card";
+    card.innerHTML = `
+      <div class="hh">
+        <div class="nums">
+          <span class="num-pill">${chapter.hadiths.length} بيتًا</span>
+          <span class="num-pill">${chapter.sourceTitle || chapter.title}</span>
+        </div>
+        ${due ? '<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>' : ""}
+      </div>
+      <div class="hadith-text poem-text" id="hadithText-${safeKey}">${verses}</div>
+      <div class="hh-actions">
+        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">إظهار / إخفاء الأبيات</button>
+        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, 0)">تسميع ${chapter.hadiths.length === 1 ? "البيت" : "الباب كاملًا"} ✍️</button>
+      </div>
+      ${prog ? `<div class="meta" style="margin-top:10px;font-size:0.76rem;color:var(--ink-soft);">
+          آخر مراجعة: ${prog.lastReviewDate || "—"} · المراجعة القادمة: ${prog.nextReviewDate || "—"}
+        </div>` : ""}
+    `;
+    wrap.appendChild(card);
+    return;
+  }
+
   chapter.hadiths.forEach(h => {
     const key = hadithKey(book.bookName, chapter.id, h.numInBook);
     const safeKey = key.replace(/[^a-zA-Z0-9]/g,'_');
     const prog = progress[key];
     const due = isDue(key);
-
     const card = document.createElement("div");
     card.className = "hadith-card";
     card.innerHTML = `
       <div class="hh">
         <div class="nums">
-          <span class="num-pill">${isPoem ? "رقم المقطع" : "رقم الباب"}: <b>${h.numInChapter}</b></span>
-          <span class="num-pill">${isPoem ? "رقم النظم" : "رقم الكتاب"}: <b>${h.numInBook}</b></span>
+          <span class="num-pill">رقم الباب: <b>${h.numInChapter}</b></span>
+          <span class="num-pill">رقم الكتاب: <b>${h.numInBook}</b></span>
         </div>
-        ${due ? `<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>` : ""}
+        ${due ? '<span class="num-pill" style="background:#F5E1DD;color:var(--red-err);font-weight:700;">مستحق للمراجعة</span>' : ""}
       </div>
       ${h.title ? `<div class="hadith-title">${h.title}</div>` : ""}
-      ${isPoem ? "" : `<div class="narrator">${h.narrator || ""}</div>`}
+      <div class="narrator">${h.narrator || ""}</div>
       <div class="hadith-text" id="hadithText-${safeKey}">${h.text}</div>
-      ${isPoem ? "" : `<div class="takhrij">${h.takhrij || ""}</div>`}
+      <div class="takhrij">${h.takhrij || ""}</div>
       ${h.note ? `<div class="note">${h.note}</div>` : ""}
       <div class="hh-actions">
-        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">${isPoem ? "إظهار / إخفاء البيت" : "إظهار / إخفاء الحديث"}</button>
-        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">${isPoem ? "تسميع البيت" : "تسميع (كتابة)"} ✍️</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleHadithText(this,'${safeKey}')">إظهار / إخفاء الحديث</button>
+        <button class="btn btn-primary btn-sm" onclick="openQuiz('${book.bookName}', ${chapter.id}, ${h.numInBook})">تسميع (كتابة) ✍️</button>
       </div>
       ${prog ? `<div class="meta" style="margin-top:10px;font-size:0.76rem;color:var(--ink-soft);">
           آخر مراجعة: ${prog.lastReviewDate || "—"} · المراجعة القادمة: ${prog.nextReviewDate || "—"}
@@ -603,19 +636,21 @@ function showLiveWordHint(){
 function openQuiz(bookName, chapterId, numInBook){
   const book = BOOKS.find(b => b.bookName === bookName);
   const chapter = book.chapters.find(c => c.id === chapterId);
-  const h = chapter.hadiths.find(x => x.numInBook === numInBook);
   const isPoem = book.contentType === "poem";
-  const key = hadithKey(bookName, chapterId, numInBook);
+  const h = isPoem
+    ? { numInBook: 0, text: chapter.hadiths.map(item => item.text).join(" ") }
+    : chapter.hadiths.find(x => x.numInBook === numInBook);
+  const key = hadithKey(bookName, chapterId, isPoem ? 0 : numInBook);
 
   activeQuiz = { key, hadith: h, chapterTitle: chapter.title, isPoem, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
                  hintWordIndex: null, hintCharsRevealed: 0,
                  narratorHint: { hintWordIndex: null, hintCharsRevealed: 0 },
                  hadithHint: { hintWordIndex: null, hintCharsRevealed: 0 } };
 
-  document.getElementById("quizTitle").textContent = isPoem ? `تسميع البيت رقم ${h.numInBook} (باب: ${chapter.title})` : `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
+  document.getElementById("quizTitle").textContent = isPoem ? `تسميع ${chapter.hadiths.length === 1 ? "البيت" : "الباب كاملًا"}: ${chapter.title}` : `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
-  document.getElementById("quizInput").placeholder = isPoem ? "اكتب البيت هنا..." : "اكتب متن الحديث هنا بدون تشكيل...";
-  document.querySelector(".hadith-field-label").textContent = isPoem ? "نص البيت" : "متن الحديث";
+  document.getElementById("quizInput").placeholder = isPoem ? "اكتب أبيات الباب هنا..." : "اكتب متن الحديث هنا بدون تشكيل...";
+  document.querySelector(".hadith-field-label").textContent = isPoem ? "أبيات الباب" : "متن الحديث";
   document.querySelector(".narrator-field-label").style.display = isPoem ? "none" : "";
   document.getElementById("narratorInput").style.display = isPoem ? "none" : "";
   document.getElementById("liveCheckBoxNarrator").style.display = isPoem ? "none" : "";
@@ -669,11 +704,12 @@ function showNextWordHint(){
 
 function checkQuizAnswer(){
   if(!activeQuiz) return;
+  const isPoem = activeQuiz.isPoem;
   const hadithText = document.getElementById("quizInput").value.trim();
   const narratorText = document.getElementById("narratorInput").value.trim();
 
   if(!hadithText){
-    showToast("اكتب متن الحديث قبل التحقق", true);
+    showToast("اكتب الأبيات قبل التحقق", true);
     return;
   }
 
@@ -715,7 +751,7 @@ function checkQuizAnswer(){
   const resultBox = document.getElementById("compareResult");
   resultBox.innerHTML = isPoem ? `
     <div style="margin-top:14px;">
-      <div class="compare-section-label">نص البيت</div>
+      <div class="compare-section-label">نص الباب</div>
       <div class="compare-output">${hadithResult.html}</div>
       <div class="compare-percentage">
         نسبة الصحة: <b style="color:${hadithResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${hadithResult.percentage}%</b>
@@ -878,20 +914,27 @@ function getAllDueHadiths(){
   const results = [];
   BOOKS.forEach(book => {
     book.chapters.forEach(chapter => {
-      chapter.hadiths.forEach(h => {
-        const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+      if(book.contentType === "poem"){
+        const key = hadithKey(book.bookName, chapter.id, 0);
         const p = progress[key];
         if(p && p.nextReviewDate && p.nextReviewDate <= todayStr()){
           results.push({
-            key, book, chapter, hadith: h,
+            key, book, chapter, hadith: { numInBook: 0, numInChapter: 0, text: chapter.hadiths.map(h => h.text).join(" ") },
             nextReviewDate: p.nextReviewDate,
             overdueDays: daysDiff(p.nextReviewDate, todayStr())
           });
         }
+        return;
+      }
+      chapter.hadiths.forEach(h => {
+        const key = hadithKey(book.bookName, chapter.id, h.numInBook);
+        const p = progress[key];
+        if(p && p.nextReviewDate && p.nextReviewDate <= todayStr()){
+          results.push({ key, book, chapter, hadith: h, nextReviewDate: p.nextReviewDate, overdueDays: daysDiff(p.nextReviewDate, todayStr()) });
+        }
       });
     });
   });
-  // الأكثر تأخيراً أولاً
   results.sort((a,b) => b.overdueDays - a.overdueDays);
   return results;
 }
@@ -936,12 +979,12 @@ function renderReviewTab(){
     let tagText = item.overdueDays > 0 ? `متأخر ${item.overdueDays} يوم` : "مستحق اليوم";
     el.innerHTML = `
       <div class="info">
-        <div class="title">${item.hadith.title || (item.book.contentType === "poem" ? `بيت رقم ${item.hadith.numInBook}` : `حديث رقم ${item.hadith.numInBook}`)} — ${item.chapter.title}</div>
-        <div class="sub">${item.book.bookName} · باب رقم ${item.hadith.numInChapter} في الباب</div>
+        <div class="title">${item.book.contentType === "poem" ? `تسميع ${item.hadith.numInChapter === 0 ? "الباب" : "البيت"} كاملًا — ${item.chapter.title}` : (item.hadith.title || `حديث رقم ${item.hadith.numInBook}`)} — ${item.chapter.title}</div>
+        <div class="sub">${item.book.bookName} · ${item.book.contentType === "poem" ? `${item.chapter.hadiths.length} بيتًا — تسميع واحد` : `حديث رقم ${item.hadith.numInChapter} في الباب` }</div>
       </div>
       <span class="due-tag">${tagText}</span>
     `;
-    el.onclick = () => openQuiz(item.book.bookName, item.chapter.id, item.hadith.numInBook);
+    el.onclick = () => openQuiz(item.book.bookName, item.chapter.id, item.book.contentType === "poem" ? 0 : item.hadith.numInBook);
     list.appendChild(el);
   });
 }
