@@ -1,15 +1,19 @@
-// متن صفوة الزبد مقسّم إلى أبوابه وعناوينه كما تظهر في نص المصدر.
+// متن صفوة الزبد مقسّم وفق عناوين فهرس المصدر، مع تجزئة الأبواب الطويلة.
 // الناظم: أحمد بن حسين بن رسلان الرملي الشافعي (ت 844هـ).
-// المصدر النصي: أرشيف الإسلام، نقلًا عن الشاملة الذهبية.
+// المصدر النصي والفهرس: أرشيف الإسلام، نقلًا عن الشاملة الذهبية.
 const SAFWAT_ALZUBAD = {
   "bookName": "صفوة الزبد",
   "contentType": "poem",
   "author": "أحمد بن حسين بن رسلان الرملي الشافعي",
-  "sourceUrl": "https://www.islamarchive.cc/ketab_content/55281",
+  "sourceUrl": "https://www.islamarchive.cc/ketab_content/103086",
   "chapters": [
     {
       "id": 1,
-      "title": "مقدمة النظم",
+      "title": "المقدمة",
+      "sourceTitle": "المقدمة",
+      "sourceTocId": 23,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -70,7 +74,11 @@ const SAFWAT_ALZUBAD = {
     },
     {
       "id": 2,
-      "title": "مقدمة في علم الأصول",
+      "title": "كتاب علم الأصول (أصول الدين - الإعتقاد) — الجزء 1 من 3",
+      "sourceTitle": "كتاب علم الأصول (أصول الدين - الإعتقاد)",
+      "sourceTocId": 24,
+      "part": 1,
+      "partCount": 3,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -181,7 +189,17 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 22,
           "numInBook": 33,
           "text": "أَرسَلَ رُسْلَهُ بِمُعجِزَاتِ ظاهِرَةٍ للخَلْقِ باهِرَاتِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "كتاب علم الأصول (أصول الدين - الإعتقاد) — الجزء 2 من 3",
+      "sourceTitle": "كتاب علم الأصول (أصول الدين - الإعتقاد)",
+      "sourceTocId": 24,
+      "part": 2,
+      "partCount": 3,
+      "hadiths": [
         {
           "numInChapter": 23,
           "numInBook": 34,
@@ -291,7 +309,17 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 44,
           "numInBook": 55,
           "text": "والعلمُ أَسنَى سائِرِ الأَعمالِ وَهْوُ دليلُ الخيرِ والإِفضَالِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "كتاب علم الأصول (أصول الدين - الإعتقاد) — الجزء 3 من 3",
+      "sourceTitle": "كتاب علم الأصول (أصول الدين - الإعتقاد)",
+      "sourceTocId": 24,
+      "part": 3,
+      "partCount": 3,
+      "hadiths": [
         {
           "numInChapter": 45,
           "numInBook": 56,
@@ -401,67 +429,81 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 66,
           "numInBook": 77,
           "text": "ومِنهُ مَعدُومٌ كموجُودٍ مُثِلْ كَدِيَةٍ تُورَثُ عَن شَخصٍ قُتِلْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "كتاب الطهارة",
+      "sourceTitle": "كتاب الطهارة",
+      "sourceTocId": 25,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 67,
+          "numInChapter": 1,
           "numInBook": 78,
           "text": "وإنَّمَا يَصِحُّ تَطهيرٌ بِمَا أُطلِقَ لا مُستَعمَلٍ ولا بِمَا"
         },
         {
-          "numInChapter": 68,
+          "numInChapter": 2,
           "numInBook": 79,
           "text": "بطاهِرٍ مُخَالِطٍ تَغَيَّرَا تَغَيُّرَا إِطلاقَ الاِسم غَيَّرَا"
         },
         {
-          "numInChapter": 69,
+          "numInChapter": 3,
           "numInBook": 80,
           "text": "في طَعمِهِ أو ريحِهِ أو لَونِهِ ويُمكِنُ استِغنَاؤُهُ بِصَونِهِ"
         },
         {
-          "numInChapter": 70,
+          "numInChapter": 4,
           "numInBook": 81,
           "text": "واستَثْنِ تَغييرًا بعُودٍ صُلْبِ أو وَرَقٍ أو طُحْلُبٍ أو تُرْبِ"
         },
         {
-          "numInChapter": 71,
+          "numInChapter": 5,
           "numInBook": 82,
           "text": "ولا بِماءٍ مُطْلَقٍ حَلَّتْهُ عَيْنْ نَجَاسَةٍ وَهْوَ بِدُونِ القُلَّتَيْنْ"
         },
         {
-          "numInChapter": 72,
+          "numInChapter": 6,
           "numInBook": 83,
           "text": "واستَثْنِ مَيْتًَا دَمُهُ لَم يَسِلْ أو لا يُرَى بالطَّرْفِ لَمَّا يَحصُلِ"
         },
         {
-          "numInChapter": 73,
+          "numInChapter": 7,
           "numInBook": 84,
           "text": "أو قُلَّتَيْنِ بالرُّطَيْلِ الرَّمْلِي فَوقَ ثَمَانين قَرِيبَ رِطْلِ"
         },
         {
-          "numInChapter": 74,
+          "numInChapter": 8,
           "numInBook": 85,
           "text": "أو قُلَّتَيْنِ بالدِّمَشقِيِّ هِيَهْ ثَمَانُ أَرطالٍ أَتَت بَعدَ مِيَهْ"
         },
         {
-          "numInChapter": 75,
+          "numInChapter": 9,
           "numInBook": 86,
           "text": "والنَّجَسُ الوَاقِعُ قَد غَيَّرَهُ واختِيرَ في مُشَمَّسٍ لا يُكْرَهُ"
         },
         {
-          "numInChapter": 76,
+          "numInChapter": 10,
           "numInBook": 87,
           "text": "وإِنْ بنَفْسِهِ انتَفَى التَّغَيُّرُ والماءُ لا كزَعفَرَانٍ يَطْهُرُ"
         },
         {
-          "numInChapter": 77,
+          "numInChapter": 11,
           "numInBook": 88,
           "text": "وكُلُّ ما استُعمِلَ في تَطهيرِ فَرْضٍ وقَلَّ ليس بالطَّهُورِ"
         }
       ]
     },
     {
-      "id": 3,
+      "id": 6,
       "title": "باب النجاسات",
+      "sourceTitle": "باب النجاسات",
+      "sourceTocId": 26,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -527,47 +569,61 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 13,
           "numInBook": 101,
           "text": "ولْيُعْفَ عن نَزْرِ دَمٍ وَقَيْحِ مِنْ بَثْرَةٍ ودُمَّلٍ وقَرْحِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "باب الآنية",
+      "sourceTitle": "باب الآنية",
+      "sourceTocId": 27,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 14,
+          "numInChapter": 1,
           "numInBook": 102,
           "text": "يُبَاحُ مِنها طاهرٌ مِن خَشَبِ أو غَيرِهِ لافِضَّةٍ أو ذَهَبِ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 2,
           "numInBook": 103,
           "text": "فيَحْرُمُ استعمالُهُ كَمِرْوَدِ لامرَأَةٍ وجَازَ مِن زَبَرْجَدِ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 3,
           "numInBook": 104,
           "text": "وتَحْرُمُ الضَّبَةُ مِن هَذِينِ بِكِبَرٍ عُرْفًَا مَعَ التَّزَيُّنِ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 4,
           "numInBook": 105,
           "text": "إِنْ فُقِدَا حَلَّتْ وفَرْدَا يُكْرَهُ والحاجَةُ التي تُساوي كَسْرَهُ"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 5,
           "numInBook": 106,
           "text": "ويُسْتَحَبُّ في الأواني التَّغْطِيَهْ ولو بِعُودٍ حُطَّ فوق الآنِيَهْ"
         },
         {
-          "numInChapter": 19,
+          "numInChapter": 6,
           "numInBook": 107,
           "text": "ويُتَحَرَّى لاشتِبَاهِ طَاهِرِ بنَجِسٍ ولو لأعمى قادِرِ"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 7,
           "numInBook": 108,
           "text": "لا الْكَمِّ والبولِ ومَيْتَةٍ وما وَرْدٍ وحَمْرٍ دَرِّ أُتْنٍ مَحْرَمَا"
         }
       ]
     },
     {
-      "id": 4,
-      "title": "باب السِواك",
+      "id": 8,
+      "title": "باب السواك",
+      "sourceTitle": "باب السواك",
+      "sourceTocId": 28,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -612,8 +668,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 5,
+      "id": 9,
       "title": "باب الوضوء",
+      "sourceTitle": "باب الوضوء",
+      "sourceTocId": 29,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -739,107 +799,131 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 25,
           "numInBook": 141,
           "text": "أو قَدَّمَ اليُسْرَى على اليمينِ أو جاوَزَ الثلاثَ باليقينِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "باب المسح على الخفين",
+      "sourceTitle": "باب المسح على الخفين",
+      "sourceTocId": 30,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 26,
+          "numInChapter": 1,
           "numInBook": 142,
           "text": "رُخِّصَ في وُضُوءِ كُلِّ حاضِرِ يوما وليلةوللمُسَافِرِ"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 2,
           "numInBook": 143,
           "text": "في سَفَرِ القَصرِ إلى ثلاثِ مَعَ ليالِيها مِنَ الإِحدَاثِ"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 3,
           "numInBook": 144,
           "text": "فانْ يَشُكَّ في انقضاءٍ غَسَلا وشَرْطُهُ الُّلبْسُ بِطُهرٍ كَمُلا"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 4,
           "numInBook": 145,
           "text": "يُمكِنُ مَشيُ حاجةٍ عليهما والسَّترُ للرِّجْلَين مَعْ كَعبَيْهِمَا"
         },
         {
-          "numInChapter": 30,
+          "numInChapter": 5,
           "numInBook": 146,
           "text": "والفَرضُ مَسْحُ بعضِ عُلْوٍ ونُدِبْ للخُفِّ مَسْحُ السُّفْلِ مِنهُ والعَقِبْ"
         },
         {
-          "numInChapter": 31,
+          "numInChapter": 6,
           "numInBook": 147,
           "text": "وعَدَمُ استيعابِهِ ويُكْرَهْ الغُسْلُ للخُفِّ ومَسْحٌ كَرَّرَهْ"
         },
         {
-          "numInChapter": 32,
+          "numInChapter": 7,
           "numInBook": 148,
           "text": "مُبْطِلُهُ خَلعٌ ومُدَّةُ الكَمَالِ فقَدَمَيكَ اغْسِلْ ومُوجِبُ اغتِسَالِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "باب الإستنجاء",
+      "sourceTitle": "باب الإستنجاء",
+      "sourceTocId": 31,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 33,
+          "numInChapter": 1,
           "numInBook": 149,
           "text": "تلويثُ فَرْجٍ مُوجِبُ استِنجَاءِ وسُنَّ بالأحجارِ ثم الماءِ"
         },
         {
-          "numInChapter": 34,
+          "numInChapter": 2,
           "numInBook": 150,
           "text": "يُجْزِيءُ ماءٌ أو ثلاثُ أحجارْ يُنْقِي بها عَيْنَا وسُنَّ الإيتارْ"
         },
         {
-          "numInChapter": 35,
+          "numInChapter": 3,
           "numInBook": 151,
           "text": "ولَو بأطرافٍ ثلاثةٍ حَصَلْ بكُلِّ مَسْحَةٍ لسائِرِ المَحَلْ"
         },
         {
-          "numInChapter": 36,
+          "numInChapter": 4,
           "numInBook": 152,
           "text": "والشرطُ لا يَجِفُّ خارجٌ ولا يَطرَأُ غَيرُهُ ولَن يَنتَقِلا"
         },
         {
-          "numInChapter": 37,
+          "numInChapter": 5,
           "numInBook": 153,
           "text": "والنَّدبُ في البِنَاءِ لا مُستَقبِلا أو مُدبِرَا وحَرَّمُوهُ في الفَلا"
         },
         {
-          "numInChapter": 38,
+          "numInChapter": 6,
           "numInBook": 154,
           "text": "ولا بماءٍ راكِدٍ ولا مَهَبْ وتَحتَ مُثمِرٍ وثَقبٍ وسَرَبْ"
         },
         {
-          "numInChapter": 39,
+          "numInChapter": 7,
           "numInBook": 155,
           "text": "والظِّلِّ والطريقِ وليَبْعُدْ ولا يَحملُ ذِكْرَ اللهِ أو مَن أَرسَلا"
         },
         {
-          "numInChapter": 40,
+          "numInChapter": 8,
           "numInBook": 156,
           "text": "ومَن سَهَا ضَمَّ عليه باليدِ ويستعيذُ وبِعكسِ المَسجدِ"
         },
         {
-          "numInChapter": 41,
+          "numInChapter": 9,
           "numInBook": 157,
           "text": "فَقَدِّمِ اليُمنى خُرُوجا واسْأَلِ مَغفِرَةً واحْمَدْ وباليُسرى ادخُلِ"
         },
         {
-          "numInChapter": 42,
+          "numInChapter": 10,
           "numInBook": 158,
           "text": "واعتَمِدِ اليُسرى وثَوْبًَا أَحْسِرَا شيئا فشيئا ساكِتًَا مُستَتِرَا"
         },
         {
-          "numInChapter": 43,
+          "numInChapter": 11,
           "numInBook": 159,
           "text": "ومِن بقايا البَولِ يَستَبرِي ولا يَستَنْجِ بالماءِ على ما نَزَلا"
         },
         {
-          "numInChapter": 44,
+          "numInChapter": 12,
           "numInBook": 160,
           "text": "لا مالَهُ بُنِي بجامِدٍ طَهَرْ لاقَصَبٍ وذي احتِرَامٍ كالثَّمَرْ"
         }
       ]
     },
     {
-      "id": 6,
-      "title": "باب الغُسل",
+      "id": 12,
+      "title": "باب الغسل",
+      "sourceTitle": "باب الغسل",
+      "sourceTocId": 32,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -930,887 +1014,1011 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 18,
           "numInBook": 178,
           "text": "وقَبلَ أن يدخُلَ يُعطِي أُجرَتَهْ ولم يُجَاوِزْ في اغتِسَالٍ حاجَتَه"
-        },
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "باب التيمم",
+      "sourceTitle": "باب التيمم",
+      "sourceTocId": 33,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 19,
+          "numInChapter": 1,
           "numInBook": 179,
           "text": "تَيَمُّمُ المُحدِثِ أو من أجْنَبَا يُبَاحُ في حالٍ وحالٍ وَجَبا"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 2,
           "numInBook": 180,
           "text": "وشَرْطُهُ خَوفٌ من استعمالِ ما أو فَقدُ ماءٍ فاضِلٍ عنِ الظَّمَا"
         },
         {
-          "numInChapter": 21,
+          "numInChapter": 3,
           "numInBook": 181,
           "text": "دخولُ وقتٍ وسؤالٌ ظاهِرُ لفاقِدِ الماءِ ترابٌ طَاهِرُ"
         },
         {
-          "numInChapter": 22,
+          "numInChapter": 4,
           "numInBook": 182,
           "text": "ولَو غُبَارَ الرَّملِ لا مُستَعمَلا مُلتَصِقَا بالعُضوِ أو منفَصِلا"
         },
         {
-          "numInChapter": 23,
+          "numInChapter": 5,
           "numInBook": 183,
           "text": "وفرضُهُ نَقْلُ ترابٍ لو نَقَلْ من وجهِهِ لليدِ أو بالعكس حَلْ"
         },
         {
-          "numInChapter": 24,
+          "numInChapter": 6,
           "numInBook": 184,
           "text": "وقَصْدُهُ ونِيَّةُ استباحِ فَرضٍ أو الصلاةِ و انمِسَاحِ"
         },
         {
-          "numInChapter": 25,
+          "numInChapter": 7,
           "numInBook": 185,
           "text": "الوَجهِ لا المَنْبَتِ واليدينِ مَعْ مِرفَقٍ ورَتِّبِ المَسحَيْن"
         },
         {
-          "numInChapter": 26,
+          "numInChapter": 8,
           "numInBook": 186,
           "text": "وسُنَّ تَفريجٌ وأن يُبَسمِلا وقَدِّمِ اليُمنى وخَلِّلْ والوِلا"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 9,
           "numInBook": 187,
           "text": "ونَزْعُ خاتَمٍ لأُولَى تُضْرَبُ أمَّا لثاني ضربةٍ فيَجِبُ"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 10,
           "numInBook": 188,
           "text": "آدابُهُ القِبلَةَ أن يَسْتَقْبِلا مكروهُهُ التُّرْبُ الكثيرُ استُعمِلا"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 11,
           "numInBook": 189,
           "text": "حرامُهُ ترابُ مسجدٍ وما في الشرعِ الاستعمالُ منه حَرُمَا"
         },
         {
-          "numInChapter": 30,
+          "numInChapter": 12,
           "numInBook": 190,
           "text": "مُبطِلُه ما أَبطَلَ الوُضُوءَ مَعْ تَوَهُّمِ الماءِ بلا شيءٍ مَنَعْ"
         },
         {
-          "numInChapter": 31,
+          "numInChapter": 13,
           "numInBook": 191,
           "text": "قبلَ ابتِدَا الصلاةِ أَمَّا فيها فمَنْ عليه واجبٌ يقضِيهَا"
         },
         {
-          "numInChapter": 32,
+          "numInChapter": 14,
           "numInBook": 192,
           "text": "أَبطِل وإلاَّ لا ولكن أفضَلُ إبطالُهَا كَيْ بالوضوءِ تُفْعَلُ"
         },
         {
-          "numInChapter": 33,
+          "numInChapter": 15,
           "numInBook": 193,
           "text": "ورِدَّةٌ تُبطِلُ لا التَّوَضِّي جَدِّدْ تَيَمُّمَا لكل فَرْضِ"
         },
         {
-          "numInChapter": 34,
+          "numInChapter": 16,
           "numInBook": 194,
           "text": "يَمسَحُ ذو جبيرةٍ بالماء مَعْ تَيَمُّمٍ ولم يُعِدْهُ إِن وَضَعْ"
         },
         {
-          "numInChapter": 35,
+          "numInChapter": 17,
           "numInBook": 195,
           "text": "على طهارةٍ ولكنْ مَن على عُضْوِ تَيَمُّمٍ لُصُوقًَا جَعَلا"
         },
         {
-          "numInChapter": 36,
+          "numInChapter": 18,
           "numInBook": 196,
           "text": "وجُنُبَا خَيِّرْهُ أَن يُقَدِّمَا الغُسْلَ أو يُقَدِّمَ التَّيَمُّمَا"
         },
         {
-          "numInChapter": 37,
+          "numInChapter": 19,
           "numInBook": 197,
           "text": "ولْيَتَيَمَّمْ مُحْدِثٌ إذْ غَسَلا عَليلَهُ ثمَّ الوُضُوءَ كَمَّلا"
         },
         {
-          "numInChapter": 38,
+          "numInChapter": 20,
           "numInBook": 198,
           "text": "وإِنْ يُرِد مِن بعده فرضا وما أحدَثَ فَلْيُصَلِّ إِن تَيَمَّمَا"
         },
         {
-          "numInChapter": 39,
+          "numInChapter": 21,
           "numInBook": 199,
           "text": "عن حَدَثٍ أو عن جنابَةٍ وقيل يُعيدُ مُحدِثٌ لما بعد العليل"
         },
         {
-          "numInChapter": 40,
+          "numInChapter": 22,
           "numInBook": 200,
           "text": "ومَن لماءٍ وتُرابٍ فَقَدا الفَرْضَ صَلَّى ثم مهما وَجَدا"
         },
         {
-          "numInChapter": 41,
+          "numInChapter": 23,
           "numInBook": 201,
           "text": "مِن ذَيْنِ فَردَا حيثُ يسقُطُ القَضَا بهِ فتجديدٌ عليه فُرِضَا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "باب الحيض",
+      "sourceTitle": "باب الحيض",
+      "sourceTocId": 34,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 42,
+          "numInChapter": 1,
           "numInBook": 202,
           "text": "إمكانُهُ مِن بعدِ تِسعٍ والأقَلْ يومٌ وليلةٌ وأكثَرُ الأَجَلْ"
         },
         {
-          "numInChapter": 43,
+          "numInChapter": 2,
           "numInBook": 203,
           "text": "خَمْسٌ إلى عَشَرَةٍ والغالِبُ سِتٌّ وإلا َّسَبعةٌ تُقَارِبُ"
         },
         {
-          "numInChapter": 44,
+          "numInChapter": 3,
           "numInBook": 204,
           "text": "أَدنَى النِّفَاسِ لحظةٌ سِتُّونا أقصاه والغالِبُ أربَعُونا"
         },
         {
-          "numInChapter": 45,
+          "numInChapter": 4,
           "numInBook": 205,
           "text": "إنْ عَبَرَ الأكثرَ واسْتَدَاما فمُسْتَحَاضَةٌ ٌحَوَتْ أقسَامَا"
         },
         {
-          "numInChapter": 46,
+          "numInChapter": 5,
           "numInBook": 206,
           "text": "لَمَ ينحَصِرْ أكثرُ وقتِ الطُّهْرِ أمَّا أقَلُّهُ فنِصفُ شَهرِ"
         },
         {
-          "numInChapter": 47,
+          "numInChapter": 6,
           "numInBook": 207,
           "text": "ثُمَّ أقلُّ الحَمْلِ سِتُّ أشهُرٍ وأَربَعُ الأعوامِ أقصَى الأكثَرِ"
         },
         {
-          "numInChapter": 48,
+          "numInChapter": 7,
           "numInBook": 208,
           "text": "وثُلْثُ عامٍ غايَةُ التَّصَوُّرِ وغالِبُ الكامِلِ تِسْعُ أشهُرِ"
         },
         {
-          "numInChapter": 49,
+          "numInChapter": 8,
           "numInBook": 209,
           "text": "بالحَدَثِ الصلاةَ مَعْ تَطَوُّفِ حَرِّمْ وللبالِغِ حَمْلَ المُصْحَفِ"
         },
         {
-          "numInChapter": 50,
+          "numInChapter": 9,
           "numInBook": 210,
           "text": "ومَسَّهُ ومَعَ ذي الأربعةِ للجُنُبِ اقتِرَاءَ بَعضِ آيةِ"
         },
         {
-          "numInChapter": 51,
+          "numInChapter": 10,
           "numInBook": 211,
           "text": "قَصْدَا ولُبْثَ مَسجِدٍ للمُسلِمِ وبالمَحِيضِ والنِّفَاسِ حَرِّمِ"
         },
         {
-          "numInChapter": 52,
+          "numInChapter": 11,
           "numInBook": 212,
           "text": "السِّتَّ مَعْ تَمَتُّعٍ بِرُؤيَةِ والمَسَّ بين سُرَّةٍ ورُكْبَةِ ."
         },
         {
-          "numInChapter": 53,
+          "numInChapter": 12,
           "numInBook": 213,
           "text": "إلى اغتِسَالٍ أو بَدِيلٍ يمتَنِعْ الصَّوْمُ والطَّلاقُ حتى ينقَطِعْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "كتاب الصلاة",
+      "sourceTitle": "كتاب الصلاة",
+      "sourceTocId": 35,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 54,
+          "numInChapter": 1,
           "numInBook": 214,
           "text": "فَرضٌ على مُكَلَّفٍ قد أسلَمَا وعَن مَحِيضٍ ونِفَاسٍ سَلِمَا"
         },
         {
-          "numInChapter": 55,
+          "numInChapter": 2,
           "numInBook": 215,
           "text": "وواجِبٌ على الوَلِيِّ الشَّرعِي أَن يأمُرَ الطفلَ بها لسَبْعِ"
         },
         {
-          "numInChapter": 56,
+          "numInChapter": 3,
           "numInBook": 216,
           "text": "والضَّربُ في العَشْرِوفيها إِن بَلَغْ أَجْزَتْ ولم تُعَدْ إذا منها فَرَغْ"
         },
         {
-          "numInChapter": 57,
+          "numInChapter": 4,
           "numInBook": 217,
           "text": "لا عُذْرَ في تأخيرِهَا إلا لِسَاهْ أو نَوْمٍ أو للجَمْعِ أو لِلاكْرَاهْ"
         },
         {
-          "numInChapter": 58,
+          "numInChapter": 5,
           "numInBook": 218,
           "text": "ووَقتُ ظُهْرٍ مِن زَوَالِهَا إلى أَن زَادَ عَن مِثلٍ لشَيْءٍ ظَلَّلا"
         },
         {
-          "numInChapter": 59,
+          "numInChapter": 6,
           "numInBook": 219,
           "text": "ثُمَّ بِهِ يَدخُلُ وَقتُ العَصرِ واختِيرَ مِثلا ظِلِّ ذاكَ القَدْرِ"
         },
         {
-          "numInChapter": 60,
+          "numInChapter": 7,
           "numInBook": 220,
           "text": "جازَ إلى غُروبِهَا أَن تُفْعَلا ووَقتُ مَغرِبٍ بها قَدْ دَخَلا"
         },
         {
-          "numInChapter": 61,
+          "numInChapter": 8,
           "numInBook": 221,
           "text": "والوَقْتُ يبقَى في القَدِيمِ الأظْهَرِ إلى العِشَاءِ بمَغِيبِ الأَحْمَرِ"
         },
         {
-          "numInChapter": 62,
+          "numInChapter": 9,
           "numInBook": 222,
           "text": "وغايَةُ العِشَاءِ فَجرٌ يَصدُقُ مُعتَرِضٌ يُضِيءُ مِنهُ الأُفُقُ"
         },
         {
-          "numInChapter": 63,
+          "numInChapter": 10,
           "numInBook": 223,
           "text": "واخْتِيرَ للثُّلْثِ وجَوِّزْهُ إلى صادِقِ فَجرٍ وبه قَد دَخَلا"
         },
         {
-          "numInChapter": 64,
+          "numInChapter": 11,
           "numInBook": 224,
           "text": "الصُّبْحُ واخْتِيرَ إلى الاِسْفَارِ جوازُهُ يَبقَى إلى الإِدبَارِ"
         },
         {
-          "numInChapter": 65,
+          "numInChapter": 12,
           "numInBook": 225,
           "text": "يُنْدَبُ تَعجيلُ الصَّلاةِ في الأُوَلْ إذأَوَّلَ الوقتِ بالاسبَابِ اشْتَغَلْ"
         },
         {
-          "numInChapter": 66,
+          "numInChapter": 13,
           "numInBook": 226,
           "text": "وسُنَّ الإِبرَادُ بفِعْلِ الظُّهْرِ لشِدَّةِ الحَرِ بقُطْرِ الحَرِّ"
         },
         {
-          "numInChapter": 67,
+          "numInChapter": 14,
           "numInBook": 227,
           "text": "لطالِبِ الجَمْعِ بمسجِدٍ أُتِي إليه مِن بُعْدٍ خِلافَ الجُمْعَةِ"
         },
         {
-          "numInChapter": 68,
+          "numInChapter": 15,
           "numInBook": 228,
           "text": "صلاةَ مالاسَبَبٌ لَهَا امنَعَا بَعدَ صلاةِ الصُّبْحِ حتى تَطْلُعَا"
         },
         {
-          "numInChapter": 69,
+          "numInChapter": 16,
           "numInBook": 229,
           "text": "وبَعدَ فِعْلِ العَصرِ حتى غَرَبَتْ وعِندمَا تَطْلُعُ حتى ارتَفَعَتْ"
         },
         {
-          "numInChapter": 70,
+          "numInChapter": 17,
           "numInBook": 230,
           "text": "والاسْتِوَا لا جُمْعَةٍ إلى الزَّوَالْ والاصْفِرَارِ بِغُرُوبِ ذِي كَمَالْ"
         },
         {
-          "numInChapter": 71,
+          "numInChapter": 18,
           "numInBook": 231,
           "text": "أمَّا التي لسببٍ مُقَدَّمِ كالنَّذْرِ والفائِتِ لَم تُحَرَّمِ"
         },
         {
-          "numInChapter": 72,
+          "numInChapter": 19,
           "numInBook": 232,
           "text": "رَكْعَتَى الطَّوَافِ والتَّحِيَّةِ والشُّكْرِ والكُسُوفِ والجَنَازَةِ"
         },
         {
-          "numInChapter": 73,
+          "numInChapter": 20,
           "numInBook": 233,
           "text": "وحَرَمِ الكَعبةِ لا الإِحْرَامِ وتُكرَهُ الصلاةُ في الحَمَّامِ"
         },
         {
-          "numInChapter": 74,
+          "numInChapter": 21,
           "numInBook": 234,
           "text": "مَعْ مَسْلَخٍ وعَطَنٍ ومَقْبَرَهْ ما نُبِشَتْ وطُرُقٍ ومَجْزَرَهْ"
         },
         {
-          "numInChapter": 75,
+          "numInChapter": 22,
           "numInBook": 235,
           "text": "مَعْ صِحَّةٍ كحَاقِنٍ وحازِقِ وعِند مَأكُولٍ صَلاةُ التَّائِقِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "باب مسنونات الصلاة",
+      "sourceTitle": "باب مسنونات الصلاة",
+      "sourceTocId": 36,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 76,
+          "numInChapter": 1,
           "numInBook": 236,
           "text": "مَسنُونُها العيدانَ والكُسُوفُ كذاك الاستِسْقَاءُ والخُسُوفُ"
         },
         {
-          "numInChapter": 77,
+          "numInChapter": 2,
           "numInBook": 237,
           "text": "والوِتْرُ ركعةٌ لإِحدَى عَشْرِ بَينِ صَلاةٍ للعِشَا والفَجْرِ"
         },
         {
-          "numInChapter": 78,
+          "numInChapter": 3,
           "numInBook": 238,
           "text": "ثِنْتَانِ قبلَ الصُّبْح والظُّهْرِ كَذَا وبَعدَهُ ومَغْرِبٍ ثُم العِشَا"
         },
         {
-          "numInChapter": 79,
+          "numInChapter": 4,
           "numInBook": 239,
           "text": "وسُنَّ ركعتانِ قبلَ الظُّهْرِ تُزَادُ كالأَربَعِ قبلَ العَصْرِ"
         },
         {
-          "numInChapter": 80,
+          "numInChapter": 5,
           "numInBook": 240,
           "text": "ثم التَّرَاويحُ فنَدْبًَا تُفْعَلُ ثم الضُّحَى وهْيَ ثَمَانٌ أفْضَلُ"
         },
         {
-          "numInChapter": 81,
+          "numInChapter": 6,
           "numInBook": 241,
           "text": "ثِنْتَانِ أَدناها ووقتُهَا هُوَا مِنَ ارتِفَاعِ الشمسِ حتى الاستِوَا"
         },
         {
-          "numInChapter": 82,
+          "numInChapter": 7,
           "numInBook": 242,
           "text": "والنَّفْلُ في الليلِ مِنَ المُؤَكَّدِ ونَدَبُوا تَحِيَّةً للمسجدِ"
         },
         {
-          "numInChapter": 83,
+          "numInChapter": 8,
           "numInBook": 243,
           "text": "ثِنْتَانِ في تَسليمَةٍ لا أكْثَرَا تَحْصُلُ بالفَرْضِ ونَفْلٍ آخَرَا"
         },
         {
-          "numInChapter": 84,
+          "numInChapter": 9,
           "numInBook": 244,
           "text": "لا فَرْدِ رَكعَةٍ ولا جَنَازَةِ وسَجْدَةٍ للشُّكْرِ أو تِلاوةِ"
         },
         {
-          "numInChapter": 85,
+          "numInChapter": 10,
           "numInBook": 245,
           "text": "كَرِّرْ بتكريرِ دُخُولٍ يَقْرُبُ وركعتانِ إِثْرَ شمسٍ تَغْرُبُ"
         },
         {
-          "numInChapter": 86,
+          "numInChapter": 11,
           "numInBook": 246,
           "text": "وفائِتُ النَّفْلِ المُؤَقَّتِ انْدُبِ قضاءَهُ لا فائِتَا ذا سَبَبِ"
         },
         {
-          "numInChapter": 87,
+          "numInChapter": 12,
           "numInBook": 247,
           "text": "والفَوْرُ والترتيبُ فيما فاتَا أَولَى لِمَن لم يختَشِي الفَوَاتَا"
         },
         {
-          "numInChapter": 88,
+          "numInChapter": 13,
           "numInBook": 248,
           "text": "وجازَ تأخيرُ مُقَدَّمٍ أَدَا ولم يَجُزْ لِمَا يُؤَخَّرُ ابتِدَا"
         },
         {
-          "numInChapter": 89,
+          "numInChapter": 14,
           "numInBook": 249,
           "text": "ويَخرُجُ النّوعانِ جَمْعَا بانقِضَا ما وَقَّتَ الشَّرعُ لِمَا قَد فُرِضَا"
         },
         {
-          "numInChapter": 90,
+          "numInChapter": 15,
           "numInBook": 250,
           "text": "ثم الجُلُوسُ جائزٌ في النَّفْلِ لغيرِ عُذرٍ وهْوَ نصفُ الفَضْلِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "باب أركان الصلاة",
+      "sourceTitle": "باب أركان الصلاة",
+      "sourceTocId": 37,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 91,
+          "numInChapter": 1,
           "numInBook": 251,
           "text": "أركانُهَا ثلاثَ عَشْرَ النِّيَّهْ في الفَرْضِ قَصْدَ الفِعْلِ والفَرْضِيَّهْ"
         },
         {
-          "numInChapter": 92,
+          "numInChapter": 2,
           "numInBook": 252,
           "text": "أَوجِبْ مَعَ التَّعيينِ أما ذو سَبَبْ والوقْتِ فالقَصْدُ وتَعيينٌ وَجَبْ"
         },
         {
-          "numInChapter": 93,
+          "numInChapter": 3,
           "numInBook": 253,
           "text": "كالوِتْرِ أمَّا مُطْلَقٍ مِن نَفْلِهَا ففيهِ تَكْفِي نِيَّةٌ لِفِعْلِهَا"
         },
         {
-          "numInChapter": 94,
+          "numInChapter": 4,
           "numInBook": 254,
           "text": "دونَ إضافةٍ لذِي الجَلالِ وَعَدَدِ الرَّكْعَاتِ واستِقْبَالِ"
         },
         {
-          "numInChapter": 95,
+          "numInChapter": 5,
           "numInBook": 255,
           "text": "ثانٍ قيامُ قادِرِ القيامِ وثالِثٌ تكبيرَةُ الاِحرَامِ"
         },
         {
-          "numInChapter": 96,
+          "numInChapter": 6,
           "numInBook": 256,
           "text": "ولَوْ مُعَرَّفَا عَن التَّنْكيرِ وقارِنِ النِّيَّةَ بالتكبيرِ"
         },
         {
-          "numInChapter": 97,
+          "numInChapter": 7,
           "numInBook": 257,
           "text": "في كُلِّهِ حَتْمَا ومُختَارُ الإمامْ والنَّوَوي وحُجَّةِ الإِسلامْ"
         },
         {
-          "numInChapter": 98,
+          "numInChapter": 8,
           "numInBook": 258,
           "text": "يَكفِي بأَنْ يكونَ قلبُ الفاعِلِ مستَحْضِرَ النِّيَّةِ غيرَ غافِلِ"
         },
         {
-          "numInChapter": 99,
+          "numInChapter": 9,
           "numInBook": 259,
           "text": "ثم انْحَنَى لعَجْزِهِ أَنْ يَنْتَصِبْ مَن لَم يُطِقْ يَقْعُدْ كيفما يُحِبْ"
         },
         {
-          "numInChapter": 100,
+          "numInChapter": 10,
           "numInBook": 260,
           "text": "وعاجِزٌ عَنِ القُعُودِ صَلَّى لِجَنْبِهِ وباليمينِ أَولَى"
         },
         {
-          "numInChapter": 101,
+          "numInChapter": 11,
           "numInBook": 261,
           "text": "ثم يُصَلِّي عاجِزٌ على قَفَاهْ وبالرُّكُوعِ والسجودِ أَوْمَآهْ"
         },
         {
-          "numInChapter": 102,
+          "numInChapter": 12,
           "numInBook": 262,
           "text": "بالرأسِ إِن يَعجِزْ فبالأجْفَانِ للعَجْزِ أجْرَى القَلْبَ بالأركانِ"
         },
         {
-          "numInChapter": 103,
+          "numInChapter": 13,
           "numInBook": 263,
           "text": "ولا يجوزُ تَرْكُهَا لمَن عَقَلْ وبعدَ عَجْزٍ إِن يُطِقْ شيئا فَعَلْ"
         },
         {
-          "numInChapter": 104,
+          "numInChapter": 14,
           "numInBook": 264,
           "text": "والحَمْدُ لا في رَكعَةٍ لِمَن سُبِقْ بِبِسمِ والحُرُوفِ والشَّدِّ نُطِقْ"
         },
         {
-          "numInChapter": 105,
+          "numInChapter": 15,
           "numInBook": 265,
           "text": "لو أبدَلَ الحَرفَ بحرفٍ أبْطَلا وواجِبٌ ترتيبُهَا مَعَ الوِلا"
         },
         {
-          "numInChapter": 106,
+          "numInChapter": 16,
           "numInBook": 266,
           "text": "وبالسُّكُوتِ انقَطَعَتْ إِنْ كَثُرَا أو قَلَّ مَعْ قَصْدٍ لِقَطْعِ ما قَرَا"
         },
         {
-          "numInChapter": 107,
+          "numInChapter": 17,
           "numInBook": 267,
           "text": "لا بسجُودِهِ وتأمينٍ ولا سُؤَالِهِ لِمَا إِمَامُهُ تَلا"
         },
         {
-          "numInChapter": 108,
+          "numInChapter": 18,
           "numInBook": 268,
           "text": "مِنَ الآياتِ سَبْعٌ والْوِلا أَوْلَىمِنَ التَّفريقِ ثُم الذِّكْرُ لا"
         },
         {
-          "numInChapter": 109,
+          "numInChapter": 19,
           "numInBook": 269,
           "text": "يَنقُصُ عن حُرُوفِهَا ثم وَقَفْ بقَدْرِهَا وارْكَعْ بأنْ تنالَ كَفْ"
         },
         {
-          "numInChapter": 110,
+          "numInChapter": 20,
           "numInBook": 270,
           "text": "لِرُكْبَةٍ بالاِنحِنَا والاعتِدَالْ عَوْدٌ إلى ما كانَ قبلَهُ فَزَالْ"
         },
         {
-          "numInChapter": 111,
+          "numInChapter": 21,
           "numInBook": 271,
           "text": "والسابِعُ السجودُ مَرَّتينِ مَعْ شيءٍ من الجَبْهَةِ مكشوفا يَضَعْ"
         },
         {
-          "numInChapter": 112,
+          "numInChapter": 22,
           "numInBook": 272,
           "text": "وَقَعْدَةٌ بينهُمَا للفَصْلِ ويطْمَئِنُّ لحظةً في الكُلِّ"
         },
         {
-          "numInChapter": 113,
+          "numInChapter": 23,
           "numInBook": 273,
           "text": "ثُمَّ التَّشَهُّدُ الأخيرُ فاقْعُدِ فيها مُصَلِّيَا على مُحَمَّدِ"
         },
         {
-          "numInChapter": 114,
+          "numInChapter": 24,
           "numInBook": 274,
           "text": "ثُمَّ السَّلامُ أولًا لا الثَّانِي والآخِرُ الترتيبُ في الأركانِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "باب أبعاض الصلاة — الجزء 1 من 2",
+      "sourceTitle": "باب أبعاض الصلاة",
+      "sourceTocId": 38,
+      "part": 1,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 115,
+          "numInChapter": 1,
           "numInBook": 275,
           "text": "أبعاضُهَا تَشَهُّدٌ إذ تبتَدِيهْ ثم القُعُودُ وصَلاةُ اللهِ فيهْ"
         },
         {
-          "numInChapter": 116,
+          "numInChapter": 2,
           "numInBook": 276,
           "text": "على النَّبِيِّ وآلِهِ في الآخِرِ ثم القُنُوتُ وقِيَامُ القادِرِ"
         },
         {
-          "numInChapter": 117,
+          "numInChapter": 3,
           "numInBook": 277,
           "text": "في الاعتِدَالِ الثَّانِ مِن صُبْحٍ وفي وِتْرٍلشَهرِالصومِ إذ يَنتَصِفِ"
         },
         {
-          "numInChapter": 118,
+          "numInChapter": 4,
           "numInBook": 278,
           "text": "سُنَّتُهَا مِن قَبلِها الأذانُ مَعْ إقامَةٍ ولَو بصحراءَ يَقَعْ"
         },
         {
-          "numInChapter": 119,
+          "numInChapter": 5,
           "numInBook": 279,
           "text": "شَرطُهُمَا الوِلا وترتيبٌ ظَهَرْ وفي مُؤذِّنٍ مُمَيِّزٍ ذَكَرْ"
         },
         {
-          "numInChapter": 120,
+          "numInChapter": 6,
           "numInBook": 280,
           "text": "أسلَمَ والمُؤذِّنِ المُرَتَّبِ معرِفَةُ الأوقاتِ لا المُحْتَسِبِ"
         },
         {
-          "numInChapter": 121,
+          "numInChapter": 7,
           "numInBook": 281,
           "text": "وسُنَّةٌ تَرْتيلُه بِعَجِّ والخَفْضُ في إقامَةٍ بدَرْجِ"
         },
         {
-          "numInChapter": 122,
+          "numInChapter": 8,
           "numInBook": 282,
           "text": "والالتِفَاتُ فيهِمَا إذ حَيْعَلا وأَنْ يكونَ طاهِرَا مُسْتَقْبِلا"
         },
         {
-          "numInChapter": 123,
+          "numInChapter": 9,
           "numInBook": 283,
           "text": "عَدْلا أَمينا صَيِّتَا مُثَوِّبَا لفَجْرِهِ مُرَجِّعَا مُحتَسِبَا"
         },
         {
-          "numInChapter": 124,
+          "numInChapter": 10,
           "numInBook": 284,
           "text": "مُرتَفِعَا كقَوْلِهِ أَجَابَهْ مُستَمِعٌ ولَوْ مَعَ الجنابَهْ"
         },
         {
-          "numInChapter": 125,
+          "numInChapter": 11,
           "numInBook": 285,
           "text": "لكنَّهُ يُبْدِلُ لَفْظَ الحَيْعَلَهْ إذا حَكَى أذانَهُ بالحَوْقَلَهْ"
         },
         {
-          "numInChapter": 126,
+          "numInChapter": 12,
           "numInBook": 286,
           "text": "والرَّفْعُ لليدين في الإحرامِ سُنْ بحيثُ الابهامُ حِذَا شَحْمِ الأُذُنْ"
         },
         {
-          "numInChapter": 127,
+          "numInChapter": 13,
           "numInBook": 287,
           "text": "مكشوفَةً وفَرِّقِ الأصابِعَا ويَبْتَدِي التكبيرَ حينَ رَفَعَا"
         },
         {
-          "numInChapter": 128,
+          "numInChapter": 14,
           "numInBook": 288,
           "text": "ولِرُكوعٍ واعتدالٍ بالفَقَارْ ووَضْع يُمناهُ على كُوعِ اليسارْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "باب أبعاض الصلاة — الجزء 2 من 2",
+      "sourceTitle": "باب أبعاض الصلاة",
+      "sourceTocId": 38,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 129,
+          "numInChapter": 15,
           "numInBook": 289,
           "text": "أسفَلَ صَدرٍ ناظِرَا مَحَلا سُجودِهِ وَجَّهْتُ وجهي الكُلا"
         },
         {
-          "numInChapter": 130,
+          "numInChapter": 16,
           "numInBook": 290,
           "text": "وكُلَّ ركعةٍ تَعَوُّذٌ يُسَرْ ومَعْ إمامِهِ بآمينَ جَهَرْ"
         },
         {
-          "numInChapter": 131,
+          "numInChapter": 17,
           "numInBook": 291,
           "text": "وسورَةٌ والجَهْرُ أو سِرٌّ أُثِرْ وعند أجنَبِيِّ الأُنثَى تُسْر"
         },
         {
-          "numInChapter": 132,
+          "numInChapter": 18,
           "numInBook": 292,
           "text": "وكَبِّرَنْ لسائِرِ انتقالِ لكنَّمَا التَسميعُ لاعتِدَالِ"
         },
         {
-          "numInChapter": 133,
+          "numInChapter": 19,
           "numInBook": 293,
           "text": "والرَّجُلُ الراكِعُ جافَى مِرْفَقَهْ كَمَا يُسَوِّي ظَهْرَهُ وعُنُقَهْ"
         },
         {
-          "numInChapter": 134,
+          "numInChapter": 20,
           "numInBook": 294,
           "text": "والوَضْعُ لليديْنِ بعدَ الركبَةِ منشورَةً مضمومَةً للكعبَةِ"
         },
         {
-          "numInChapter": 135,
+          "numInChapter": 21,
           "numInBook": 295,
           "text": "ورَفْعُ بَطنِ ساجِدٍ عن فَخِذَيْهْ مُفَرِّقَا كالشِّبرِ بين قَدَمَيْهْ"
         },
         {
-          "numInChapter": 136,
+          "numInChapter": 22,
           "numInBook": 296,
           "text": "وجَلْسَةُ الرَّاحَةِ خَفِّفَنْهَا في كُلِّ ركعَةٍ تقومُ عنهَا"
         },
         {
-          "numInChapter": 137,
+          "numInChapter": 23,
           "numInBook": 297,
           "text": "وسَبِّحِ انْ رَكَعْتَ أو إن تَسجُدِ وَضَعْ على الفَخذَيْنِ في التَّشَهُّدِ"
         },
         {
-          "numInChapter": 138,
+          "numInChapter": 24,
           "numInBook": 298,
           "text": "يَدَيكَ واضْمُمْ ناشِرَا يُسرَاكَا واقبِضْ سِوَى سَبَّابَةٍ يُمْنَاكَا"
         },
         {
-          "numInChapter": 139,
+          "numInChapter": 25,
           "numInBook": 299,
           "text": "وعندَ إلا اللهُ فالمُهَلِّلَهْ إرفَعْ لتوحيدِ الذي صَلَّيتَ لَهْ"
         },
         {
-          "numInChapter": 140,
+          "numInChapter": 26,
           "numInBook": 300,
           "text": "والثَّانِ مِن تسليمَةِ التِفَاتِهِ ونِيَّةُ الخُروجِ مِن صَلاتِهِ"
         },
         {
-          "numInChapter": 141,
+          "numInChapter": 27,
           "numInBook": 301,
           "text": "ينوي الإمامُ حاضِرِيهِ بالسلامْ وهُم نَوَوْا رَدًَّا على هذا الإمامْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "باب شروط الصلاة قبل الدخول فيها",
+      "sourceTitle": "باب شروط الصلاة قبل الدخول فيها",
+      "sourceTocId": 39,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 142,
+          "numInChapter": 1,
           "numInBook": 302,
           "text": "شروطُهَا الإسلامُ والتَّمييزُ للسَّبْعِ في الغالِبِ والتَّمييزُ"
         },
         {
-          "numInChapter": 143,
+          "numInChapter": 2,
           "numInBook": 303,
           "text": "للفرضِ مِن نَفْلٍ لِمَن يَشتَغِلُ والفَرضُ لا يُنوَى به التَّنَفُّلُ"
         },
         {
-          "numInChapter": 144,
+          "numInChapter": 3,
           "numInBook": 304,
           "text": "وطُهْرُ ما لم يُعْفَ عنه من خَبَثْ ثَوْبًَا مكانًا بَدَنًَا ومِن حَدَثْ"
         },
         {
-          "numInChapter": 145,
+          "numInChapter": 4,
           "numInBook": 305,
           "text": "وغيرُ حُرَّةٍ عليها السُّترَهْ لعَورَةٍ مِن رُكبَةٍ لِسُرَّهْ"
         },
         {
-          "numInChapter": 146,
+          "numInChapter": 5,
           "numInBook": 306,
           "text": "وحُرَّةٌ لا الوَجْهِ والكَفِّ بِمَا لا يَصِفُ الَّلونَ ولَو كُدْرَةَ مَا"
         },
         {
-          "numInChapter": 147,
+          "numInChapter": 6,
           "numInBook": 307,
           "text": "وعِلمٌ أو ظَنٌّ لِوَقتٍ دَخَلا واستَقْبِلَنْ لا في قِتَالٍ حُلِّلا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "باب مبطلات الصلاة",
+      "sourceTitle": "باب مبطلات الصلاة",
+      "sourceTocId": 40,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 148,
+          "numInChapter": 1,
           "numInBook": 308,
           "text": "أو نافِلاتِ سَفَرٍ وإنْ قَصَرْ وتَرْكُهُ عَمدًَا كَلامًَا للبَشَرْ"
         },
         {
-          "numInChapter": 149,
+          "numInChapter": 2,
           "numInBook": 309,
           "text": "حرفَيْنِ أو حَرفا بِمَدٍّ صَوتَكَا أو مُفهِمًَا ولو بِضِحْكٍ أو بُكَا"
         },
         {
-          "numInChapter": 150,
+          "numInChapter": 3,
           "numInBook": 310,
           "text": "أو ذِكْرٍ أو قراءةٍ تَجَرَّدَا للفَهْمِ أو لم يَنْوِ شيئًا أَبَدَا"
         },
         {
-          "numInChapter": 151,
+          "numInChapter": 4,
           "numInBook": 311,
           "text": "أو خاطَبَ العاطِسَ بالتَّرَحُّمِ أو رَدَّ تسليمًا على المُسَلِّمِ"
         },
         {
-          "numInChapter": 152,
+          "numInChapter": 5,
           "numInBook": 312,
           "text": "لا بِسُعالٍ أو تَنَحْنُحٍ غَلَبْ أو دُون ذَيْنِ لم يُطِقْ ذِكْرَا وَجَبْ"
         },
         {
-          "numInChapter": 153,
+          "numInChapter": 6,
           "numInBook": 313,
           "text": "وإن تَنَحْنَحَ الإمامُ فَبَدَا حَرْفَانِ فالأَوْلَى دوامُ الاقْتِدَا"
         },
         {
-          "numInChapter": 154,
+          "numInChapter": 7,
           "numInBook": 314,
           "text": "وفِعْلُهُ الكثيرُ لَو بِسَهوِ مِثلُ مُوَالاةِ ثلاثِ خَطْوِ"
         },
         {
-          "numInChapter": 155,
+          "numInChapter": 8,
           "numInBook": 315,
           "text": "وَوَثْبَةٌ تَفْحُشُ والمُفَطِّرُ ونِيَّةُ الصلاةِ إذ تُغَيَّرُ"
         },
         {
-          "numInChapter": 156,
+          "numInChapter": 9,
           "numInBook": 316,
           "text": "نَدْبَا لِمَا يَنُوبُهُ يُسَبِّحُ وَهْيَ بِظَهْرِ كَفِّهَا تُصَفِّحُ"
         },
         {
-          "numInChapter": 157,
+          "numInChapter": 10,
           "numInBook": 317,
           "text": "ويُبْطِلُ الصلاةَ تَرْكُ رُكنٍ أوْ فَوَاتُ شَرْطٍ مِن شُرُوط قَد مَضَوْا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "باب مكروهات الصلاة",
+      "sourceTitle": "باب مكروهات الصلاة",
+      "sourceTocId": 41,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 158,
+          "numInChapter": 1,
           "numInBook": 318,
           "text": "مَكرُوهُهَا بِكَفِّ ثَوْبٍ أو شَعَرْ وَرَفْعُهُ إلى السماءِ بالبَصَرْ"
         },
         {
-          "numInChapter": 159,
+          "numInChapter": 2,
           "numInBook": 319,
           "text": "وَوَضْعُهُ يَدَا على خاصِرَتِهْ ومَسْحُ تُرْبٍ وَحَصَىً عَن جَبْهَتِهْ"
         },
         {
-          "numInChapter": 160,
+          "numInChapter": 3,
           "numInBook": 320,
           "text": "وحَطُّهُ اليدَيْنِ في الأكمَامِ في حالَةِ السجودِ والإِحرَامِ"
         },
         {
-          "numInChapter": 161,
+          "numInChapter": 4,
           "numInBook": 321,
           "text": "والنَّقْرُ في السجودِ كالغُرَابِ وجَلْسَةُ الإِقْعَاءِ كالكِلابِ"
         },
         {
-          "numInChapter": 162,
+          "numInChapter": 5,
           "numInBook": 322,
           "text": "تَكُونُ أَلْيَتَاهُ مَعْ يَدَيْهِ بالأرضِ لكِنْ ناصِبًَا ساقَيْهِ"
         },
         {
-          "numInChapter": 163,
+          "numInChapter": 6,
           "numInBook": 323,
           "text": "والالتِفَاتُ لا لحاجَةٍ لَهْ والبَصْقُ لليمينِ أو لِلْقِبْلَهْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "title": "باب سجود السهو",
+      "sourceTitle": "باب سجود السهو",
+      "sourceTocId": 42,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 164,
+          "numInChapter": 1,
           "numInBook": 324,
           "text": "قُبَيْلَ تَسليمٍ تُسَنُّ سَجْدَتَاهْ لِسَهْوِ ما يُبْطِلُ عَمْدُهُ الصَّلاهْ"
         },
         {
-          "numInChapter": 165,
+          "numInChapter": 2,
           "numInBook": 325,
           "text": "وتَرْكِ بَعضٍ عَمْدَا أو لِذُهْلِ لا سُنَّةٍ بَلْ نَقْلِ رُكْنٍ قَوْلِي"
         },
         {
-          "numInChapter": 166,
+          "numInChapter": 3,
           "numInBook": 326,
           "text": "وكُلُّ رُكنٍ قد تَرَكتَ ساهِيَا ما بَعدَهُ لَغْوٌ إلى أَنْ تَأْتِيَا"
         },
         {
-          "numInChapter": 167,
+          "numInChapter": 4,
           "numInBook": 327,
           "text": "بِمِثلِهِ فَهْوَ يَنُوبُ عَنْهُ ولَوْ بِقَصْدِ النَّفْلِ تَفْعَلَنْهُ"
         },
         {
-          "numInChapter": 168,
+          "numInChapter": 5,
           "numInBook": 328,
           "text": "ومَنْ نَسِي التَّشَهُّدَ المُقَدَّمَا وعَادَ بَعدَ الانتِصَابِ حَرُمَا"
         },
         {
-          "numInChapter": 169,
+          "numInChapter": 6,
           "numInBook": 329,
           "text": "وجَاهِلُ التَّحرِيمِ أو نَاسٍ فَلا يُبْطِلُ عَوْدُهُ وإلا أبْطَلا"
         },
         {
-          "numInChapter": 170,
+          "numInChapter": 7,
           "numInBook": 330,
           "text": "لكِنْ على المأمومِ حَتمًَا يَرْجِعُ إلى الجُلُوسِ للإِمامِ يَتْبَعُ"
         },
         {
-          "numInChapter": 171,
+          "numInChapter": 8,
           "numInBook": 331,
           "text": "وعائِدٌ قَبلَ انتِصَابٍ يُنْدَبُ سُجُودُهُ إِذ لِلْقِيَامِ أَقْرَبُ"
         },
         {
-          "numInChapter": 172,
+          "numInChapter": 9,
           "numInBook": 332,
           "text": "ومُقْتَدٍ لِسَهْوِهِ لَن يَسْجُدَا لَكِنْ لِسَهْوِ مَن بِهِ قد اقتَدَى"
         },
         {
-          "numInChapter": 173,
+          "numInChapter": 10,
           "numInBook": 333,
           "text": "وشَكُّهُ قبلَ السَّلامِ في عَدَدْ لَم يَعْتَمِدْ فيهِ على قَولِ أَحَدْ"
         },
         {
-          "numInChapter": 174,
+          "numInChapter": 11,
           "numInBook": 334,
           "text": "لكِنْ على يقِينِهِ وَهْوَ الأَقَلْ ولْيَأْتِ بالباقِي ويَسجُدْ لِلْخَلَلْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "title": "باب صلاة الجماعة",
+      "sourceTitle": "باب صلاة الجماعة",
+      "sourceTocId": 43,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 175,
+          "numInChapter": 1,
           "numInBook": 335,
           "text": "تُسَنُّ في مَكتُوبَةٍ لا جُمُعَهْ وفِي التَّراويحِ وفي الوِتْرِ مَعَهْ"
         },
         {
-          "numInChapter": 176,
+          "numInChapter": 2,
           "numInBook": 336,
           "text": "كَأَنْ يُعِيدَ الفَرْضَ يَنْوِي نِيَّتَهْ مَعَ الجَمَاعَةِ اعتَقِدْ نَفْلِيَّتَهْ"
         },
         {
-          "numInChapter": 177,
+          "numInChapter": 3,
           "numInBook": 337,
           "text": "وكَثْرَةُ الجَمْعِ اسْتُحِبَّتْ حيثُ لا بالقُرْبِ مِنهُ مَسْجِدٌ تَعَطَّلا"
         },
         {
-          "numInChapter": 178,
+          "numInChapter": 4,
           "numInBook": 338,
           "text": "أَوْ فَسَقَ الإِمَامُ أو ذُو بِدْعَةِ وجُمْعَةٌ يُدرِكُهَا بِرَكْعَةِ"
         },
         {
-          "numInChapter": 179,
+          "numInChapter": 5,
           "numInBook": 339,
           "text": "والفَضْلُ في تكبيرَةِ الإِحرامِ بالاشتِغَالِ عَقِبَ الإمامِ"
         },
         {
-          "numInChapter": 180,
+          "numInChapter": 6,
           "numInBook": 340,
           "text": "وعُذْرُ تَرْكِهَا وجُمْعَةٍ مَطَرْ ووَحلٌ وشِدَّةُ البَرْدِ وَحَرْ"
         },
         {
-          "numInChapter": 181,
+          "numInChapter": 7,
           "numInBook": 341,
           "text": "ومَرَضٌ وعَطَشٌ وجُوعُ قَد ظَهَرَا أو غَلَبَ الهُجُوعُ"
         },
         {
-          "numInChapter": 182,
+          "numInChapter": 8,
           "numInBook": 342,
           "text": "مَعَ اتِّسَاعِ وَقتِهَا وَعُرْيُ وأكْلُ ذي رِيحٍ كريهٍ نِيُّ"
         },
         {
-          "numInChapter": 183,
+          "numInChapter": 9,
           "numInBook": 343,
           "text": "إِنْ لم يُزِلْ في بيتِهِ فليقعُدِ ولا تَصِحُّ قُدوَةٌ بمُقْتَدِي"
         },
         {
-          "numInChapter": 184,
+          "numInChapter": 10,
           "numInBook": 344,
           "text": "ولا بِمَن تلزَمُهُ إِعَادَهْ ولا بِمَنْ قَامَ إلى زِيَادَهْ"
         },
         {
-          "numInChapter": 185,
+          "numInChapter": 11,
           "numInBook": 345,
           "text": "والشَّرطُ عِلْمُهُ بأفعالِ الإمامِ برُؤيةٍ أو سَمْعِ تابِعِ الإِمامِ"
         },
         {
-          "numInChapter": 186,
+          "numInChapter": 12,
           "numInBook": 346,
           "text": "ولْيَقتَرِبْ مِنه بغيرِ المسجدِ ودونَ حائِلٍ إذا لم يَزِدِ"
         },
         {
-          "numInChapter": 187,
+          "numInChapter": 13,
           "numInBook": 347,
           "text": "على ثَلَثِمِائَةٍ مِن الذِّرَاعْ ولَم يَحُلْ نهرٌ وطُرْقٌ وتِلاعْ"
         },
         {
-          "numInChapter": 188,
+          "numInChapter": 14,
           "numInBook": 348,
           "text": "يَؤُمُّ عَبْدٌ وصَبِيٌّ يعقِلُ وفاسِقٌ لكِنْ سِوَاهُم أفضَلُ"
         },
         {
-          "numInChapter": 189,
+          "numInChapter": 15,
           "numInBook": 349,
           "text": "لا امرأَةٌ بِذَكَر ولا المُخِلْ بالحَرْفِ مِن فاتِحَةٍ بالمُكْتَمِلْ"
         },
         {
-          "numInChapter": 190,
+          "numInChapter": 16,
           "numInBook": 350,
           "text": "وإِن تَأَخَّرْ عَنه أو تَقَدَّمَا بِرُكنَيِ الفِعلَيْنِ ثُم عَلِمَا"
         },
         {
-          "numInChapter": 191,
+          "numInChapter": 17,
           "numInBook": 351,
           "text": "وأربَعٍ تَمَّتْ مِنَ الطِّوَالِ للعُذْرِ والأقوالُ كالأفعالِ"
         },
         {
-          "numInChapter": 192,
+          "numInChapter": 18,
           "numInBook": 352,
           "text": "كَشَكِّهِ والبُطْءِ في أُمِّ القُرَانْ وَزَحْمِ وَضْعِ جبهةٍ ونِسيانْ"
         },
         {
-          "numInChapter": 193,
+          "numInChapter": 19,
           "numInBook": 353,
           "text": "ونِيَّةُ المأمومِ أوَّلا تَجِبْ وللإمام غيرَ جُمْعَةٍ نُدِبْ"
         }
       ]
     },
     {
-      "id": 7,
+      "id": 25,
       "title": "باب صلاة المسافر",
+      "sourceTitle": "باب صلاة المسافر",
+      "sourceTocId": 44,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -1861,57 +2069,71 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 10,
           "numInBook": 363,
           "text": "في مَرَضٍ قَوْلٌ جَلِيٌّ وقَوِي اختارَهُ حَمْدٌ ويحيى النَّوَوِي"
-        },
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "title": "باب صلاة الخوف",
+      "sourceTitle": "باب صلاة الخوف",
+      "sourceTocId": 45,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 11,
+          "numInChapter": 1,
           "numInBook": 364,
           "text": "أنواعُهَا ثلاثةٌ فإن يَكُنْ عَدُوُّنَا في غيرِ قِبْلَةٍ فَسُنْ"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 2,
           "numInBook": 365,
           "text": "تَحْرُسُ فرقَةٌ وصَلَّى مَن يَؤُمْ بالفِرْقَةِ الركعةَ الأُولى وتُتِمْ"
         },
         {
-          "numInChapter": 13,
+          "numInChapter": 3,
           "numInBook": 366,
           "text": "وحَرَسَتْ ثم يُصَلِّي ركعهْ بالفِرْقَةِ الأُخرَى ولو في جُمْعَهْ"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 4,
           "numInBook": 367,
           "text": "ثم أتَمَّتْ وبهم يُسَلِّمُ وإِن يكُنْ في قبلةٍ صَفَّهُمُ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 5,
           "numInBook": 368,
           "text": "صَفَّيْنِ ثم بالجميعِ أحرَمَا ومَعَهُ يسجُدُ صَفٌّ منهُمَا"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 6,
           "numInBook": 369,
           "text": "وحَرَسَ الآخَرُ ثم حيث قامْ فيسجُدُ الثانِي ويلحَقُ الإمامْ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 7,
           "numInBook": 370,
           "text": "وفي التِحَامِ الحَربِ صَلُّوا مَهْمَا أَمْكَنَهُم رُكْبَانًَا أو بالاِيْمَا"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 8,
           "numInBook": 371,
           "text": "وحَرَّمُوا على الرِّجَالِ العَسْجَدَا بالنَّسْجِ والتَّمويهِ لا حالَ الصَّدَا"
         },
         {
-          "numInChapter": 19,
+          "numInChapter": 9,
           "numInBook": 372,
           "text": "وخالِصَ القَزِّ أو الحَرِيرِ أوغالِبًَا إلا على الصغيرِ"
         }
       ]
     },
     {
-      "id": 8,
-      "title": "باب صلاة الجُمُعة",
+      "id": 27,
+      "title": "باب صلاة الجمعة",
+      "sourceTitle": "باب صلاة الجمعة",
+      "sourceTocId": 46,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -1972,52 +2194,66 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 12,
           "numInBook": 384,
           "text": "وسُنَّةُ الخُطْبَةِ بالإِنصَاتِ والْخِفُّ في تَحِيَّةِ الصَّلاةِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "title": "باب صلاة العيدين",
+      "sourceTitle": "باب صلاة العيدين",
+      "sourceTocId": 47,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 13,
+          "numInChapter": 1,
           "numInBook": 385,
           "text": "تُسَنُّ رَكعَتَانِ لَو مُنْفَرِدَا بَينَ طُلُوعٍ وزَوَالِهَا أَدَا"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 2,
           "numInBook": 386,
           "text": "تَكبيرُ سَبْعٍ أَوَّلَ الأُولَى يُسَنْ والخَمْسُ في ثانِيَةٍ مِن بَعدِ أَنْ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 3,
           "numInBook": 387,
           "text": "كَبَّرَ في إحرامِهِ وقَوْمَتِهْ وخُطْبَتَانِ بَعدَهَا كَجُمْعَتِهْ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 4,
           "numInBook": 388,
           "text": "كَبَّر فِي الاولَى منهُمَا تِسْعًَا وِلا والسَّبْعَ في ثانِيَةٍ أَيْ أَوَّلا"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 5,
           "numInBook": 389,
           "text": "وسُنَّ مِن قَبْلِ صلاةِ الفِطْرِ فِطْرٌ كَذَا الإِمْسَاكُ حَتى النَّحْرِ"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 6,
           "numInBook": 390,
           "text": "وبَكَّرَ الخُرُوجَ لا الخَطِيبُ والمَشْيُ والتَّزْيِينُ التَّطْيِيبُ"
         },
         {
-          "numInChapter": 19,
+          "numInChapter": 7,
           "numInBook": 391,
           "text": "وكَبَّرُوا لَيْلَتَيِ العيدِ إلى تَحَرُّمٍ بِهَا كَذَا لِمَا تَلا"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 8,
           "numInBook": 392,
           "text": "الصلوَاتِ بعدَ صُبْحِ التاسِعِ إلَى انتِهَاءِ عَصْرِ يَوْمِ الرَّابِعِ"
         }
       ]
     },
     {
-      "id": 9,
+      "id": 29,
       "title": "باب صلاة الخسوف والكسوف",
+      "sourceTitle": "باب صلاة الخسوف والكسوف",
+      "sourceTocId": 48,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2042,8 +2278,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 10,
-      "title": "باب صلاة الاستسقاء",
+      "id": 30,
+      "title": "باب صلاة الإستسقاء",
+      "sourceTitle": "باب صلاة الإستسقاء",
+      "sourceTocId": 49,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2064,222 +2304,256 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 4,
           "numInBook": 400,
           "text": "واخْطُبْ كما في العِيدِ باستِدْبَارِ وأَبْدِلِ التَّكبيرَ باستِغْفَارِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "title": "باب الجنائز",
+      "sourceTitle": "باب الجنائز",
+      "sourceTocId": 50,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 5,
+          "numInChapter": 1,
           "numInBook": 401,
           "text": "الغُسْلُ والتَّكْفينُ والصَّلاةُ عَلَيْهِ ثم الدَّفْنُ مَفْرُوضَاتُ"
         },
         {
-          "numInChapter": 6,
+          "numInChapter": 2,
           "numInBook": 402,
           "text": "كِفَايَةً وَمَنْ شهيدًا يُقْتَلُ في مَعْرَكِ الكفارِ لا يُغَسَّلُ"
         },
         {
-          "numInChapter": 7,
+          "numInChapter": 3,
           "numInBook": 403,
           "text": "ولا يُصَلَّى بَل على الغَرِيقِ والهَدْمِ والمَبْطُونِ والحَرِيقِ"
         },
         {
-          "numInChapter": 8,
+          "numInChapter": 4,
           "numInBook": 404,
           "text": "وكَفِّنِ السِّقْطَ بِكُلِّ حالِ وبَعدَ نَفْخِ الرُّوحِ باغْتِسَالِ"
         },
         {
-          "numInChapter": 9,
+          "numInChapter": 5,
           "numInBook": 405,
           "text": "فإِنْ يَصِحْ فَكَالْكَبيرِ يُجْعَلُ وسُنَّ سَتْرُهُ َوِوتْرًَا يُغْسَلُ"
         },
         {
-          "numInChapter": 10,
+          "numInChapter": 6,
           "numInBook": 406,
           "text": "بالسِّدْرِ في الأُولَى وبالكَافُورِ الصُّلْبِ والآكَدُ في الأَخِيرِ"
         },
         {
-          "numInChapter": 11,
+          "numInChapter": 7,
           "numInBook": 407,
           "text": "وذَكَرٌ كُفِّنَ في عِرَاضِ لفائِفٍ ثلاثَةٍ بِيَاضِ"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 8,
           "numInBook": 408,
           "text": "لَهَا لِفَافَتَانِ والإِزَارُ ثُمَّ القَمِيصُ البِيضُ والخِمَارُ"
         },
         {
-          "numInChapter": 13,
+          "numInChapter": 9,
           "numInBook": 409,
           "text": "والفَرْضُ للصَّلاةِ كَبِّرْ ناوِيًَا ثم اقرإِ الحَمدُ وكَبِّرْ ثانِيًَا"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 10,
           "numInBook": 410,
           "text": "وبَعدَهُ صَلِّ على المُقَفِّي وثالِثًَا تَدعُو لِمَنْ تُوُفِّي"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 11,
           "numInBook": 411,
           "text": "مِنْ بعدِهِ التكبيرُ والسَّلامُ وقادِرٌ يلزَمُهُ القيامُ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 12,
           "numInBook": 412,
           "text": "ودَفْنَهُ لِقَبْلَةٍ قَد أوجَبُوا وسُنَّ في لَحْدٍ بأرضٍ تَصْلُبُ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 13,
           "numInBook": 413,
           "text": "تَعْزِيَةُ المُصَابِ فيها السُّنَّهْ ثلاثَ أيَّامٍ تُوَالِي دَفْنَهْ"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 14,
           "numInBook": 414,
           "text": "وجَوَّزُوا البُكَا بغيرِ ضَرْبِ وَجْهٍ ولا نَوْحٍ وشَقِّ ثَوْبِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "title": "كتاب الزكاة — الجزء 1 من 2",
+      "sourceTitle": "كتاب الزكاة",
+      "sourceTocId": 51,
+      "part": 1,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 19,
+          "numInChapter": 1,
           "numInBook": 415,
           "text": "وإِنَّما الفرضُ على مَن أسْلَمَا حُرٌّ مُعَيَّنٍ ومِلْكٌ تُمِّمَا"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 2,
           "numInBook": 416,
           "text": "في إِبِلٍ وبَقَر وأغنامْ بِشَرطِ حَوْلٍ ونِصَابٍ واستِيَامْ"
         },
         {
-          "numInChapter": 21,
+          "numInChapter": 3,
           "numInBook": 417,
           "text": "وذَهَبٍ وفضةٍ غيرَ حُلِي جازَ ولو أُوجِرَ للمُسْتَعْمِلِ"
         },
         {
-          "numInChapter": 22,
+          "numInChapter": 4,
           "numInBook": 418,
           "text": "وعَرْضِ مَتْجَرٍ ورِبْحٍ حَصَلا بِشَرْطِ حَوْلٍ ونِصَابٍ كَمُلا"
         },
         {
-          "numInChapter": 23,
+          "numInChapter": 5,
           "numInBook": 419,
           "text": "وجِنْسِ قُوْتٍ باختِيَارٍ طَبْعِ مِن عِنَبٍ ورُطَبٍ وزَرْعِ"
         },
         {
-          "numInChapter": 24,
+          "numInChapter": 6,
           "numInBook": 420,
           "text": "وشَرْطُهُ النِّصَابُ إذْ يَشْتَدُّ حَبٌّ وزَهْوٌ في الثِّمَارِ يَبْدُو"
         },
         {
-          "numInChapter": 25,
+          "numInChapter": 7,
           "numInBook": 421,
           "text": "في إِبِلٍ أدنَى نِصَابِ الأُسِّ خَمْسٌ لها شاةٌ وكُلُّ خَمْسِ"
         },
         {
-          "numInChapter": 26,
+          "numInChapter": 8,
           "numInBook": 422,
           "text": "مِنها لأربَعٍ مَعَ العشرينَ ضَانْ تَمَّ لها عامٌ وعَنْزٌ عامانْ"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 9,
           "numInBook": 423,
           "text": "في الخَمسِ والعشرينَ بِنْتٌ للمَخَاضْ وفي الثلاثينَ وسِتِّ افتِرَاضْ"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 10,
           "numInBook": 424,
           "text": "بِنْتُ لَبُونٍ سنتين استَكمَلَتْ سِتٌّ وأربعونَ حِقَّةٌ ثَبَتْ"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 11,
           "numInBook": 425,
           "text": "وجْذَعٌة للفَرْدِ مَعْ سِتِّينِ سِتٌّ وسبعونَ ابنَتَا لَبُونِ"
         },
         {
-          "numInChapter": 30,
+          "numInChapter": 12,
           "numInBook": 426,
           "text": "في الفَرْدِ والتسعينَ ضِعفُ الحِقَّةِ والفَرْدِ مَعْ عشرينَ بَعْدَ المائَةِ"
         },
         {
-          "numInChapter": 31,
+          "numInChapter": 13,
           "numInBook": 427,
           "text": "ثلاثَةُ البَنَاتِ مِن لَبُونِ بِنْتَ الَّلبُونِ كُلَّ أَربَعِينِ"
         },
         {
-          "numInChapter": 32,
+          "numInChapter": 14,
           "numInBook": 428,
           "text": "وحِقَّةً لِكُلِّ خمسينَ احْسُبِ واعْفُ عَنِ الأوقَاصِ بينَ النُّصُبِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "title": "كتاب الزكاة — الجزء 2 من 2",
+      "sourceTitle": "كتاب الزكاة",
+      "sourceTocId": 51,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 33,
+          "numInChapter": 15,
           "numInBook": 429,
           "text": "نِصَابُ أبقارٍ ثلاثونَ وفي كُلِّ ثلاثينَ تَبِيعٌ يَقْتَفِي"
         },
         {
-          "numInChapter": 34,
+          "numInChapter": 16,
           "numInBook": 430,
           "text": "مُسِنَّةً في كُلِّ أربعينَ أَيْ ذاتُ ثِنْتَيْنِ مِنَ السِّنِينَ"
         },
         {
-          "numInChapter": 35,
+          "numInChapter": 17,
           "numInBook": 431,
           "text": "وضِعْفُ عشرينَ نِصابُ الغَنَمْ شاةٌ لها كشاةِ إبلِ النَّعَمْ"
         },
         {
-          "numInChapter": 36,
+          "numInChapter": 18,
           "numInBook": 432,
           "text": "وضِعْفُ سِتِّينَ إلى واحدةِ شاتانِ والإِحدى وضِعفُ المائَةِ"
         },
         {
-          "numInChapter": 37,
+          "numInChapter": 19,
           "numInBook": 433,
           "text": "ثلاثَةٌ مِنَ الشِّيَاه ثُمَّا شاةً لكُلِّ مِائَةِ اجْعَلْ حَتْمَا"
         },
         {
-          "numInChapter": 38,
+          "numInChapter": 20,
           "numInBook": 434,
           "text": "مالُ الخليطَيْنِ كمالٍ مُفرَدِ إِن مَشْرَعٌ ومَسْرَحٌ يَتَحِدِ"
         },
         {
-          "numInChapter": 39,
+          "numInChapter": 21,
           "numInBook": 435,
           "text": "والفَحْلُ والرَّاعِي وأرضُ الحَلَبِ وفي مُرَاحِ ليلِهَا والمَشْرَبِ"
         },
         {
-          "numInChapter": 40,
+          "numInChapter": 22,
           "numInBook": 436,
           "text": "عِشرونُ مِثْقَالًا نِصَابٌ للذَّهَبْ ومِائَتَا دِرْهَم فِضَّةٍ وَجَبْ"
         },
         {
-          "numInChapter": 41,
+          "numInChapter": 23,
           "numInBook": 437,
           "text": "في ذَيْنِ رُبْعُ العُشْرِ لَو مِن مَعدَنِ وما يزيدُ بالحسابِ البَيِّنِ"
         },
         {
-          "numInChapter": 42,
+          "numInChapter": 24,
           "numInBook": 438,
           "text": "وفي رِكَازٍ جاهِلِيٍّ مِنهما الخُمْسُ حالًا كالزَّكَاةِ قُسِمَا"
         },
         {
-          "numInChapter": 43,
+          "numInChapter": 25,
           "numInBook": 439,
           "text": "في التَّمْرِ والزَّرْعِ النِّصَابُ الرَّمْلِي قُلْ خَمسَةٌ ورُبْعُ ألْفِ رَطْلِ"
         },
         {
-          "numInChapter": 44,
+          "numInChapter": 26,
           "numInBook": 440,
           "text": "وزائِدٍ جَفَّ ومِنْ غيرٍنَقِي العُشْرُ إذ بلا مَئُونَةٍ سُقِي"
         },
         {
-          "numInChapter": 45,
+          "numInChapter": 27,
           "numInBook": 441,
           "text": "ونِصْفُهُ مَعْ مُؤَنٍ للزَّرْعِ أو بِهِمَا وَزِّعْ بِحَسْبِ النَّفْعِ"
         },
         {
-          "numInChapter": 46,
+          "numInChapter": 28,
           "numInBook": 442,
           "text": "وعَرْضَ مَتْجَرٍ أَخِيرَ حَوْلِهِ قَوِّمْهُ مَعْ رِبْحٍ بنَقْدِ أصْلِهِ"
         }
       ]
     },
     {
-      "id": 11,
-      "title": "باب زكاة الفِطر",
+      "id": 34,
+      "title": "باب زكاة الفطر",
+      "sourceTitle": "باب زكاة الفطر",
+      "sourceTocId": 52,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2315,227 +2589,261 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 7,
           "numInBook": 449,
           "text": "ودَيْنِهِ وقُوْتِ مَن مَئُونَتَهْ يَحمِلُ يومَ عيدِهِ وليلَتَهْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "title": "باب الصدقات",
+      "sourceTitle": "باب الصدقات",
+      "sourceTocId": 53,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 8,
+          "numInChapter": 1,
           "numInBook": 450,
           "text": "أصنافُهُ إِن وُجِدَتْ ثمانِيَهْ مَن يُفْقَدِ ارْدُدْ سَهمَهُ للباقِيَهْ"
         },
         {
-          "numInChapter": 9,
+          "numInChapter": 2,
           "numInBook": 451,
           "text": "فقيرٌ العادِمُ والمسكينُ لَهْ ما يقَعُ المَوْقِعَ دونَ تَكمِلَهْ"
         },
         {
-          "numInChapter": 10,
+          "numInChapter": 3,
           "numInBook": 452,
           "text": "وعامِلٌ كحاشِرِ الأنعامِ مُؤَلَّفٌ يَضْعُفُ في الإسلامْ"
         },
         {
-          "numInChapter": 11,
+          "numInChapter": 4,
           "numInBook": 453,
           "text": "رِقَابُهُم مُكَاتَبٌ والغارِمُ مَنْ للمُبَاحِ ادَّانَ وهْوَ عادِمُ"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 5,
           "numInBook": 454,
           "text": "وفي سبيلِ اللهِ غازٍ احْتَسَبْ وابنُ السبيلِ ذو افتِقَارٍ اغتَرَبْ"
         },
         {
-          "numInChapter": 13,
+          "numInChapter": 6,
           "numInBook": 455,
           "text": "ثلاثَةٌ أقَلُّ كُلِّ صِنْفِ في غير عامِلٍ وليس يَكْفِي"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 7,
           "numInBook": 456,
           "text": "دَفْعٌ لكافِرٍ ولا مَمْسُوسِ رِقْ ولا نَصِيبَيْنِ لِوَصْفَيْ مُسْتَحِقْ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 8,
           "numInBook": 457,
           "text": "ولا بَنِي هاشِمِ والمُطَّلِبِ ولا الغنِي بمالٍ أو تَكَسُّبِ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 9,
           "numInBook": 458,
           "text": "ومَنْ بإنفاقٍ مِن الزوجِ ومَنْ حَتما مِنَ القريبِ مَكْفِيُّ المُؤَنْ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 10,
           "numInBook": 459,
           "text": "والنَّقْلُ مِن مَوْضِعِ رَبِّ المِلْكِ في فِطْرَةٍ والمالِ مِمَّا زُكِّي"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 11,
           "numInBook": 460,
           "text": "لا يُسْقِطُ الفَرْضَ وفي التكفيرِ يُسْقِطُ والإيصَاءِ والمَنْذُورِ"
         },
         {
-          "numInChapter": 19,
+          "numInChapter": 12,
           "numInBook": 461,
           "text": "وصَدَقَاتُ النَّفْلِ في الإِسرارِ أَوْلى وللقَرِيبِ ثم الجارِ"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 13,
           "numInBook": 462,
           "text": "ووَقْتِ حاجَةٍ وفي شهرِ الصِّيَامْ وهْوَ بما احتاجُ عيالُهُ حَرَامْ"
         },
         {
-          "numInChapter": 21,
+          "numInChapter": 14,
           "numInBook": 463,
           "text": "وفاضِلُ الحاجَةِ فيهِ أَجْرُ بِمَن لهُ على اضطِرَارٍ صَبْرُ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "title": "كتاب الصيام — الجزء 1 من 2",
+      "sourceTitle": "كتاب الصيام",
+      "sourceTocId": 54,
+      "part": 1,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 22,
+          "numInChapter": 1,
           "numInBook": 464,
           "text": "يَجِبُ صَوْمُ رمضانَ بأحَدْ أمْرَيْنِ باستكْمَالِ شعبانَ العَدَدْ"
         },
         {
-          "numInChapter": 23,
+          "numInChapter": 2,
           "numInBook": 465,
           "text": "أو رُؤْيَةِ العَدْلِ هلالَ الشهرِ في حَقِّ مَن دونَ مَسِيرِ القَصْرِ"
         },
         {
-          "numInChapter": 24,
+          "numInChapter": 3,
           "numInBook": 466,
           "text": "وإنما الفَرْضُ على شخصٍ قَدَرْ عليه مسلِمٍ مكلفٍ طَهَرْ"
         },
         {
-          "numInChapter": 25,
+          "numInChapter": 4,
           "numInBook": 467,
           "text": "وشَرْطُ نَفْلٍ نية للصَّوْمِ قبلَ زوالِهَا لكلِّ يومِ"
         },
         {
-          "numInChapter": 26,
+          "numInChapter": 5,
           "numInBook": 468,
           "text": "وإِن يَكُنْ فَرْضَا شَرَطْنَا نِيَّتَهْ قد عُيِّنَتْ مِن ليلهِ مُبَيَّتَهْ"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 6,
           "numInBook": 469,
           "text": "وبانتِفَاءِ مُفْطِرِ الصيامِ حَيْضٍ نِفَاسٍ رِدَّةِ الإسلامِ"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 7,
           "numInBook": 470,
           "text": "جُنُونِ كُلَّ اليومِ لَكِن مَن ينامْ جميعَ يومِهِ فصَحِّحِ الصيامْ"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 8,
           "numInBook": 471,
           "text": "وإِنْ يُفِقْ مُغْمَىً عليه بعضَ يَومْ ولو لُحَيْظَةً يَصِحُّ منه صَوْمْ"
         },
         {
-          "numInChapter": 30,
+          "numInChapter": 9,
           "numInBook": 472,
           "text": "وكُلِّ عَيْنٍ وَصَلَتْ مُسَمَّى جَوفٍ بِمَنْفَذٍ وذِكْرِ صَوْمَا"
         },
         {
-          "numInChapter": 31,
+          "numInChapter": 10,
           "numInBook": 473,
           "text": "كالبَطْنِ والدِّمَاغِ ثم المُثُنِ ودُبُرٍ وباطِنٍ مِن أُذُنِ"
         },
         {
-          "numInChapter": 32,
+          "numInChapter": 11,
           "numInBook": 474,
           "text": "والعَمْدِ لِلْوَطْءِ وباستِقَاءِ أو أخرَجَ المَنِيَّ باستِمْنَاءِ"
         },
         {
-          "numInChapter": 33,
+          "numInChapter": 12,
           "numInBook": 475,
           "text": "وسُنَّ مَعْ عِلم الغروبِ يُفطِرُ بسُرعَةٍ وعكْسُهُ التَسَحُّرُ"
         },
         {
-          "numInChapter": 34,
+          "numInChapter": 13,
           "numInBook": 476,
           "text": "والفِطرُ بالماء لِفَقْدِ التَّمرِ وغُسْلُ مَن أَجنَبَ قبلَ الفجرِ"
         },
         {
-          "numInChapter": 35,
+          "numInChapter": 14,
           "numInBook": 477,
           "text": "ويُكْرَهُ العَلْكُ وذَوْقٌ واحتِجَامْ ومَجُّ ماء عند فِطرٍ مِن صيام"
         },
         {
-          "numInChapter": 36,
+          "numInChapter": 15,
           "numInBook": 478,
           "text": "أما استِياكُ صائمٍ بعد الزَّوَالْ فاختيرَ لم يُكْرَهْ ويَحْرُمُ الوِصَالْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "title": "كتاب الصيام — الجزء 2 من 2",
+      "sourceTitle": "كتاب الصيام",
+      "sourceTocId": 54,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 37,
+          "numInChapter": 16,
           "numInBook": 479,
           "text": "وسنَّة صيامُ يومِ عَرَفَهْ إلا لِمَن في الحج حيث أضعَفَهْ"
         },
         {
-          "numInChapter": 38,
+          "numInChapter": 17,
           "numInBook": 480,
           "text": "وسِتِّ شوالٍ وبالْوِلاءِ أَوْلَى وعاشورا وتاسوعاءِ"
         },
         {
-          "numInChapter": 39,
+          "numInChapter": 18,
           "numInBook": 481,
           "text": "وصَوْمُ الاثنينِ كذا الخميسُ مَعْ أيامِ بِيْضٍ وأَجِزْ لمَن شَرَعْ"
         },
         {
-          "numInChapter": 40,
+          "numInChapter": 19,
           "numInBook": 482,
           "text": "في النَّفلِ أن يقطَعَهُ بلا قَضَا ولم يَجُزْ قَطْعٌ لما قد فُرِضَا"
         },
         {
-          "numInChapter": 41,
+          "numInChapter": 20,
           "numInBook": 483,
           "text": "ولا يصِحُّ صَوْمُ يومِ العيدِ ويوم تشريقٍ ولا ترديدِ"
         },
         {
-          "numInChapter": 42,
+          "numInChapter": 21,
           "numInBook": 484,
           "text": "لا إِن يُوَافِق عادَةً أو نَذرَا أو وَصَل الصومَ بصَوْمٍ مَرَّا"
         },
         {
-          "numInChapter": 43,
+          "numInChapter": 22,
           "numInBook": 485,
           "text": "يُكَفِّرُ المُفسِدُ صَوْمَ يَومِ من رمضانَ إن يَطَأْ مَعْ إثْمِ"
         },
         {
-          "numInChapter": 44,
+          "numInChapter": 23,
           "numInBook": 486,
           "text": "كمِثْلِ مَن ظاهَرَ لا على المَرَهْ وكُرِّرَتْ إنِ الفسادَ كَرَّرَهْ"
         },
         {
-          "numInChapter": 45,
+          "numInChapter": 24,
           "numInBook": 487,
           "text": "وواجِبٌ بالموت دونَ صَوْمِ بعدَ تَمَكُّنٍ لكلِّ يَوْمِ"
         },
         {
-          "numInChapter": 46,
+          "numInChapter": 25,
           "numInBook": 488,
           "text": "مُدُّ طعامٍ غالِبٍ في القُوْتِ وجَوِّزِ الفِطْرَ لخَوْفِ مَوْتِ"
         },
         {
-          "numInChapter": 47,
+          "numInChapter": 26,
           "numInBook": 489,
           "text": "ومَرَضٍ وسَفَرٍ إِنْ يَطُلِ وخَوْفِ مُرضِعٍ وذاتِ حَمْلِ"
         },
         {
-          "numInChapter": 48,
+          "numInChapter": 27,
           "numInBook": 490,
           "text": "مِنْهُ على نفْسِهمَا ضُرًَّا بَدَا ويُوجِبُ القَضَاءَ دونَ الافتِدَا"
         },
         {
-          "numInChapter": 49,
+          "numInChapter": 28,
           "numInBook": 491,
           "text": "ومُفْطِرٌ لهَرَمٍ لكُلِّ يَوْمْ مُدٌّ كما مَرَّ بلا قضاءِ صَوْمْ"
         },
         {
-          "numInChapter": 50,
+          "numInChapter": 29,
           "numInBook": 492,
           "text": "والمُدُّ والقَضَا لذاتِ الحَمْلِ أو مُرْضِعٍ إِنْ خافتا للطِّفلِ"
         }
       ]
     },
     {
-      "id": 12,
-      "title": "باب الاعتكاف",
+      "id": 38,
+      "title": "باب الإعتكاف",
+      "sourceTitle": "باب الإعتكاف",
+      "sourceTocId": 55,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2566,287 +2874,331 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 6,
           "numInBook": 498,
           "text": "والأكلِ والشُّربِ أو الأذانِ من راتِبٍ والخَوْفِ مِن سُلطانِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "title": "كتاب الحج — الجزء 1 من 2",
+      "sourceTitle": "كتاب الحج",
+      "sourceTocId": 56,
+      "part": 1,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 7,
+          "numInChapter": 1,
           "numInBook": 499,
           "text": "الحَجُّ فَرْضٌ وكذاكَ العُمرَهْ لم يَجِبَا في العُمْرِ غيرَ مَرَّهْ"
         },
         {
-          "numInChapter": 8,
+          "numInChapter": 2,
           "numInBook": 500,
           "text": "وإنما يَلْزَمُ حُرًَّا مُسلِمَا كُلِّفَ ذا استِطَاعَةٍ لكُلِّ مَا"
         },
         {
-          "numInChapter": 9,
+          "numInChapter": 3,
           "numInBook": 501,
           "text": "يَحتاجُ مِن مأكُولٍ اوْ مَشرُوبِ إلى رُجُوعِهِ ومِنْ مَركُوبِ"
         },
         {
-          "numInChapter": 10,
+          "numInChapter": 4,
           "numInBook": 502,
           "text": "لاقَ بِهِ بشَرطِ أَمْنِ الطُّرُقِ ويُمكِنُ المَسِيرُ في وقتٍ بَقِي"
         },
         {
-          "numInChapter": 11,
+          "numInChapter": 5,
           "numInBook": 503,
           "text": "أركانُهُ الإحرامُ بالنِّيَّةِ قِفِ بعد زوالِ التِّسعِ إذ تُعَرِّفِ"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 6,
           "numInBook": 504,
           "text": "وطافَ بالكعبةِ سَبْعًَا وسَعَى مِنَ الصَّفَا لمَرْوَةٍ مُسَبِّعَا"
         },
         {
-          "numInChapter": 13,
+          "numInChapter": 7,
           "numInBook": 505,
           "text": "ثُم أَزِلْ شَعْرًَا ثلاثًَا نَزْرَهْ وما سِوَى الوُقُوفِ رُكنُ العُمْرَهْ"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 8,
           "numInBook": 506,
           "text": "والدَّمُ جابِرٌ لواجِبَاتِ أَوَّلُها الإحرامُ مِن ميقَاتِ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 9,
           "numInBook": 507,
           "text": "والجَمعُ بين الليل والنَّهَارِ بِعَرَفَهْ والرَّمْيُ للجِمَارِ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 10,
           "numInBook": 508,
           "text": "ثم المَبِيتُ بمِنَىً والجَمْعِ وآخِرُ السِّتِ طَوَافُ الوَدْعِ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 11,
           "numInBook": 509,
           "text": "وسُنَّ بَدْءُ الحَجّ ثم يَعْتَمِرْ ولْيَتَجَرَّدْ مُحْرِمٌ ويَتَّزِرْ"
         },
         {
-          "numInChapter": 18,
+          "numInChapter": 12,
           "numInBook": 510,
           "text": "ويَرْتَدِ البَيَاضَ ثم التَّلبِيَهْ وأَنْ يَطُوفَ قادِمٌ والأَدْعِيَهْ"
         },
         {
-          "numInChapter": 19,
+          "numInChapter": 13,
           "numInBook": 511,
           "text": "يَرْمُلُ في ثلاثَةٍ مُهَرْوِلا والمَشْيُ باقي سَبْعَةٍ تَمَهُّلا"
         },
         {
-          "numInChapter": 20,
+          "numInChapter": 14,
           "numInBook": 512,
           "text": "والاضْطِبَاعُ في طَوَافٍ يَرْمُلُ فيهِ وفي سَعيٍ بِهِ يُهَرْوِلُ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "title": "كتاب الحج — الجزء 2 من 2",
+      "sourceTitle": "كتاب الحج",
+      "sourceTocId": 56,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
-          "numInChapter": 21,
+          "numInChapter": 15,
           "numInBook": 513,
           "text": "ورَكْعَتَا الطَّوَافِ مِن وَرَاالمَقَامْ فالحِجْرِفالمسجِدِ إِن يَكُن زِحَامْ"
         },
         {
-          "numInChapter": 22,
+          "numInChapter": 16,
           "numInBook": 514,
           "text": "وباتَ في مِنَىً بِلَيْلِ عَرَفَهْ وجَمْعُهُ بها وبالمُزْدَلِفَهْ"
         },
         {
-          "numInChapter": 23,
+          "numInChapter": 17,
           "numInBook": 515,
           "text": "بِتْ وارتَحِلْ فَجْرَا وقِفْ بالمَشْعَرِ تَدعُووأسْرِعْ وادِيَ المُحَسِّرِ"
         },
         {
-          "numInChapter": 24,
+          "numInChapter": 18,
           "numInBook": 516,
           "text": "وفي مِنَىً للجَمْرَةِ الأُولَى رَمَيْتْ بِسَبعِ رَمياتِ الحَصَى حينَ انتَهَيْتْ"
         },
         {
-          "numInChapter": 25,
+          "numInChapter": 19,
           "numInBook": 517,
           "text": "مُكَبِّرَا للكُلِّ واقْطَعْ تَلْبِيَهْ ثُمَّ اذْبَحِ الهَدْيَ بِهَا كالأُضْحِيهْ"
         },
         {
-          "numInChapter": 26,
+          "numInChapter": 20,
           "numInBook": 518,
           "text": "واحلِقْ بها أو قَصِّرَنْ مَعْ دَفْنِ شَعْرٍ وبعدَهُ طَوَافُ الرُّكْنِ"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 21,
           "numInBook": 519,
           "text": "وبعدَ يومِ العيدِ للزَّوَالِ تَرمِي الجِمَارَ الكُلَّ بالتَّوَالِي"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 22,
           "numInBook": 520,
           "text": "باثنَيْنِ مِن حَلْقٍ ورَمْيِ النَّحْرِ أوِ الطَّوَافِ حَلَّ قَلْمُ الظُّفْرِ"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 23,
           "numInBook": 521,
           "text": "والحَلْقُ والُّلبْسُ وصَيْدٌ ويُبَاحْ بثالِثٍ وَطْءٌ وعَقْدٌ ونِكَاحْ"
         },
         {
-          "numInChapter": 30,
+          "numInChapter": 24,
           "numInBook": 522,
           "text": "واشْرَبْ لِمَا تُحِبُّ ماءَ زَمْزَمِ وطُفْ وَدَاعًَا وادْعُ بالمُلْتَزَمِ"
         },
         {
-          "numInChapter": 31,
+          "numInChapter": 25,
           "numInBook": 523,
           "text": "ولازِمٌ لمُتَمَتِّعٍ دَمُ أو قارِنٍ إِن كان عنه الحَرَمُ"
         },
         {
-          "numInChapter": 32,
+          "numInChapter": 26,
           "numInBook": 524,
           "text": "مسافَةَالقَصْرِ وعند العَجْزِ صَامْ مِن قَبلِ نَحْرِهِ ثلاثَ أيامْ"
         },
         {
-          "numInChapter": 33,
+          "numInChapter": 27,
           "numInBook": 525,
           "text": "وسَبْعَةً في دارِهِ ولْيَحْتَلِلْ لِفَوْتِ وَقْفَةٍ بِعُمْرَةٍ عَمَلْ"
         },
         {
-          "numInChapter": 34,
+          "numInChapter": 28,
           "numInBook": 526,
           "text": "ولْيَقْضِ مَعْ دَمٍ ومُحْصَرٍ أَحَلْ بِنِيَّةٍ والحَلْقُ مَعْ دَمِ حَصَلْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "title": "باب محرمات الإحرام",
+      "sourceTitle": "باب محرمات الإحرام",
+      "sourceTocId": 57,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 35,
+          "numInChapter": 1,
           "numInBook": 527,
           "text": "حَرِّمْ بالاِحْرَامِ مُسَمَّى لُبْسِ خِيطَ وللرَّاجِلِ سَتْرُ الرَّأْسِ"
         },
         {
-          "numInChapter": 36,
+          "numInChapter": 2,
           "numInBook": 528,
           "text": "وامْرَأَةٍ وَجْهًَا وَدَهْنَ الشَّعْرِ والحَلْقَ والطِّيبَ وقَلْمَ الظُّفْرِ"
         },
         {
-          "numInChapter": 37,
+          "numInChapter": 3,
           "numInBook": 529,
           "text": "والَّلْمَس بالشَّهْوِة كُلٌّ يُوجِبُ تَخْيِيرَهُ ما بَيْنَ شاةٍ تُعْطَبُ"
         },
         {
-          "numInChapter": 38,
+          "numInChapter": 4,
           "numInBook": 530,
           "text": "أو آصُعٍ ثلاثَةٍ لِسِتَّةِ مِسْكِينٍ أو صَوْمِ ثلاثٍ بَيِّتِ"
         },
         {
-          "numInChapter": 39,
+          "numInChapter": 5,
           "numInBook": 531,
           "text": "وَعَمْدَ وَطْءٍ للتَّمَامِ حَقَّقَا مَعَ الفَسَادِ والقَضَا مُضَيَّقَا"
         },
         {
-          "numInChapter": 40,
+          "numInChapter": 6,
           "numInBook": 532,
           "text": "كالصَّوْمِ تَكْفِيرُ صَلاةٍ باعْتِدَا وبالقِضَا يَحْصُلُ مالَهُ الأَدَا"
         },
         {
-          "numInChapter": 41,
+          "numInChapter": 7,
           "numInBook": 533,
           "text": "وصَحَّ في الصِّبَا وَرِقٍّ كَفَّرَهْ بَدَنَةٌ إِنْ لَم يَجِدْ فَبَقَرَهْ"
         },
         {
-          "numInChapter": 42,
+          "numInChapter": 8,
           "numInBook": 534,
           "text": "ثُمَّ الشِّيَاهُ السَّبْعُ فالطَّعَامُ بِقِيمَةِ البَدَنَةِ فالصِّيَامُ"
         },
         {
-          "numInChapter": 43,
+          "numInChapter": 9,
           "numInBook": 535,
           "text": "بالعَدِّ مِن أَمْدَادِهِ وَحَرُمَا لِمُحْرِمٍ ومَنْ يَحُلَّ الحَرَمَا"
         },
         {
-          "numInChapter": 44,
+          "numInChapter": 10,
           "numInBook": 536,
           "text": "تَعَرُّضُ الصَّيْدِ وفي الأَنْعَامِ المِثْلُ فالبَعِيرُ كالنَّعَامِ"
         },
         {
-          "numInChapter": 45,
+          "numInChapter": 11,
           "numInBook": 537,
           "text": "والكَبْشُ كالضَّبْعِ وعَنْزٌ ظَبْيُ وكالحَمَامِ الشَّاةُ ضَبٌّ جَدْيُ"
         },
         {
-          "numInChapter": 46,
+          "numInChapter": 12,
           "numInBook": 538,
           "text": "أَوِ الطَّعَامُ قِيمَةً أو صَوْمَا بِعَدِّهَا عَنْ كُلِّ مُدٍّ يَوْمَا"
         },
         {
-          "numInChapter": 47,
+          "numInChapter": 13,
           "numInBook": 539,
           "text": "بالحَرَمِ اخْتَصَّ طَعَامٌ والدَّمُ لا الصَّوْمُ إِنْ يَعْقِدْ نِكَاحًَا مُحْرِمُ"
         },
         {
-          "numInChapter": 48,
+          "numInChapter": 14,
           "numInBook": 540,
           "text": "فباطِلٌ وقَطْعَ نَبْتِ حَرَمِ رَطْبٍ وقَلْعًَا دُونَ عُذْرٍ حَرِّمِ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "title": "كتاب المعاملات",
+      "sourceTitle": "كتاب المعاملات",
+      "sourceTocId": 58,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 49,
+          "numInChapter": 1,
           "numInBook": 541,
           "text": "وإنَّمَا يَصِحُّ بالإِيجَابِ وبِقَبُولِهِ أوِ اسْتِيجَابِ"
         },
         {
-          "numInChapter": 50,
+          "numInChapter": 2,
           "numInBook": 542,
           "text": "في طاهِرٍ مُنْتَفَعٍ بِهِ قُدِرْ تسليمُهُ مِلْكٌ لذِي العَقْدِ نُظِرْ"
         },
         {
-          "numInChapter": 51,
+          "numInChapter": 3,
           "numInBook": 543,
           "text": "إِن عَيْنُهُ مَعَ المَمَرِّ تُعْلَمِ أوْ وَصْفُهُ وقَدْرُ ما في الذِّمَمِ"
         },
         {
-          "numInChapter": 52,
+          "numInChapter": 4,
           "numInBook": 544,
           "text": "وشَرْطُ بيعِ النَّقدِ بالنَّقدِ كَمَا في بيعِ مطعُومٍ بما قَد طُعِمَا"
         },
         {
-          "numInChapter": 53,
+          "numInChapter": 5,
           "numInBook": 545,
           "text": "تقَابُضُ المَجلِسِ والحُلُولُ زِدْ عِلْمَ تَمَاثُلٍ بِجِنسٍ يَتَّحِدْ"
         },
         {
-          "numInChapter": 54,
+          "numInChapter": 6,
           "numInBook": 546,
           "text": "وإنَّمَا يُعْتَبَرُ التَّمَاثُلُ حالَ كمالِ النَّفْعِ وَهْوَ حاصِلُ"
         },
         {
-          "numInChapter": 55,
+          "numInChapter": 7,
           "numInBook": 547,
           "text": "في لَبِنٍ والتَّمْرِ وَهْوَ بالرُّطَبْ رُخِّصَ في دونِ نِصَابٍ كالعِنَبْ"
         },
         {
-          "numInChapter": 56,
+          "numInChapter": 8,
           "numInBook": 548,
           "text": "واشْرُطْ لبَيْعِ ثَمَرٍ أو زَرْعِ مِن قَبْلِ طِيبِ الأكلِ شَرْطَ القَطْعِ"
         },
         {
-          "numInChapter": 57,
+          "numInChapter": 9,
           "numInBook": 549,
           "text": "بَيعُ المَبِيعِ قبلَ قَبْضٍ أُبْطِلا كالحيوانِ إِذْ بلَحْمٍ قُوبِلا"
         },
         {
-          "numInChapter": 58,
+          "numInChapter": 10,
           "numInBook": 550,
           "text": "والبَيِّعَانِ بالخِيَارِ قبلَ أَنْ يفْتَرِقَا عُرْفًَا وطَوْعًَا بالبَدَنْ"
         },
         {
-          "numInChapter": 59,
+          "numInChapter": 11,
           "numInBook": 551,
           "text": "ويُشْرَطُ الخِيَارُ في غيرِالسَّلَمْ ثلاثةً ودونَهَا مِن حينِ تَمْ"
         },
         {
-          "numInChapter": 60,
+          "numInChapter": 12,
           "numInBook": 552,
           "text": "وإِنْ بمَا يُبَاعُ عَيْبٌ يَظْهَرِ مِنْ قبلِ قَبْضٍ جائِزٌ للمُشْتَرِي"
         },
         {
-          "numInChapter": 61,
+          "numInChapter": 13,
           "numInBook": 553,
           "text": "يَرُدُّهُ فَوْرًَا على المُعْتَادِ كَكَوْنِ مَنْ تُبَاعُ في اعتِدَادِ"
         }
       ]
     },
     {
-      "id": 13,
+      "id": 43,
       "title": "باب السَّلم",
+      "sourceTitle": "باب السَّلم",
+      "sourceTocId": 59,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2887,32 +3239,46 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 8,
           "numInBook": 561,
           "text": "عَيِّنْ لذِي التأجيلِ مَوْضِعَ الأَدَا إِن لَم يُوَافِقْهُ مَكَانُ عُقِدَا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "title": "باب الرهن",
+      "sourceTitle": "باب الرهن",
+      "sourceTocId": 60,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 9,
+          "numInChapter": 1,
           "numInBook": 562,
           "text": "يجُوزُ فيما بَيْعُهُ جازَ كَمَا صَحَّ بِدَيْنٍ ثابِتٍ قَد لَزِمَا"
         },
         {
-          "numInChapter": 10,
+          "numInChapter": 2,
           "numInBook": 563,
           "text": "للرَّاهِنِ الرُّجُوعُ مالَمْ يَقْبِضِ مُكَلَّفٌ بإذْنِهِ حينَ رَضِي"
         },
         {
-          "numInChapter": 11,
+          "numInChapter": 3,
           "numInBook": 564,
           "text": "وإنَّمَا يَضْمَنُهُ المُرْتَهِنُ إذا تَعَدَّى في الذي يُؤْتَمَنُ"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 4,
           "numInBook": 565,
           "text": "يَنْفَكُّ بالإِبْرَا وفَسْخِ الرَّهْنِ كَذَا إذا زالَ جميعُ الدَّيْنِ"
         }
       ]
     },
     {
-      "id": 14,
+      "id": 45,
       "title": "باب الحجر",
+      "sourceTitle": "باب الحجر",
+      "sourceTocId": 61,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2947,8 +3313,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 15,
-      "title": "باب الصُلح",
+      "id": 46,
+      "title": "باب الصلح",
+      "sourceTitle": "باب الصلح",
+      "sourceTocId": 62,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2983,8 +3353,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 16,
-      "title": "باب الحِوالة",
+      "id": 47,
+      "title": "باب الحوالة",
+      "sourceTitle": "باب الحوالة",
+      "sourceTocId": 63,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -2999,8 +3373,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 17,
-      "title": "باب الضَّمان",
+      "id": 48,
+      "title": "باب الضمان",
+      "sourceTitle": "باب الضمان",
+      "sourceTocId": 64,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3045,8 +3423,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 18,
+      "id": 49,
       "title": "باب الشركة",
+      "sourceTitle": "باب الشركة",
+      "sourceTocId": 65,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3071,8 +3453,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 19,
+      "id": 50,
       "title": "باب الوكالة",
+      "sourceTitle": "باب الوكالة",
+      "sourceTocId": 66,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3097,8 +3483,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 20,
-      "title": "باب الاقرار",
+      "id": 51,
+      "title": "باب الإقرار",
+      "sourceTitle": "باب الإقرار",
+      "sourceTocId": 67,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3123,8 +3513,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 21,
+      "id": 52,
       "title": "باب العارية",
+      "sourceTitle": "باب العارية",
+      "sourceTocId": 68,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3149,8 +3543,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 22,
-      "title": "باب الغَصبْ",
+      "id": 53,
+      "title": "باب الغصب",
+      "sourceTitle": "باب الغصب",
+      "sourceTocId": 69,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3180,8 +3578,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 23,
-      "title": "باب الشُّفعة",
+      "id": 54,
+      "title": "باب الشفعة",
+      "sourceTitle": "باب الشفعة",
+      "sourceTocId": 70,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3206,8 +3608,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 24,
-      "title": "باب القِراض",
+      "id": 55,
+      "title": "باب القراض",
+      "sourceTitle": "باب القراض",
+      "sourceTocId": 71,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3237,8 +3643,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 25,
-      "title": "باب المُسَاقاة",
+      "id": 56,
+      "title": "باب المساقاة",
+      "sourceTitle": "باب المساقاة",
+      "sourceTocId": 72,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3263,8 +3673,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 26,
-      "title": "باب الاجارة",
+      "id": 57,
+      "title": "باب الإجارة",
+      "sourceTitle": "باب الإجارة",
+      "sourceTocId": 73,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3319,8 +3733,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 27,
-      "title": "باب الجُعَالة",
+      "id": 58,
+      "title": "باب الجعالة",
+      "sourceTitle": "باب الجعالة",
+      "sourceTocId": 74,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3340,8 +3758,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 28,
-      "title": "باب احياء المَوَات",
+      "id": 59,
+      "title": "باب إحياء الأموات",
+      "sourceTitle": "باب إحياء الأموات",
+      "sourceTocId": 75,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3371,8 +3793,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 29,
+      "id": 60,
       "title": "باب الوقف",
+      "sourceTitle": "باب الوقف",
+      "sourceTocId": 76,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3407,8 +3833,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 30,
-      "title": "باب الهِبَة",
+      "id": 61,
+      "title": "باب الهبة",
+      "sourceTitle": "باب الهبة",
+      "sourceTocId": 77,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3433,8 +3863,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 31,
-      "title": "باب الُّلقطة",
+      "id": 62,
+      "title": "باب اللقطة",
+      "sourceTitle": "باب اللقطة",
+      "sourceTocId": 78,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3499,8 +3933,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 32,
+      "id": 63,
       "title": "باب اللقيط",
+      "sourceTitle": "باب اللقيط",
+      "sourceTocId": 79,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3520,8 +3958,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 33,
+      "id": 64,
       "title": "باب الوديعة",
+      "sourceTitle": "باب الوديعة",
+      "sourceTocId": 80,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3551,8 +3993,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 34,
-      "title": "كتاب الفرائض",
+      "id": 65,
+      "title": "كتاب الفرائض — الجزء 1 من 2",
+      "sourceTitle": "كتاب الفرائض",
+      "sourceTocId": 81,
+      "part": 1,
+      "partCount": 2,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3638,7 +4084,17 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 17,
           "numInBook": 686,
           "text": "الاِبْنُ بَعْدَهُ ابْنُهُ فأَسفَلا فالأبُ فالجَدُّ لَهُ وإِن عَلا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "title": "كتاب الفرائض — الجزء 2 من 2",
+      "sourceTitle": "كتاب الفرائض",
+      "sourceTocId": 81,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
           "numInChapter": 18,
           "numInBook": 687,
@@ -3722,8 +4178,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 35,
+      "id": 67,
       "title": "باب الوصية",
+      "sourceTitle": "باب الوصية",
+      "sourceTocId": 82,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3743,8 +4203,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 36,
+      "id": 68,
       "title": "باب الوصاية",
+      "sourceTitle": "باب الوصاية",
+      "sourceTocId": 83,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3764,8 +4228,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 37,
+      "id": 69,
       "title": "كتاب النكاح",
+      "sourceTitle": "كتاب النكاح",
+      "sourceTocId": 84,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3886,37 +4354,51 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 24,
           "numInBook": 732,
           "text": "كَرَتَقِهَا أو قَرَنٍ بِخِيرَتِهْ كَمَالَهَا بِجَبِّهِ أو عُنَّتِهْ"
-        },
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "title": "باب الصداق",
+      "sourceTitle": "باب الصداق",
+      "sourceTocId": 85,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 25,
+          "numInChapter": 1,
           "numInBook": 733,
           "text": "يُسَنُّ في العَقْدِ ولَوَ قليلا مَهْرٌ كَنَفْعٍ لَم يَكُن مَجهُولا"
         },
         {
-          "numInChapter": 26,
+          "numInChapter": 2,
           "numInBook": 734,
           "text": "لَو لَم يُسَمَّ صَحَّ عَقَدْ ٌوانْحَتَمْ مَهْرٌ بِفَرْضٍ مِنهُما أو مِن حَكَمْ"
         },
         {
-          "numInChapter": 27,
+          "numInChapter": 3,
           "numInBook": 735,
           "text": "وإِن يَطَأْ أو ماتَ فَرْدٌ أَوْجِبِ كَمَهْرِ مِثْلِ عَصَبَاتِ النَّسَبِ"
         },
         {
-          "numInChapter": 28,
+          "numInChapter": 4,
           "numInBook": 736,
           "text": "وبالطَّلاقِ قبلَ وَطْئِهِ سَقَطْ نِصْفٌ كَمَا إذا تَخَالَعَا يُحَطْ"
         },
         {
-          "numInChapter": 29,
+          "numInChapter": 5,
           "numInBook": 737,
           "text": "وحَبْسُهَا لنَفْسِهَا وِفَاقَهَا حتى تَرَاها قَبَضَتْ صَدَاقَهَا"
         }
       ]
     },
     {
-      "id": 38,
-      "title": "باب وليمة العُرس",
+      "id": 71,
+      "title": "باب وليمة العرس",
+      "sourceTitle": "باب وليمة العرس",
+      "sourceTocId": 86,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3931,8 +4413,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 39,
-      "title": "باب القَسم والنُّشوز",
+      "id": 72,
+      "title": "باب القسم والنشوز",
+      "sourceTitle": "باب القسم والنشوز",
+      "sourceTocId": 87,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3977,8 +4463,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 40,
-      "title": "باب الخُلع",
+      "id": 73,
+      "title": "باب الخلع",
+      "sourceTitle": "باب الخلع",
+      "sourceTocId": 88,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -3998,8 +4488,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 41,
+      "id": 74,
       "title": "باب الطلاق",
+      "sourceTitle": "باب الطلاق",
+      "sourceTocId": 89,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4049,8 +4543,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 42,
-      "title": "باب الرَّجعة",
+      "id": 75,
+      "title": "باب الرجعة",
+      "sourceTitle": "باب الرجعة",
+      "sourceTocId": 90,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4095,8 +4593,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 43,
-      "title": "باب الايلاء",
+      "id": 76,
+      "title": "باب الإيلاء",
+      "sourceTitle": "باب الإيلاء",
+      "sourceTocId": 91,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4116,8 +4618,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 44,
-      "title": "باب الِّلعان",
+      "id": 77,
+      "title": "باب الظهار",
+      "sourceTitle": "باب الظهار",
+      "sourceTocId": 92,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4148,67 +4654,81 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 6,
           "numInBook": 776,
           "text": "وعاجِزٌ سِتِّينَ مُدًَّا مَلَّكَا سِتِّينَ مِسكينًا كَفِطْرَةٍ حَكَى"
-        },
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "title": "باب اللعان",
+      "sourceTitle": "باب اللعان",
+      "sourceTocId": 93,
+      "part": 1,
+      "partCount": 1,
+      "hadiths": [
         {
-          "numInChapter": 7,
+          "numInChapter": 1,
           "numInBook": 777,
           "text": "يقُولُ أرْبَعًَا إِنِ القاضي أَمَرْ إذا زِنَا زوجَتِهِ عنها اشْتَهَرْ"
         },
         {
-          "numInChapter": 8,
+          "numInChapter": 2,
           "numInBook": 778,
           "text": "أو أُلْحِقَ الطِّفلُ بِهِ مِنَ الزِّنَا أَشْهَدُ باللهِ لَصَادِقٌ أَنَا"
         },
         {
-          "numInChapter": 9,
+          "numInChapter": 3,
           "numInBook": 779,
           "text": "فيما رَمَيْتُهَا بِهِ وَأَنَّا ذا ليس مِنِّي خامِسًَا أَنْ لَعْنَا"
         },
         {
-          "numInChapter": 10,
+          "numInChapter": 4,
           "numInBook": 780,
           "text": "عَلَيْهِ مِن خالِقِهِ إِن كَذَبَا يُشِيرُ إِن تَحضُرْ لَهَا مُخَاطِبَا"
         },
         {
-          "numInChapter": 11,
+          "numInChapter": 5,
           "numInBook": 781,
           "text": "أَو سُمِّيَتْ وَهْيِ تقولُ أربَعَا أَشْهَدُ باللهِ لَكِذْبًَا ادَّعَى"
         },
         {
-          "numInChapter": 12,
+          "numInChapter": 6,
           "numInBook": 782,
           "text": "فيما رمَى وخامِسًَا بالغَضَبِ إِن صادِقًَا فيما رَمَى مِن كَذِبِ"
         },
         {
-          "numInChapter": 13,
+          "numInChapter": 7,
           "numInBook": 783,
           "text": "وسُنَّ بالجامِعِ عندَ المِنْبَرِ بِمَجْمَعٍ عَن أربَعٍ لَم يَنْزُرِ"
         },
         {
-          "numInChapter": 14,
+          "numInChapter": 8,
           "numInBook": 784,
           "text": "وَخَوَّفَ الحاكِمُ حينَ يُنْهِيهْ الكُلَّ مَعْ وَضْعِ يَدٍ مِن فَوْقِ فِيهْ"
         },
         {
-          "numInChapter": 15,
+          "numInChapter": 9,
           "numInBook": 785,
           "text": "وبِلِعَانِهِ انْتَفَى عنهُ النَّسَبْ وَحَدُّهُ لَكِنْ عليها قَد وَجَبْ"
         },
         {
-          "numInChapter": 16,
+          "numInChapter": 10,
           "numInBook": 786,
           "text": "وحُرْمَةٌ بينَهُمَا تَأَبَّدَتْ وَشُطِّرَ المَهْرُ وأُخْتٌ حُلِّلَتْ"
         },
         {
-          "numInChapter": 17,
+          "numInChapter": 11,
           "numInBook": 787,
           "text": "وَبِلِعَانِهَا سُقُوطُ الحَدِّ عَنِ الزِّنَا مِن رَجْمِهَا أو جَلْدِ"
         }
       ]
     },
     {
-      "id": 45,
-      "title": "باب العِدَّة",
+      "id": 79,
+      "title": "باب العدة",
+      "sourceTitle": "باب العدة",
+      "sourceTocId": 94,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4258,8 +4778,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 46,
-      "title": "باب الاستِبراء",
+      "id": 80,
+      "title": "باب الإستبراء",
+      "sourceTitle": "باب الإستبراء",
+      "sourceTocId": 95,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4284,8 +4808,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 47,
-      "title": "باب الرَّضاع",
+      "id": 81,
+      "title": "باب الرضاع",
+      "sourceTitle": "باب الرضاع",
+      "sourceTocId": 96,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4310,8 +4838,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 48,
+      "id": 82,
       "title": "باب النفقات",
+      "sourceTitle": "باب النفقات",
+      "sourceTocId": 97,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4366,8 +4898,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 49,
-      "title": "باب الحَضانة",
+      "id": 83,
+      "title": "باب الحضانة",
+      "sourceTitle": "باب الحضانة",
+      "sourceTocId": 98,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4422,8 +4958,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 50,
-      "title": "كتاب الجنايات",
+      "id": 84,
+      "title": "كتاب الجنايات — الجزء 1 من 2",
+      "sourceTitle": "كتاب الجنايات",
+      "sourceTocId": 99,
+      "part": 1,
+      "partCount": 2,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4504,7 +5044,17 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 16,
           "numInBook": 840,
           "text": "فإِنْ تُخَفَّفْ فابْنَةُ المَحَاضِ عِشْرُونَ كابْنَةِ الَّلبُونِ المَاضِي"
-        },
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "title": "كتاب الجنايات — الجزء 2 من 2",
+      "sourceTitle": "كتاب الجنايات",
+      "sourceTocId": 99,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
           "numInChapter": 17,
           "numInBook": 841,
@@ -4583,8 +5133,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 51,
+      "id": 86,
       "title": "باب دعوى الدم",
+      "sourceTitle": "باب دعوى الدم",
+      "sourceTocId": 100,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4604,8 +5158,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 52,
-      "title": "باب البُغاة",
+      "id": 87,
+      "title": "باب البغاة",
+      "sourceTitle": "باب البغاة",
+      "sourceTocId": 101,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4635,8 +5193,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 53,
+      "id": 88,
       "title": "باب حد الرِّدة",
+      "sourceTitle": "باب حد الرِّدة",
+      "sourceTocId": 102,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4666,8 +5228,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 54,
+      "id": 89,
       "title": "باب حد الزنا",
+      "sourceTitle": "باب حد الزنا",
+      "sourceTocId": 103,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4692,8 +5258,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 55,
+      "id": 90,
       "title": "باب حد القذف",
+      "sourceTitle": "باب حد القذف",
+      "sourceTocId": 104,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4713,8 +5283,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 56,
+      "id": 91,
       "title": "باب حد السرقة",
+      "sourceTitle": "باب حد السرقة",
+      "sourceTocId": 105,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4749,8 +5323,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 57,
+      "id": 92,
       "title": "باب حد قاطع الطريق",
+      "sourceTitle": "باب حد قاطع الطريق",
+      "sourceTocId": 106,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4785,8 +5363,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 58,
+      "id": 93,
       "title": "باب حد شارب الخمر",
+      "sourceTitle": "باب حد شارب الخمر",
+      "sourceTocId": 107,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4806,8 +5388,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 59,
-      "title": "باب حد الصائِل",
+      "id": 94,
+      "title": "باب حد الصائل",
+      "sourceTitle": "باب حد الصائل",
+      "sourceTocId": 108,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4827,8 +5413,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 60,
+      "id": 95,
       "title": "كتاب الجهاد",
+      "sourceTitle": "كتاب الجهاد",
+      "sourceTocId": 109,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4868,8 +5458,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 61,
+      "id": 96,
       "title": "باب الغنيمة",
+      "sourceTitle": "باب الغنيمة",
+      "sourceTocId": 110,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4924,8 +5518,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 62,
-      "title": "باب الجِزية",
+      "id": 97,
+      "title": "باب الجزية",
+      "sourceTitle": "باب الجزية",
+      "sourceTocId": 111,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -4975,8 +5573,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 63,
+      "id": 98,
       "title": "كتاب الصيد والذبائح",
+      "sourceTitle": "كتاب الصيد والذبائح",
+      "sourceTocId": 112,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5027,63 +5629,71 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 10,
           "numInBook": 929,
           "text": "وَوَجِّهِ المذبُوحَ نَحْوَ القِبْلَهْ وقَبْلَ أَنْ تُصَلِّ قُلْ بسمِ اللهْ"
+        },
+        {
+          "numInChapter": 11,
+          "numInBook": 930,
+          "text": "وسَمِّ في أُضْحِيَةٍ وَكَبِّرَا وبالدُّعَاءِ بالقُبُولِ فاجْهَرَا"
         }
       ]
     },
     {
-      "id": 64,
-      "title": "باب الأُضحية",
+      "id": 99,
+      "title": "باب الأضحية",
+      "sourceTitle": "باب الأضحية",
+      "sourceTocId": 113,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
-          "numInBook": 930,
-          "text": "وسَمِّ في أُضْحِيَةٍ وَكَبِّرَا وبالدُّعَاءِ بالقُبُولِ فاجْهَرَا"
-        },
-        {
-          "numInChapter": 2,
           "numInBook": 931,
           "text": "وَوَقْتُهَا قَدْرُ صلاةِ ركعَتَيْنْ مِنَ الطُّلُوعِ تَنْقَضِي وخُطْبَتَيْنْ"
         },
         {
-          "numInChapter": 3,
+          "numInChapter": 2,
           "numInBook": 932,
           "text": "وسُنَّ مِنَ بعدِ ارتفاعِهَا إلى ثلاثةِ التَّشرِيقِ أَنْ تُكَمَّلا"
         },
         {
-          "numInChapter": 4,
+          "numInChapter": 3,
           "numInBook": 933,
           "text": "عَن واحِدٍ ضَأْنٌ لَهُ حَوْلٌ كَمَلْ أوْ مَعَزٌ في ثالثِ الحَوْلِ دَخَلْ"
         },
         {
-          "numInChapter": 5,
+          "numInChapter": 4,
           "numInBook": 934,
           "text": "كَبَقَرٍ لَكِنْ عنِ السبعِ كَفَتْ وإِبِلٍ خَمْسَ سنينَ اسْتَكْمَلَتْ"
         },
         {
-          "numInChapter": 6,
+          "numInChapter": 5,
           "numInBook": 935,
           "text": "ولَمْ تَجُزْ بَيِّنَةُ الهُزَالِ ومَرَضٍ وعَرَجٍ في الحالِ"
         },
         {
-          "numInChapter": 7,
+          "numInChapter": 6,
           "numInBook": 936,
           "text": "وناقِصُ الجُزْءِ كبعضِ أُذْنِ أَوْ ذَنَبٍ كَعَوَرٍ في العَيْنِ"
         },
         {
-          "numInChapter": 8,
+          "numInChapter": 7,
           "numInBook": 937,
           "text": "أو العَمَى أو قَطْعِ بعضِ الأَلْيَةِ وجازَ نَقْصُ قَرْنِهَا والخُصْيَةِ"
         },
         {
-          "numInChapter": 9,
+          "numInChapter": 8,
           "numInBook": 938,
           "text": "والفَرْضُ بعضُ الَّلحمِ لَوْ بِنَزْرِ وكُلْ مِنَ المندُوبِ دونَ النَّذْرِ"
         }
       ]
     },
     {
-      "id": 65,
+      "id": 100,
       "title": "باب العقيقة",
+      "sourceTitle": "باب العقيقة",
+      "sourceTocId": 114,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5098,8 +5708,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 66,
-      "title": "باب الأطعِمة",
+      "id": 101,
+      "title": "باب الأطعمة",
+      "sourceTitle": "باب الأطعمة",
+      "sourceTocId": 115,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5124,8 +5738,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 67,
+      "id": 102,
       "title": "باب المسابقة",
+      "sourceTitle": "باب المسابقة",
+      "sourceTocId": 116,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5150,8 +5768,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 68,
+      "id": 103,
       "title": "باب الأيمان",
+      "sourceTitle": "باب الأيمان",
+      "sourceTocId": 117,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5196,8 +5818,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 69,
-      "title": "باب النَّذر",
+      "id": 104,
+      "title": "باب النذر",
+      "sourceTitle": "باب النذر",
+      "sourceTocId": 118,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5247,8 +5873,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 70,
+      "id": 105,
       "title": "كتاب القضاء",
+      "sourceTitle": "كتاب القضاء",
+      "sourceTocId": 119,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5338,8 +5968,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 71,
-      "title": "باب القِسمة",
+      "id": 106,
+      "title": "باب القسمة",
+      "sourceTitle": "باب القسمة",
+      "sourceTocId": 120,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5364,8 +5998,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 72,
-      "title": "باب الشَّهادات",
+      "id": 107,
+      "title": "باب الشهادات",
+      "sourceTitle": "باب الشهادات",
+      "sourceTocId": 121,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5440,8 +6078,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 73,
-      "title": "باب الدعاوَى البيِّنات",
+      "id": 108,
+      "title": "باب الدعاوى والبينات",
+      "sourceTitle": "باب الدعاوى والبينات",
+      "sourceTocId": 122,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5491,8 +6133,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 74,
-      "title": "باب العِتق",
+      "id": 109,
+      "title": "باب العتق",
+      "sourceTitle": "باب العتق",
+      "sourceTocId": 123,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5532,8 +6178,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 75,
+      "id": 110,
       "title": "باب التدبير",
+      "sourceTitle": "باب التدبير",
+      "sourceTocId": 124,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5548,8 +6198,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 76,
+      "id": 111,
       "title": "باب الكتابة",
+      "sourceTitle": "باب الكتابة",
+      "sourceTocId": 125,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5584,8 +6238,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 77,
-      "title": "باب أمَّهات الأولاد",
+      "id": 112,
+      "title": "باب أمهات الأولاد",
+      "sourceTitle": "باب أمهات الأولاد",
+      "sourceTocId": 126,
+      "part": 1,
+      "partCount": 1,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5630,8 +6288,12 @@ const SAFWAT_ALZUBAD = {
       ]
     },
     {
-      "id": 78,
-      "title": "خاتمة في علم التصوف",
+      "id": 113,
+      "title": "خاتمة في عِلْمِ التَّصَوُّفِ — الجزء 1 من 2",
+      "sourceTitle": "خاتمة في عِلْمِ التَّصَوُّفِ",
+      "sourceTocId": 127,
+      "part": 1,
+      "partCount": 2,
       "hadiths": [
         {
           "numInChapter": 1,
@@ -5757,7 +6419,17 @@ const SAFWAT_ALZUBAD = {
           "numInChapter": 25,
           "numInBook": 1057,
           "text": "فإِنْ يَمُتْ فَهْيَ لِوَارِثٍ يُرَى إِن لم يَكُنْ فَأَعْطِهَا للفُقَرَا"
-        },
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "title": "خاتمة في عِلْمِ التَّصَوُّفِ — الجزء 2 من 2",
+      "sourceTitle": "خاتمة في عِلْمِ التَّصَوُّفِ",
+      "sourceTocId": 127,
+      "part": 2,
+      "partCount": 2,
+      "hadiths": [
         {
           "numInChapter": 26,
           "numInBook": 1058,
