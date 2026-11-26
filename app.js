@@ -339,7 +339,9 @@ function renderHadiths(book, chapter){
     const prog = progress[key];
     const due = isDue(key);
     const verses = chapter.hadiths.map(h =>
-      `<div class="poem-verse"><span class="poem-number">${h.numInBook}.</span> ${h.text}</div>`
+      (h.sadr && h.ajz)
+        ? `<div class="poem-verse poem-bayt"><span class="poem-number">${h.numInBook}.</span><span class="poem-sadr">${h.sadr}</span><span class="poem-ajz">${h.ajz}</span></div>`
+        : `<div class="poem-verse"><span class="poem-number">${h.numInBook}.</span> ${h.text}</div>`
     ).join("");
     const card = document.createElement("div");
     card.className = "hadith-card poem-card";

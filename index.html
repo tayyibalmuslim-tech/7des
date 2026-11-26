@@ -300,6 +300,19 @@
   .hadith-card .hadith-text.shown{ display:block; }
   .poem-text .poem-verse{ margin: 0 0 7px; }
   .poem-text .poem-number{ color: var(--gold); font-weight: 700; font-size: 0.84em; }
+  .poem-text .poem-bayt{ display: grid; grid-template-columns: auto minmax(0,1fr) minmax(0,1fr); column-gap: 14px; align-items: baseline; padding: 4px 0; border-bottom: 1px dashed rgba(0,0,0,0.06); }
+  .poem-text .poem-bayt:last-child{ border-bottom: 0; }
+  .poem-text .poem-sadr{ text-align: right; }
+  .poem-text .poem-ajz{ text-align: left; }
+  @media (max-width: 560px){
+    .poem-text .poem-bayt{ column-gap: 10px; font-size: clamp(0.7rem, 3.05vw, 0.95rem); line-height: 1.9; }
+    .poem-text .poem-number{ font-size: 0.75em; }
+  }
+  @media (max-width: 340px){
+    .poem-text .poem-bayt{ grid-template-columns: auto 1fr; row-gap: 2px; }
+    .poem-text .poem-sadr, .poem-text .poem-ajz{ white-space: normal; }
+    .poem-text .poem-ajz{ grid-column: 2; }
+  }
 
   .hadith-card .takhrij{
     font-size: 0.82rem;
