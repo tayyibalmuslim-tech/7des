@@ -241,7 +241,7 @@ function renderCurrentView(){
 }
 
 // ---------- Books List ----------
-const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS, SAFWAT_ALZUBAD];
+const BOOKS = [RIYAD_ALSALIHIN, MANHAJI_HADITHS, SAFWAT_ALZUBAD, AJURRUMIYYA];
 
 function renderBooksList(){
   const wrap = document.getElementById("booksList");
