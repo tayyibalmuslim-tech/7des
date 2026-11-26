@@ -840,6 +840,9 @@ function checkQuizAnswer(){
   `;
 
   if(!activeQuiz.isPoem) document.getElementById("takhrijQuizBox").className = "takhrij-quiz-box shown";
+  // بعد التحقق تظهر اختيارات المراجعة الأربعة مباشرة (زي tasme3)
+  renderRateButtons();
+  document.getElementById("selfRateBox").className = "self-rate shown";
 }
 
 function checkTakhrijAnswer(){
@@ -867,27 +870,53 @@ function checkTakhrijAnswer(){
     resultBox.innerHTML = `<div class="takhrij-result-box wrong">✗ غير صحيح. التخريج الصحيح: ${correct.join(" و")}</div>`;
   }
 
+  renderRateButtons();
   document.getElementById("selfRateBox").className = "self-rate shown";
 }
 
 // ---------- Spaced Repetition ----------
 const BASE_INTERVAL_DAYS = 1;
-const RATING_DELTA = {
-  excellent: 10,
-  good: 5,
-  medium: 2,
-  bad: -2
+// نفس نظام مستودع tasme3: الفاصل الجديد = الفاصل السابق × المعامل (أقل حاجة يوم واحد)
+// أول تسميع لأي باب/حديث (حفظ جديد) يرجع بعد يوم واحد مهما كان التقييم، وبعدها تبدأ المضاعفة
+const RATINGS = {
+  reset:  ["تصفير العداد", 1],
+  hard:   ["صعب", 1.2],
+  medium: ["متوسط", 2],
+  easy:   ["سهل", 3]
 };
 
+function previousInterval(p){
+  return Math.max(1, Math.round(+(p && p.intervalDays) || 1));
+}
+function nextInterval(p, rating){
+  const isNew = !p || !p.lastReviewDate;
+  if(rating === "reset" || isNew) return 1;
+  return Math.max(1, Math.round(previousInterval(p) * RATINGS[rating][1]));
+}
+function daysLabel(n){
+  return n === 1 ? "بعد يوم" : n === 2 ? "بعد يومين" : (n <= 10 ? `بعد ${n} أيام` : `بعد ${n} يومًا`);
+}
+function renderRateButtons(){
+  const grid = document.getElementById("rateGrid");
+  if(!grid || !activeQuiz) return;
+  const p = progress[activeQuiz.key];
+  grid.innerHTML = Object.entries(RATINGS).map(([key, [label]]) =>
+    `<button class="rate-btn rate-${key}" onclick="submitSelfRating('${key}')">${label}<small>${daysLabel(nextInterval(p, key))}</small></button>`
+  ).join("");
+}
+
+// التاريخ بالتوقيت المحلي (مش UTC) عشان «بعد يوم» تبقى فعلاً اليوم اللي بعده في مصر
+function localDateStr(d){
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
 function todayStr(){
-  const d = new Date();
-  return d.toISOString().slice(0,10);
+  return localDateStr(new Date());
 }
 
 function addDays(dateStr, days){
   const d = new Date(dateStr + "T00:00:00");
   d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0,10);
+  return localDateStr(d);
 }
 
 function isDue(key){
@@ -911,15 +940,15 @@ function recordReview(key, reviewDate, rating){
     // تسجيل تاريخ يدوي بدون تقييم: نحافظ على نفس الفترة القديمة أو نبدأ بالأساسية
     newInterval = prevInterval > 0 ? prevInterval : BASE_INTERVAL_DAYS;
   } else {
-    const base = prevInterval > 0 ? prevInterval : BASE_INTERVAL_DAYS;
-    newInterval = Math.max(1, base + RATING_DELTA[rating]);
+    newInterval = nextInterval(progress[key], rating);
   }
 
   p.lastReviewDate = reviewDate;
   p.intervalDays = newInterval;
   p.nextReviewDate = addDays(reviewDate, newInterval);
   p.history = p.history || [];
-  p.history.push({ date: reviewDate, rating: rating });
+  p.history.push({ date: reviewDate, rating: rating, intervalBefore: prevInterval || null, intervalAfter: newInterval, successful: rating === "manual" ? null : rating !== "reset" });
+  p.rating = rating === "manual" ? (p.rating || null) : rating;
 
   progress[key] = p;
   saveProgress();
@@ -928,7 +957,7 @@ function recordReview(key, reviewDate, rating){
 function submitSelfRating(rating){
   if(!activeQuiz) return;
   recordReview(activeQuiz.key, todayStr(), rating);
-  showToast("تم تسجيل المراجعة ✓ — المراجعة القادمة بعد " + progress[activeQuiz.key].intervalDays + " يوم");
+  showToast(`تم تسجيل «${RATINGS[rating][0]}» ✓ — المراجعة القادمة ${daysLabel(progress[activeQuiz.key].intervalDays)}`);
   closeQuizModal();
   refreshAfterProgress();
 }

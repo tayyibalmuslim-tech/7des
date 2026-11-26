@@ -605,6 +605,14 @@
     transition: all 0.15s;
   }
   .rate-btn small{ display:block; font-size:0.72rem; color:var(--ink-soft); margin-top:2px; }
+  .rate-grid{ grid-template-columns: repeat(4, 1fr); }
+  .rate-btn.rate-reset{ background:#fde8e8; color:#a52a20; border-color:#e7b3ae; }
+  .rate-btn.rate-hard{ background:#fff0dd; color:#9c5100; border-color:#ebc79a; }
+  .rate-btn.rate-medium{ background:#f3f5f4; color:#40534a; border-color:#c9d3ce; }
+  .rate-btn.rate-easy{ background:#e6f4ec; color:#155c34; border-color:#a9d3b8; }
+  .rate-btn[class*="rate-"]:hover{ filter: brightness(0.96); transform: translateY(-1px); }
+  .rate-btn[class*="rate-"] small{ color: inherit; opacity: .8; }
+  @media (max-width: 420px){ .rate-grid{ grid-template-columns: 1fr 1fr; } }
   .rate-btn.excellent:hover{ background:#E4F0E0; border-color:var(--green-ok); }
   .rate-btn.good:hover{ background:#EAF2E4; border-color:var(--olive); }
   .rate-btn.medium:hover{ background:#F5EBD8; border-color:var(--gold); }
@@ -867,13 +875,8 @@
     </div>
 
     <div class="self-rate" id="selfRateBox">
-      <p>قيّم نفسك في هذا التسميع:</p>
-      <div class="rate-grid">
-        <button class="rate-btn excellent" onclick="submitSelfRating('excellent')">ممتاز<small>+١٠ أيام</small></button>
-        <button class="rate-btn good" onclick="submitSelfRating('good')">جيد<small>+٥ أيام</small></button>
-        <button class="rate-btn medium" onclick="submitSelfRating('medium')">متوسط<small>+٢ أيام</small></button>
-        <button class="rate-btn bad" onclick="submitSelfRating('bad')">سيء<small>−٢ أيام</small></button>
-      </div>
+      <p>جودة التسميع — اختار واحد عشان يتحدد ميعاد المراجعة الجاية:</p>
+      <div class="rate-grid" id="rateGrid"></div>
       <div class="manual-date-row">
         <label style="font-size:0.82rem;color:var(--ink-soft);">أو سجّل تاريخ مراجعة يدوي:</label>
         <input type="date" id="manualReviewDate">
