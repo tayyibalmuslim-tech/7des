@@ -599,21 +599,29 @@ function getCompletedWordCountFor(elId){
 }
 
 // بعد كل تغيير كتابة في أي صندوق: أي تلميح ظاهر بيتلغي لأن الكلام اتغيّر (المستخدم كتب الكلمة أو تخطاها)
+// ملاحظة: كيبورد الموبايل (أندرويد خصوصاً) مش بيبعت مفتاح المسافة في keydown (بيبعت "Unidentified")،
+// عشان كده التصحيح بيتعمل من حدث input نفسه: كل ما عدد الكلمات المكتملة يتغير بنعيد الرسم.
+// ده بيشتغل كمان مع اللصق والتصحيح التلقائي ومسح الكلمات.
+let lastLiveCompleted = { narratorInput: null, quizInput: null };
+function liveCheckIfChanged(elId, renderFn, hintState){
+  const hintWasShown = hintState.hintWordIndex !== null;
+  if(hintWasShown){
+    hintState.hintWordIndex = null;
+    hintState.hintCharsRevealed = 0;
+  }
+  const completed = getCompletedWordsRaw(elId);
+  if(hintWasShown || completed !== lastLiveCompleted[elId]){
+    lastLiveCompleted[elId] = completed;
+    renderFn();
+  }
+}
 function handleNarratorInputChange(){
   if(!liveCheckEnabled || !activeQuiz) return;
-  if(activeQuiz.narratorHint.hintWordIndex !== null){
-    activeQuiz.narratorHint.hintWordIndex = null;
-    activeQuiz.narratorHint.hintCharsRevealed = 0;
-    liveCheckNarrator();
-  }
+  liveCheckIfChanged("narratorInput", liveCheckNarrator, activeQuiz.narratorHint);
 }
 function handleQuizInputChange(){
   if(!liveCheckEnabled || !activeQuiz) return;
-  if(activeQuiz.hadithHint.hintWordIndex !== null){
-    activeQuiz.hadithHint.hintWordIndex = null;
-    activeQuiz.hadithHint.hintCharsRevealed = 0;
-    liveCheckHadith();
-  }
+  liveCheckIfChanged("quizInput", liveCheckHadith, activeQuiz.hadithHint);
 }
 
 // عند الضغط على مسافة، نصحح آخر كلمة مكتملة (بعد لحظة عشان المسافة تتسجل في value الأول)
@@ -697,6 +705,7 @@ function openQuiz(bookName, chapterId, numInBook){
 
   document.getElementById("quizTitle").textContent = isPoem ? `تسميع ${chapter.hadiths.length === 1 ? "البيت" : "الباب كاملًا"}: ${chapter.title}` : `تسميع ${h.title || `حديث رقم ${h.numInBook}`} (باب: ${chapter.title})`;
   document.getElementById("quizInput").value = "";
+  lastLiveCompleted = { narratorInput: null, quizInput: null };
   document.getElementById("quizInput").placeholder = isPoem ? "اكتب أبيات الباب هنا..." : "اكتب متن الحديث هنا بدون تشكيل...";
   document.querySelector(".hadith-field-label").textContent = isPoem ? "أبيات الباب" : "متن الحديث";
   document.querySelector(".narrator-field-label").style.display = isPoem ? "none" : "";
