@@ -427,6 +427,47 @@ function tokenize(text){
   return text.split(/\s+/).filter(Boolean);
 }
 
+// ---------- عرض الأبيات بهيئة الشعر داخل صناديق التصحيح ----------
+// يبني خريطة لكل كلمة في نص الباب: رقم البيت، وهل هي في الصدر أم العجز
+function buildPoemWordMap(chapter){
+  const map = [];
+  chapter.hadiths.forEach((h, vIdx) => {
+    if(h.sadr && h.ajz){
+      tokenize(h.sadr).forEach(() => map.push({ v: vIdx, half: 0 }));
+      tokenize(h.ajz).forEach(() => map.push({ v: vIdx, half: 1 }));
+    } else {
+      tokenize(h.text).forEach(() => map.push({ v: vIdx, half: -1 }));
+    }
+  });
+  return { map, verses: chapter.hadiths };
+}
+
+// items: [{ origIdx, html }] — origIdx = موضع الكلمة في النص الأصلي (أو null لكلمة زيادة تلحق بما قبلها)
+// onlyTouched: لو true يعرض الأبيات اللي وصل لها المستخدم فقط (للتصحيح اللحظي)
+function renderPoemRows(layout, items, onlyTouched){
+  const { map, verses } = layout;
+  const rows = verses.map(() => [[], []]);
+  let lastV = 0, lastHalf = 0, maxV = -1;
+  items.forEach(it => {
+    let pos = (it.origIdx !== null && it.origIdx !== undefined) ? map[it.origIdx] : null;
+    if(pos){ lastV = pos.v; lastHalf = pos.half === 1 ? 1 : 0; }
+    rows[lastV][lastHalf].push(it.html);
+    if(lastV > maxV) maxV = lastV;
+  });
+  const upto = onlyTouched ? maxV : verses.length - 1;
+  let out = "";
+  for(let v = 0; v <= upto; v++){
+    const h = verses[v];
+    const num = `<span class="poem-number">${h.numInBook}.</span>`;
+    if(h.sadr && h.ajz){
+      out += `<div class="poem-verse poem-bayt">${num}<span class="poem-sadr">${rows[v][0].join(" ")}</span><span class="poem-ajz">${rows[v][1].join(" ")}</span></div>`;
+    } else {
+      out += `<div class="poem-verse">${num} ${rows[v][0].concat(rows[v][1]).join(" ")}</div>`;
+    }
+  }
+  return `<div class="poem-text">${out}</div>`;
+}
+
 // ---------- LCS-based word alignment ----------
 function lcsAlign(origWords, origNorm, userNorm){
   const n = origNorm.length, m = userNorm.length;
@@ -509,6 +550,7 @@ function renderLiveCheckGeneric(inputElId, boxElId, originalText, hintState){
   const userCompletedWords = tokenize(completedRaw);
 
   let html = [];
+  const items = []; // نسخة بمواضع الكلمات لعرض الشعر
 
   if(originalWords.length === 0){
     html = userCompletedWords.map(w => `<span class="word-extra">${w}</span>`);
@@ -518,11 +560,13 @@ function renderLiveCheckGeneric(inputElId, boxElId, originalText, hintState){
       const uNorm = normalizeForCompare(uWord);
       if(idx >= originalWords.length){
         html.push(`<span class="word-extra">${uWord}</span>`); // كلمة زيادة عن حد النص الأصلي
+        items.push({ origIdx: null, html: html[html.length-1] });
         continue;
       }
       const isMatch = uNorm === originalNorm[idx];
       const displayWord = isMatch ? originalWords[idx] : uWord;
       html.push(`<span class="${isMatch ? 'word-ok' : 'word-wrong'}">${displayWord}</span>`);
+      items.push({ origIdx: idx, html: html[html.length-1] });
     }
   }
 
@@ -532,9 +576,11 @@ function renderLiveCheckGeneric(inputElId, boxElId, originalText, hintState){
     const hintCharsCount = hintState.hintCharsRevealed || 0;
     const displayHint = (hintCharsCount >= hintWord.length) ? hintWord : hintWord.slice(0, hintCharsCount);
     html.push(`<span class="word-hint">${displayHint}</span>`);
+    items.push({ origIdx: hintState.hintWordIndex, html: html[html.length-1] });
   }
 
-  box.innerHTML = html.join(" ");
+  const poemLayout = (boxElId === "liveCheckBoxHadith" && activeQuiz.poemLayout) ? activeQuiz.poemLayout : null;
+  box.innerHTML = (poemLayout && items.length) ? renderPoemRows(poemLayout, items, true) : html.join(" ");
   box.scrollTop = box.scrollHeight;
 }
 
@@ -644,7 +690,7 @@ function openQuiz(bookName, chapterId, numInBook){
     : chapter.hadiths.find(x => x.numInBook === numInBook);
   const key = hadithKey(bookName, chapterId, isPoem ? 0 : numInBook);
 
-  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, isPoem, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
+  activeQuiz = { key, hadith: h, chapterTitle: chapter.title, isPoem, poemLayout: isPoem ? buildPoemWordMap(chapter) : null, revealedWordsCount: 0, lastRating: null, takhrijCorrect: null,
                  hintWordIndex: null, hintCharsRevealed: 0,
                  narratorHint: { hintWordIndex: null, hintCharsRevealed: 0 },
                  hadithHint: { hintWordIndex: null, hintCharsRevealed: 0 } };
@@ -733,18 +779,22 @@ function checkQuizAnswer(){
     const ops = lcsAlign(origWords, origNorm, uNorm);
     let correctCount = 0;
     let htmlParts = [];
+    const items = [];
     ops.forEach(op => {
       if(op.type === "match"){
         htmlParts.push(`<span class="word-ok">${origWords[op.origIdx]}</span>`);
+        items.push({ origIdx: op.origIdx, html: htmlParts[htmlParts.length-1] });
         correctCount++;
       } else if(op.type === "missing"){
         htmlParts.push(`<span class="word-missing">${origWords[op.origIdx]}</span>`);
+        items.push({ origIdx: op.origIdx, html: htmlParts[htmlParts.length-1] });
       } else if(op.type === "extra"){
         htmlParts.push(`<span class="word-extra">${uWords[op.userIdx]}</span>`);
+        items.push({ origIdx: null, html: htmlParts[htmlParts.length-1] });
       }
     });
     const percentage = origWords.length > 0 ? Math.round((correctCount / origWords.length) * 100) : 0;
-    return { html: htmlParts.join(" "), correctCount, total: origWords.length, percentage };
+    return { html: htmlParts.join(" "), items, correctCount, total: origWords.length, percentage };
   }
 
   const narratorResult = buildResult(narratorWords, narratorNorm, userNarratorWords, userNarratorNorm);
@@ -754,7 +804,7 @@ function checkQuizAnswer(){
   resultBox.innerHTML = isPoem ? `
     <div style="margin-top:14px;">
       <div class="compare-section-label">نص الباب</div>
-      <div class="compare-output">${hadithResult.html}</div>
+      <div class="compare-output">${activeQuiz.poemLayout ? renderPoemRows(activeQuiz.poemLayout, hadithResult.items, false) : hadithResult.html}</div>
       <div class="compare-percentage">
         نسبة الصحة: <b style="color:${hadithResult.percentage >= 80 ? 'var(--green-ok)' : 'var(--red-err)'}">${hadithResult.percentage}%</b>
         (${hadithResult.correctCount} من ${hadithResult.total})
